@@ -1,6 +1,5 @@
 package faculdade.mercadopago.adapter.driven.entity;
 
-import faculdade.mercadopago.core.domain.enums.StatusPedidoEnum;
 import jakarta.persistence.*;
 import lombok.*;
 

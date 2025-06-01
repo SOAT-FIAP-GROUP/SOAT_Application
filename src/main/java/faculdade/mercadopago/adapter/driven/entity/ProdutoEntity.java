@@ -5,7 +5,6 @@ import lombok.Data;
 
 import java.math.BigDecimal;
 import java.sql.Time;
-import java.time.Duration;
 
 @Data
 @Entity

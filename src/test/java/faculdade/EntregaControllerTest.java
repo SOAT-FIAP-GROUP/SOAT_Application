@@ -14,7 +14,6 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.ResponseEntity;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 import static faculdade.mercadopago.core.domain.enums.StatusPedidoEnum.FINALIZADO;
 import static org.junit.jupiter.api.Assertions.assertEquals;
