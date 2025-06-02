@@ -99,7 +99,7 @@ public class PagamentoService {
                 var resultado = CreatePagamento(Long.parseLong(codigo), BigDecimal.valueOf(valorPago), status);
                 if (resultado) {
                     apiResponse.setData(null);
-                    _pedidoService.alterarPedido(Long.parseLong(codigo), StatusPedidoEnum.EM_PREPARO);
+                    _pedidoService.alterarPedido(Long.parseLong(codigo), StatusPedidoEnum.EM_PREPARACAO);
                     _pedidoService.adicionarPedidoNaFila(Long.parseLong(codigo));
                 }
             } else {

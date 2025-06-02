@@ -64,7 +64,7 @@ class PedidoServiceTest {
     @Test
     void testAlterarPedidoComSucesso() {
         long codigo = 123L;
-        StatusPedidoEnum novoStatus = StatusPedidoEnum.EM_PREPARO;
+        StatusPedidoEnum novoStatus = StatusPedidoEnum.EM_PREPARACAO;
 
         PedidoEntity pedidoExistente = new PedidoEntity();
         pedidoExistente.setCodigo(codigo);

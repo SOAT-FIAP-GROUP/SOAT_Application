@@ -45,7 +45,7 @@ public class PedidoController {
             apiResponse.setSuccess(false);
             apiResponse.setData("{}");
             apiResponse.addError("Status Inválido", "Status aceitos: "
-            + "( RECEBIDO | EM_PREPARO | PRONTO | FINALIZADO )");
+            + "( RECEBIDO | EM_PREPARACAO | PRONTO | FINALIZADO )");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiResponse);
         }
     }
