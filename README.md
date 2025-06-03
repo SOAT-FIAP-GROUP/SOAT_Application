@@ -28,6 +28,12 @@ Conheça o DDD do nosso projeto no link: https://miro.com/app/board/uXjVI9DOubQ=
 
 ---
 
+## 🎥 Vídeo do Projeto
+
+Veja a execução do projeto no link: https://youtu.be/-9GxpBW_uAE
+
+---
+
 ## ✅ Tecnologias Utilizadas
 
 - Java 17  
@@ -42,7 +48,7 @@ Conheça o DDD do nosso projeto no link: https://miro.com/app/board/uXjVI9DOubQ=
 - Baixar e instalar Maven
 
 ```bash
-git clone https://github.com/andrewpsoares/mercadopago.git
+git clone https://github.com/JoseAugustoDosSantos/mercadopago-fiap-tc.git
 
 ```
 
@@ -82,6 +88,7 @@ http://localhost:8080/swagger-ui/index.html
 **Body:**
 ```json
 {
+  "identificar_usuario": true,
   "nome": "Maria Oliveira",
   "cpf": "98765432100",
   "email": "mariaoliveira@gmail.com"
@@ -133,7 +140,7 @@ http://localhost:8080/swagger-ui/index.html
 {
   "nome": "Coca-Cola",
   "descricao": "Refrigerante 350ml",
-  "categoria": 10,
+  "categoria": 3,
   "preco": 5.00,
   "tempopreparo": "00:01:00"
 }
@@ -147,7 +154,7 @@ http://localhost:8080/swagger-ui/index.html
     "codigo": 2,
     "nome": "Coca-Cola",
     "descricao": "Refrigerante 350ml",
-    "categoria": 10,
+    "categoria": 3,
     "preco": 5.00,
     "tempopreparo": "00:01:00"
   }
@@ -162,18 +169,21 @@ http://localhost:8080/swagger-ui/index.html
 
 **GET** `/pedido?status=RECEBIDO`
 
-**Resposta (paginada):**
+**Resposta:**
 ```json
 {
-  "content": [
+  "data": [
     {
-      "codigo": 1,
-      "status": "RECEBIDO",
-      "itens": []
+      "pedido": 1,
+      "usuario": 1,
+      "status": "EM_PREPARACAO",
+      "valorTotal": 10.00,
+      "dataHoraSolicitacao": "2025-06-03T03:36:23.414949",
+      "tempoTotalPreparo": "00:02:00"
     }
   ],
-  "totalPages": 1,
-  "totalElements": 1
+  "errors": [],
+  "success": true
 }
 ```
 
@@ -183,14 +193,25 @@ http://localhost:8080/swagger-ui/index.html
 
 **Body:**
 ```json
-"EM PREPARAÇÃO"
+{
+  "codigo":  1,
+  "status": "EM_PREPARACAO"
+}
 ```
 
 **Resposta:**
 ```json
 {
-  "codigo": 1,
-  "status": "EM PREPARAÇÃO"
+  "data": {
+    "pedido": 1,
+    "usuario": 1,
+    "status": "EM_PREPARACAO",
+    "valorTotal": 10.00,
+    "dataHoraSolicitacao": "2025-06-03T03:36:23.414949",
+    "tempoTotalPreparo": "00:02:00"
+  },
+  "errors": [],
+  "success": true
 }
 ```
 
@@ -211,20 +232,58 @@ http://localhost:8080/swagger-ui/index.html
 **Body:**
 ```json
 {
-  "pedidoId": 1,
-  "valor": 29.90
+  "OrderId": 3,
+  "TotalAmount": 10.000000,
+  "Itens": [
+    {
+      "Codigo": 3,
+      "quantidade": 2,
+      "Valor": 5.000000
+    }
+  ]
 }
+
 ```
 
 **Resposta:**
 ```json
 {
-  "success": true,
   "data": {
-    "qrData": "000201010212...MP123",
-    "orderId": "order_xyz"
+    "in_store_order_id": "a0eae50a-e0a6-4d08-8d5b-b7e4bcf79304",
+    "qr_data": "00020101021243650016COM.MERCADOLIBRE020130636a0eae50a-e0a6-4d08-8d5b-b7e4bcf793045204000053039865802BR5913Andrew Soares6009SAO PAULO62070503***63040655"
+  },
+  "errors": [],
+  "success": true
+}
+```
+
+#### 🧾 Efetivar Criação do QR Code de Pagamento
+
+**POST** `https://api.mercadopago.com/v1/payments`
+
+**Body:**
+```json
+{
+  "transaction_amount": 10,
+  "payment_method_id": "pix",
+  "description": "Compra de teste QR",
+  "external_reference": "3",
+  "installments": 1,
+  "payer": {
+    "first_name": "Teste",
+    "last_name": "User",
+    "email": "email@gmail.com"
   }
 }
+
+```
+
+**Resposta:**
+```json
+{
+  "id": 1323573924,
+  "date_created": "2025-06-02T23:49:17.258-04:00"
+} 
 ```
 
 #### ✅ Confirmar pagamento
@@ -234,16 +293,25 @@ http://localhost:8080/swagger-ui/index.html
 **Body:**
 ```json
 {
-  "orderId": "order_xyz",
-  "status": "APPROVED"
+  "id": "1323573924",
+  "live_mode": false,
+  "type": "payment",
+  "date_created": "2025-05-22T12:54:53Z",
+  "user_id": 17679366,
+  "api_version": "v1",
+  "action": "payment.created",
+  "data": {
+    "id": "1323573924"
+  }
 }
 ```
 
 **Resposta:**
 ```json
 {
-  "success": true,
-  "message": "Pagamento confirmado"
+  "data": null,
+  "errors": [],
+  "success": true
 }
 ```
 
@@ -258,19 +326,21 @@ http://localhost:8080/swagger-ui/index.html
 **Body:**
 ```json
 {
-  "pedidoId": 1,
+  "codigo":  1,
   "status": "FINALIZADO"
-}
+} 
 ```
 
 **Resposta:**
 ```json
 {
-  "success": true,
   "data": {
-    "pedidoId": 1,
-    "status": "FINALIZADO "
-  }
+    "codigo": 1,
+    "status": "FINALIZADO",
+    "dataHoraEntrega": "2025-06-03T04:33:39.72109629"
+  },
+  "errors": [],
+  "success": true
 }
 ```
 

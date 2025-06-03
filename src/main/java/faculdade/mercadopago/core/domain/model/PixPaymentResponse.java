@@ -1,5 +1,6 @@
 package faculdade.mercadopago.core.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -29,6 +30,7 @@ public class PixPaymentResponse {
     private String call_for_authorize_id;
     private String callback_url;
     private boolean captured;
+    @JsonIgnore
     private Card card;
 
     @JsonProperty("charges_details")
@@ -63,6 +65,7 @@ public class PixPaymentResponse {
     private String money_release_status;
     private String notification_url;
     private String operation_type;
+    @JsonIgnore
     private Order order;
     private Payer payer;
 
