@@ -30,7 +30,7 @@ Conheça o DDD do nosso projeto no link: https://miro.com/app/board/uXjVI9DOubQ=
 
 ## 🎥 Vídeo do Projeto
 
-Veja a execução do projeto no link: https://youtu.be/-9GxpBW_uAE
+Veja a execução do nosso projeto no link: https://youtu.be/-9GxpBW_uAE
 
 ---
 
