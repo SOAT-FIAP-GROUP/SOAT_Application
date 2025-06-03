@@ -58,7 +58,7 @@ http://localhost:8080/swagger-ui/index.html
 ```
 
 
-⚠️ Em caso de erro no cadastro de produtos verifique se as categorias foram incluídas no banco. Caso não retorne registros execute a inserção manualmente: 
+Em caso de erro no cadastro de produtos verifique se as categorias foram incluídas no banco. Caso não retorne registros execute a inserção manualmente: 
 ```
 INSERT INTO `categorias` (`CODIGO`, `NOME`) VALUES
 	(1, 'LANCHE'),
