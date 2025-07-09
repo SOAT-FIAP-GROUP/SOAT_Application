@@ -1,6 +1,8 @@
-package faculdade.mercadopago.adapter.driven.entity;
+package faculdade.mercadopago.gateway.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import faculdade.mercadopago.adapter.driven.entity.PedidoItemEntity;
+import faculdade.mercadopago.adapter.driven.entity.UsuarioEntity;
 import faculdade.mercadopago.core.domain.enums.StatusPedidoEnum;
 import faculdade.mercadopago.entity.Pedido;
 import jakarta.persistence.*;
@@ -11,9 +13,7 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.sql.Time;
-import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.List;
 
 @Data
@@ -24,6 +24,7 @@ import java.util.List;
 @EqualsAndHashCode(of = {"codigo"})
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class PedidoEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long codigo;
@@ -48,34 +49,18 @@ public class PedidoEntity {
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PedidoItemEntity> itens;
 
-    public void alterarStatusPedido(StatusPedidoEnum status) {
-        if (status != null){
-            this.status = status;
-        }
+    public Pedido toModel() {
+        return new Pedido(
+                usuario != null ? usuario.toModel() : null,
+                status,
+                valorTotal,
+                dataHoraSolicitacao,
+                tempoTotalPreparo,
+                itens != null
+                        ? itens.stream().map(PedidoItemEntity::toModel).toList()
+                        : List.of()
+        );
     }
 
-    public BigDecimal calcularValorTotalPedido(List<PedidoItemEntity> itens){
-         return itens.stream()
-                   .map(PedidoItemEntity::calcularPrecoTotalItem)
-                   .reduce(BigDecimal.ZERO, BigDecimal::add);
-    }
-
-    public Time calcularTempoTotalDePreparo(List<PedidoItemEntity> itens) {
-        Duration tempoTotal = itens.stream()
-                .map(PedidoItemEntity::calcularTempoTotalItem)
-                .map(Time::toLocalTime)
-                .map(t -> Duration.ofHours(t.getHour()).plusMinutes(t.getMinute()).plusSeconds(t.getSecond()))
-                .reduce(Duration.ZERO, Duration::plus   );
-
-        LocalTime totalTime = LocalTime.MIDNIGHT.plus(tempoTotal);
-        return Time.valueOf(totalTime);
-    }
-
-    @PrePersist
-    public void prePersist() {
-        if (this.dataHoraSolicitacao == null) {
-            this.dataHoraSolicitacao = LocalDateTime.now();
-        }
-    }
 
 }
