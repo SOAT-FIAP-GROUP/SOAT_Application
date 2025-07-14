@@ -1,11 +1,9 @@
 package faculdade.mercadopago.api.controller;
 
 import faculdade.mercadopago.controller.ProdutoController;
+import faculdade.mercadopago.controller.mapper.dto.request.ProdutoRequest;
+import faculdade.mercadopago.controller.mapper.dto.response.CategoriaResponse;
 import faculdade.mercadopago.controller.mapper.dto.response.ProdutoResponse;
-import faculdade.mercadopago.core.applications.ports.ApiResponse;
-import faculdade.mercadopago.core.domain.dto.NewProdutoDto;
-import faculdade.mercadopago.core.domain.dto.ViewCategoriaDto;
-import faculdade.mercadopago.core.domain.dto.ViewProdutoDto;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
@@ -33,14 +31,14 @@ public class ProdutoAPIController {
 
     @Operation(summary = "Buscar por categoria", description = "Retorna uma categoria especifica do codigo enviado")
     @GetMapping("/buscar/categoria/{codigoCategoria}")
-    public ResponseEntity<ApiResponse<ViewCategoriaDto>> buscarPorCategoriaProduto(@PathVariable Long codigoCategoria) {
+    public ResponseEntity<CategoriaResponse> buscarPorCategoriaProduto(@PathVariable Long codigoCategoria) {
         var response = produtoController.buscarCategoria(codigoCategoria);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @Operation(summary = "Busca lista de produtos do codigo de categoria", description = "Retorna lista de produtos especificos do codigo categoria enviado")
     @GetMapping("/buscar/categoria/{codigoCategoria}/produtos")
-    public ResponseEntity<ApiResponse<List<ViewProdutoDto>>> buscarProdutosPorCategoriaProduto(@PathVariable Long codigoCategoria) {
+    public ResponseEntity<List<ProdutoResponse>> buscarProdutosPorCategoriaProduto(@PathVariable Long codigoCategoria) {
         var response = produtoController.buscarProdutosPorCategoria(codigoCategoria);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
@@ -48,7 +46,7 @@ public class ProdutoAPIController {
     @Operation(summary = "Cadastrar novo produto", description = "Inclusão de novo produto no banco de dados")
     @PostMapping
     @Transactional
-    public ResponseEntity<ApiResponse<ViewProdutoDto>> adicionar(@RequestBody NewProdutoDto produto) {
+    public ResponseEntity<ProdutoResponse> adicionar(@RequestBody ProdutoRequest produto) {
         var response = produtoController.cadastrarProduto(produto);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
@@ -64,7 +62,7 @@ public class ProdutoAPIController {
     @Operation(summary = "Atualizar informações de produto", description = "Atualiza informações do produto cadastrado no banco de dados")
     @PutMapping("/{codigo}")
     @Transactional
-    public ResponseEntity<ApiResponse<ViewProdutoDto>> atualizar(@PathVariable Long codigo, @RequestBody ViewProdutoDto produto) throws Exception {
+    public ResponseEntity<ProdutoResponse> atualizar(@PathVariable Long codigo, @RequestBody ProdutoRequest produto) throws Exception {
         var response = produtoController.atualizarProduto(produto, codigo);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
