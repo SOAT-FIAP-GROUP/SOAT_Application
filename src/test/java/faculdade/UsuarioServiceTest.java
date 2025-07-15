@@ -1,11 +1,11 @@
 package faculdade;
 
-import faculdade.mercadopago.adapter.driven.entity.UsuarioEntity;
 import faculdade.mercadopago.adapter.driven.repository.UsuarioRepository;
 import faculdade.mercadopago.core.applications.ports.ApiResponse;
 import faculdade.mercadopago.core.domain.model.Usuario;
 import faculdade.mercadopago.core.domain.model.UsuarioRequest;
 import faculdade.mercadopago.core.services.UsuarioService;
+import faculdade.mercadopago.gateway.entity.UsuarioEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

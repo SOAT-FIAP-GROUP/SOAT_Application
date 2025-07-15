@@ -1,5 +1,6 @@
 package faculdade.mercadopago.adapter.driven.entity;
 
+import faculdade.mercadopago.gateway.entity.PedidoEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;

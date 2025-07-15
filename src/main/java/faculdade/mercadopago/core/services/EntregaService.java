@@ -1,13 +1,13 @@
 package faculdade.mercadopago.core.services;
 
-import faculdade.mercadopago.adapter.driven.entity.EntregaEntity;
-import faculdade.mercadopago.adapter.driven.entity.PedidoEntity;
-import faculdade.mercadopago.adapter.driven.repository.EntregaRepository;
-import faculdade.mercadopago.adapter.driven.repository.PedidoRepository;
 import faculdade.mercadopago.core.applications.ports.ApiResponse;
 import faculdade.mercadopago.core.domain.dto.EntregaDto;
 import faculdade.mercadopago.core.domain.dto.ViewEntregaDto;
 import faculdade.mercadopago.core.domain.mapper.EntregaMapper;
+import faculdade.mercadopago.gateway.entity.EntregaEntity;
+import faculdade.mercadopago.gateway.entity.PedidoEntity;
+import faculdade.mercadopago.gateway.persistence.jpa.EntregaRepository;
+import faculdade.mercadopago.gateway.persistence.jpa.PedidoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

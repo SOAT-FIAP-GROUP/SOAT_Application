@@ -10,17 +10,13 @@ public class EntregaController {
 
     private final IEntregaUseCase entregaUseCase;
     private final IEntregaGateway entregaGateway;
-    private final EntregaMapper entregaMapper;
 
-    public EntregaController(IEntregaUseCase entregaUseCase, IEntregaGateway entregaGateway, EntregaMapper entregaMapper) {
+    public EntregaController(IEntregaUseCase entregaUseCase, IEntregaGateway entregaGateway) {
         this.entregaUseCase = entregaUseCase;
         this.entregaGateway = entregaGateway;
-        this.entregaMapper = entregaMapper;
     }
 
     public EntregaResponse entregarPedido(EntregaRequest entregaRequest) {
-        return entregaMapper.toResponse(entregaUseCase.entregarPedido(entregaRequest.codigo(), entregaGateway));
+        return EntregaMapper.toResponse(entregaUseCase.entregarPedido(entregaRequest.codigo(), entregaGateway));
     }
-
-
 }

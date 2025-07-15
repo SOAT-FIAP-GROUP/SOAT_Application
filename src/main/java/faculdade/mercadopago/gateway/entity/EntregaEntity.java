@@ -1,9 +1,8 @@
 package faculdade.mercadopago.gateway.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import faculdade.mercadopago.adapter.driven.entity.PedidoEntity;
+
 import faculdade.mercadopago.entity.Entrega;
-import faculdade.mercadopago.entity.Produto;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

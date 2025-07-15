@@ -1,7 +1,7 @@
 package faculdade.mercadopago.adapter.driven.repository;
 
 import faculdade.mercadopago.adapter.driven.entity.FilaPedidosPreparacaoEntity;
-import faculdade.mercadopago.adapter.driven.entity.PedidoEntity;
+import faculdade.mercadopago.gateway.entity.PedidoEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

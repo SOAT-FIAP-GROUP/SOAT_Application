@@ -1,13 +1,13 @@
 package faculdade;
 
-import faculdade.mercadopago.adapter.driven.entity.CategoriaEntity;
-import faculdade.mercadopago.adapter.driven.entity.ProdutoEntity;
-import faculdade.mercadopago.adapter.driven.repository.CategoriaRepository;
-import faculdade.mercadopago.adapter.driven.repository.ProdutoRepository;
 import faculdade.mercadopago.core.domain.dto.NewProdutoDto;
 import faculdade.mercadopago.core.domain.dto.ViewProdutoDto;
 import faculdade.mercadopago.core.domain.mapper.ProdutoMapper;
 import faculdade.mercadopago.core.services.ProdutoService;
+import faculdade.mercadopago.gateway.entity.CategoriaEntity;
+import faculdade.mercadopago.gateway.entity.ProdutoEntity;
+import faculdade.mercadopago.gateway.persistence.jpa.CategoriaRepository;
+import faculdade.mercadopago.gateway.persistence.jpa.ProdutoRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -76,7 +76,7 @@ class ProdutoServiceTest {
         entity.setDescricao("Descrição");
         entity.setTempopreparo(new Time(300000));
         CategoriaEntity categoria = new CategoriaEntity();
-        categoria.setCodigo(2);
+        categoria.setCodigo(2L);
         entity.setCategoria(categoria);
 
         when(produtoRepository.findById(codigo)).thenReturn(Optional.of(entity));
