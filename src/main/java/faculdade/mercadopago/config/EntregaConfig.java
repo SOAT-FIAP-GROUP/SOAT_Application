@@ -1,0 +1,42 @@
+package faculdade.mercadopago.config;
+
+import faculdade.mercadopago.api.controller.EntregaAPIController;
+import faculdade.mercadopago.controller.EntregaController;
+import faculdade.mercadopago.controller.mapper.EntregaMapper;
+import faculdade.mercadopago.entity.Entrega;
+import faculdade.mercadopago.gateway.IEntregaGateway;
+import faculdade.mercadopago.gateway.impl.EntregaGateway;
+import faculdade.mercadopago.gateway.persistence.jpa.EntregaRepository;
+import faculdade.mercadopago.usercase.IEntregaUseCase;
+import faculdade.mercadopago.usercase.impl.EntregaUserCase;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class EntregaConfig {
+
+    @Bean
+    EntregaAPIController entregaAPIController(EntregaController entregaController) {
+        return new EntregaAPIController(entregaController);
+    }
+
+    @Bean
+    EntregaController entregaController(IEntregaUseCase entregaUseCase, IEntregaGateway entregaGateway){
+        return new EntregaController(entregaUseCase, entregaGateway);
+    }
+
+    @Bean
+    EntregaMapper entregaMapper(){
+        return new EntregaMapper();
+    }
+
+    @Bean
+    EntregaUserCase entregaUseCase(){
+        return new EntregaUserCase();
+    }
+
+    @Bean
+    EntregaGateway entregaGateway(EntregaRepository entregaRepository){
+        return new EntregaGateway(entregaRepository);
+    }
+}
