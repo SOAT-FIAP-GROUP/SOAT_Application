@@ -20,7 +20,7 @@ public class EntregaEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long codigo;
+    private Long codigo;
 
     @OneToOne
     @JoinColumn(name = "pedidocodigo")
