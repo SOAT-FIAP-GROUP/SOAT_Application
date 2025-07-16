@@ -1,5 +1,6 @@
-package faculdade.mercadopago.adapter.driven.entity;
+package faculdade.mercadopago.gateway.entity;
 
+import faculdade.mercadopago.entity.Usuario;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -16,4 +17,7 @@ public class UsuarioEntity {
     private String cpf;
     private String email;
 
+    public Usuario toModel() {
+        return new Usuario(this.codigo, this.nome, this.cpf, this.email);
+    }
 }

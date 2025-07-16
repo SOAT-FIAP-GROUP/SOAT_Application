@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import faculdade.mercadopago.AppConstants;
 import faculdade.mercadopago.adapter.driven.entity.PagamentoEntity;
 import faculdade.mercadopago.adapter.driven.repository.PagamentoRepository;
-import faculdade.mercadopago.adapter.driven.repository.PedidoRepository;
 import faculdade.mercadopago.core.applications.ports.ApiResponse;
 import faculdade.mercadopago.core.domain.dto.NewPaymentDto;
 import faculdade.mercadopago.core.domain.enums.StatusPedidoEnum;
@@ -12,6 +11,7 @@ import faculdade.mercadopago.core.domain.model.PixPaymentResponse;
 import faculdade.mercadopago.core.domain.model.QrOrderPagamentoResponse;
 import faculdade.mercadopago.core.domain.model.QrOrderRequest;
 import faculdade.mercadopago.core.domain.model.QrOrderResponse;
+import faculdade.mercadopago.gateway.persistence.jpa.PedidoRepository;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 

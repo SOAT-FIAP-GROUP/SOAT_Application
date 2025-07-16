@@ -1,6 +1,7 @@
-package faculdade.mercadopago.adapter.driven.entity;
+package faculdade.mercadopago.gateway.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import faculdade.mercadopago.entity.PedidoItem;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -13,13 +14,14 @@ import java.time.LocalTime;
 @Data
 @Builder
 @Entity
-@EqualsAndHashCode(of = "Codigo")
+@EqualsAndHashCode(of = "codigo")
 @NoArgsConstructor
 @AllArgsConstructor
 public class PedidoItemEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long Codigo;
+    private long codigo;
 
     @ManyToOne
     @JoinColumn(name = "pedidocodigo")
@@ -29,28 +31,28 @@ public class PedidoItemEntity {
     @ManyToOne
     @JoinColumn(name = "produtocodigo")
     @JsonIgnore
-    private ProdutoEntity produtocodigo;
+    private ProdutoEntity produtoCodigo;
 
     @Column(name = "quantidade")
     private int quantidade;
 
     @Column(name = "precounitario")
-    private BigDecimal precounitario;
+    private BigDecimal precoUnitario;
 
     @Column(name = "precototal")
-    private BigDecimal precototal;
+    private BigDecimal precoTotal;
 
 
     public BigDecimal calcularPrecoTotalItem() {
-        if (this.produtocodigo != null && this.produtocodigo.getPreco() != null && quantidade > 0) {
-           return this.precototal = this.produtocodigo.getPreco().multiply(BigDecimal.valueOf(quantidade));
+        if (this.produtoCodigo != null && this.produtoCodigo.getPreco() != null && quantidade > 0) {
+            return this.precoTotal = this.produtoCodigo.getPreco().multiply(BigDecimal.valueOf(quantidade));
         } else {
-            return this.precototal = BigDecimal.ZERO;
+            return this.precoTotal = BigDecimal.ZERO;
         }
     }
 
     public Time calcularTempoTotalItem() {
-        LocalTime tempoUnitario = produtocodigo.getTempopreparo().toLocalTime();
+        LocalTime tempoUnitario = produtoCodigo.getTempopreparo().toLocalTime();
         Duration duracaoUnitario = Duration.ofHours(tempoUnitario.getHour())
                 .plusMinutes(tempoUnitario.getMinute())
                 .plusSeconds(tempoUnitario.getSecond());
@@ -60,4 +62,9 @@ public class PedidoItemEntity {
 
         return Time.valueOf(tempoTotal);
     }
+
+    public PedidoItem toModel() {
+        return new PedidoItem(this.codigo, this.quantidade, this.precoUnitario, this.precoTotal);
+    }
+
 }

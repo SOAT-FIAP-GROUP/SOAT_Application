@@ -1,10 +1,10 @@
 package faculdade.mercadopago.core.services;
 
-import faculdade.mercadopago.adapter.driven.entity.UsuarioEntity;
 import faculdade.mercadopago.adapter.driven.repository.UsuarioRepository;
 import faculdade.mercadopago.core.applications.ports.ApiResponse;
 import faculdade.mercadopago.core.domain.model.Usuario;
 import faculdade.mercadopago.core.domain.model.UsuarioRequest;
+import faculdade.mercadopago.gateway.entity.UsuarioEntity;
 import lombok.Builder;
 import org.springframework.stereotype.Service;
 

@@ -1,7 +1,7 @@
 package faculdade.mercadopago.core.domain.mapper;
 
-import faculdade.mercadopago.adapter.driven.entity.EntregaEntity;
 import faculdade.mercadopago.core.domain.dto.ViewEntregaDto;
+import faculdade.mercadopago.gateway.entity.EntregaEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

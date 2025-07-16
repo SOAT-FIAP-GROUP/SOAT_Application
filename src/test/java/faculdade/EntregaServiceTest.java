@@ -1,9 +1,5 @@
 package faculdade;
 
-import faculdade.mercadopago.adapter.driven.entity.EntregaEntity;
-import faculdade.mercadopago.adapter.driven.entity.PedidoEntity;
-import faculdade.mercadopago.adapter.driven.repository.EntregaRepository;
-import faculdade.mercadopago.adapter.driven.repository.PedidoRepository;
 import faculdade.mercadopago.core.applications.ports.ApiResponse;
 import faculdade.mercadopago.core.domain.dto.EntregaDto;
 import faculdade.mercadopago.core.domain.dto.ViewEntregaDto;
@@ -11,6 +7,10 @@ import faculdade.mercadopago.core.domain.enums.StatusPedidoEnum;
 import faculdade.mercadopago.core.domain.mapper.EntregaMapper;
 import faculdade.mercadopago.core.services.EntregaService;
 import faculdade.mercadopago.core.services.PedidoService;
+import faculdade.mercadopago.gateway.entity.EntregaEntity;
+import faculdade.mercadopago.gateway.entity.PedidoEntity;
+import faculdade.mercadopago.gateway.persistence.jpa.EntregaRepository;
+import faculdade.mercadopago.gateway.persistence.jpa.PedidoRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
