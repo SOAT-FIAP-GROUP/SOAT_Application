@@ -5,6 +5,7 @@ import faculdade.mercadopago.entity.PedidoItem;
 import faculdade.mercadopago.gateway.entity.PedidoItemEntity;
 
 public class PedidoItemMapper {
+
     public static PedidoItemResponse toResponse(PedidoItem entity){
         return new PedidoItemResponse(entity.id(), entity.quantidade(), entity.precoUnitario(), entity.precoTotal());
     }

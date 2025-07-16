@@ -1,4 +1,4 @@
-package faculdade.mercadopago.core.domain.enums;
+package faculdade.mercadopago.entity.enums;
 
 public enum StatusPedidoEnum {
     RECEBIDO,

@@ -7,7 +7,6 @@ import faculdade.mercadopago.gateway.entity.ProdutoEntity;
 
 public class ProdutoMapper {
 
-
     public ProdutoResponse toResponse(Produto entity){
         return new ProdutoResponse(entity.id(), entity.nome(), entity.descricao(),
                 CategoriaMapper.toResponse(entity.categoria()), entity.preco(), entity.tempopreparo());

@@ -1,4 +1,4 @@
 package faculdade.mercadopago.usercase.impl;
 
-public interface PedidoUseCase {
+public class PedidoUseCase {
 }

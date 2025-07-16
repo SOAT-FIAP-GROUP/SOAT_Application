@@ -11,7 +11,7 @@ public class UsuarioEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long codigo;
+    private Long codigo;
 
     private String nome;
     private String cpf;

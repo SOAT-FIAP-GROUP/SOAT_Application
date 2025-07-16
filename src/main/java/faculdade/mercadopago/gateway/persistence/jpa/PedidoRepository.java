@@ -1,6 +1,6 @@
 package faculdade.mercadopago.gateway.persistence.jpa;
 
-import faculdade.mercadopago.core.domain.enums.StatusPedidoEnum;
+import faculdade.mercadopago.entity.enums.StatusPedidoEnum;
 import faculdade.mercadopago.gateway.entity.PedidoEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

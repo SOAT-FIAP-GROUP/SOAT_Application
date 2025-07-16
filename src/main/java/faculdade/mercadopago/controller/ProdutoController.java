@@ -1,12 +1,10 @@
 package faculdade.mercadopago.controller;
 
 import faculdade.mercadopago.controller.mapper.CategoriaMapper;
+import faculdade.mercadopago.controller.mapper.ProdutoMapper;
 import faculdade.mercadopago.controller.mapper.dto.request.ProdutoRequest;
 import faculdade.mercadopago.controller.mapper.dto.response.CategoriaResponse;
 import faculdade.mercadopago.controller.mapper.dto.response.ProdutoResponse;
-import faculdade.mercadopago.controller.mapper.ProdutoMapper;
-import faculdade.mercadopago.core.domain.dto.NewProdutoDto;
-import faculdade.mercadopago.core.domain.dto.ViewProdutoDto;
 import faculdade.mercadopago.gateway.ICategoriaGateway;
 import faculdade.mercadopago.gateway.IProdutoGateway;
 import faculdade.mercadopago.usercase.IProdutoUseCase;

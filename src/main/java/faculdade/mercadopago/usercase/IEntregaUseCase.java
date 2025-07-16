@@ -5,5 +5,5 @@ import faculdade.mercadopago.gateway.IEntregaGateway;
 
 public interface IEntregaUseCase {
 
-    Entrega entregarPedido(long id, IEntregaGateway gateway);
+    Entrega entregarPedido(Long id, IEntregaGateway gateway);
 }

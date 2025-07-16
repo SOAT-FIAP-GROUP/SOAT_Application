@@ -2,7 +2,7 @@ package faculdade.mercadopago.gateway.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import faculdade.mercadopago.core.domain.enums.StatusPedidoEnum;
+import faculdade.mercadopago.entity.enums.StatusPedidoEnum;
 import faculdade.mercadopago.entity.Pedido;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -52,6 +52,7 @@ public class PedidoEntity {
 
     public Pedido toModel() {
         return new Pedido(
+                codigo,
                 usuario != null ? usuario.toModel() : null,
                 status,
                 valorTotal,

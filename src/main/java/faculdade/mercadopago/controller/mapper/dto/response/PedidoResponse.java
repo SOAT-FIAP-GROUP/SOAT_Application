@@ -1,6 +1,6 @@
 package faculdade.mercadopago.controller.mapper.dto.response;
 
-import faculdade.mercadopago.core.domain.enums.StatusPedidoEnum;
+import faculdade.mercadopago.entity.enums.StatusPedidoEnum;
 
 import java.math.BigDecimal;
 import java.sql.Time;

@@ -1,11 +1,9 @@
 package faculdade.mercadopago.usercase.impl;
 
-import faculdade.mercadopago.controller.mapper.ProdutoMapper;
 import faculdade.mercadopago.entity.Categoria;
 import faculdade.mercadopago.entity.Produto;
 import faculdade.mercadopago.gateway.ICategoriaGateway;
 import faculdade.mercadopago.gateway.IProdutoGateway;
-import faculdade.mercadopago.gateway.entity.ProdutoEntity;
 import faculdade.mercadopago.usercase.IProdutoUseCase;
 
 import java.util.List;

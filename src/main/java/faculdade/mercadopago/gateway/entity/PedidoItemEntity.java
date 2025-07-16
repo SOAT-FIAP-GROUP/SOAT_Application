@@ -21,7 +21,7 @@ public class PedidoItemEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long codigo;
+    private Long codigo;
 
     @ManyToOne
     @JoinColumn(name = "pedidocodigo")

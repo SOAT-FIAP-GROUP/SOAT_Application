@@ -1,8 +1,8 @@
 package faculdade.mercadopago.controller.mapper.dto.request;
 
-import faculdade.mercadopago.core.domain.enums.StatusPedidoEnum;
+import faculdade.mercadopago.entity.enums.StatusPedidoEnum;
 
 import java.time.LocalDateTime;
 
-public record EntregaRequest(long codigo, long pedido, StatusPedidoEnum status, LocalDateTime dataHoraSolicitacao) {
+public record EntregaRequest(Long codigo, Long pedido, StatusPedidoEnum status, LocalDateTime dataHoraSolicitacao) {
 }
