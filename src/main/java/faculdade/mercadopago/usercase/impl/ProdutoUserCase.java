@@ -2,9 +2,11 @@ package faculdade.mercadopago.usercase.impl;
 
 import faculdade.mercadopago.entity.Categoria;
 import faculdade.mercadopago.entity.Produto;
+import faculdade.mercadopago.exception.EntityNotFoundException;
 import faculdade.mercadopago.gateway.ICategoriaGateway;
 import faculdade.mercadopago.gateway.IProdutoGateway;
 import faculdade.mercadopago.usercase.IProdutoUseCase;
+
 
 import java.util.List;
 
@@ -16,7 +18,7 @@ public class ProdutoUserCase implements IProdutoUseCase {
 
     @Override
     public Produto buscarProduto(Long id, IProdutoGateway gateway) {
-        return gateway.findById(id).orElseThrow();
+        return gateway.findById(id).orElseThrow(() -> new EntityNotFoundException(Produto.class, id));
     }
 
     @Override
@@ -38,6 +40,6 @@ public class ProdutoUserCase implements IProdutoUseCase {
 
     @Override
     public Categoria buscarCategoria(Long id, ICategoriaGateway gateway) {
-        return gateway.findById(id).orElseThrow();
+        return gateway.findById(id).orElseThrow(() -> new EntityNotFoundException(Categoria.class, id));
     }
 }

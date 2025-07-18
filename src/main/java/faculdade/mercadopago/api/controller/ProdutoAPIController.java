@@ -54,7 +54,7 @@ public class ProdutoAPIController {
     @Operation(summary = "Remover produto cadastrado", description = "Remover produto cadastrado do banco de dados")
     @DeleteMapping("/{codigo}")
     @Transactional
-    public ResponseEntity<Void> removerProduto(@PathVariable Long codigo) throws Exception {
+    public ResponseEntity<Void> removerProduto(@PathVariable Long codigo) {
         produtoController.removerProduto(codigo);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
