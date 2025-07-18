@@ -4,7 +4,7 @@ import faculdade.mercadopago.controller.mapper.EntregaMapper;
 import faculdade.mercadopago.controller.mapper.dto.request.EntregaRequest;
 import faculdade.mercadopago.controller.mapper.dto.response.EntregaResponse;
 import faculdade.mercadopago.gateway.IEntregaGateway;
-import faculdade.mercadopago.usercase.IEntregaUseCase;
+import faculdade.mercadopago.usecase.IEntregaUseCase;
 
 public class EntregaController {
 

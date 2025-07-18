@@ -10,8 +10,8 @@ import faculdade.mercadopago.gateway.impl.CategoriaGateway;
 import faculdade.mercadopago.gateway.impl.ProdutoGateway;
 import faculdade.mercadopago.gateway.persistence.jpa.CategoriaRepository;
 import faculdade.mercadopago.gateway.persistence.jpa.ProdutoRepository;
-import faculdade.mercadopago.usercase.IProdutoUseCase;
-import faculdade.mercadopago.usercase.impl.ProdutoUserCase;
+import faculdade.mercadopago.usecase.IProdutoUseCase;
+import faculdade.mercadopago.usecase.impl.ProdutoUseCase;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -47,8 +47,8 @@ public class ProdutoConfig {
     }
 
     @Bean
-    ProdutoUserCase produtoUserCase(){
-        return new ProdutoUserCase();
+    ProdutoUseCase produtoUserCase(){
+        return new ProdutoUseCase();
     }
 
     @Bean

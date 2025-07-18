@@ -7,8 +7,8 @@ import faculdade.mercadopago.controller.mapper.PedidoMapper;
 import faculdade.mercadopago.gateway.IPedidoGateway;
 import faculdade.mercadopago.gateway.impl.PedidoGateway;
 import faculdade.mercadopago.gateway.persistence.jpa.PedidoRepository;
-import faculdade.mercadopago.usercase.IPedidoUseCase;
-import faculdade.mercadopago.usercase.impl.PedidoUseCase;
+import faculdade.mercadopago.usecase.IPedidoUseCase;
+import faculdade.mercadopago.usecase.impl.PedidoUseCase;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

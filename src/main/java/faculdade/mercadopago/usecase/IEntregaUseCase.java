@@ -1,4 +1,4 @@
-package faculdade.mercadopago.usercase;
+package faculdade.mercadopago.usecase;
 
 import faculdade.mercadopago.entity.Entrega;
 import faculdade.mercadopago.gateway.IEntregaGateway;

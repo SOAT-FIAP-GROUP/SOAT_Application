@@ -10,7 +10,7 @@ import faculdade.mercadopago.entity.Produto;
 import faculdade.mercadopago.gateway.ICategoriaGateway;
 import faculdade.mercadopago.gateway.IProdutoGateway;
 import faculdade.mercadopago.mocks.MockGenerator;
-import faculdade.mercadopago.usercase.IProdutoUseCase;
+import faculdade.mercadopago.usecase.IProdutoUseCase;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

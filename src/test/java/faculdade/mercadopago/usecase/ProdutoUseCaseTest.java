@@ -6,7 +6,7 @@ import faculdade.mercadopago.exception.EntityNotFoundException;
 import faculdade.mercadopago.gateway.ICategoriaGateway;
 import faculdade.mercadopago.gateway.IProdutoGateway;
 import faculdade.mercadopago.mocks.MockGenerator;
-import faculdade.mercadopago.usercase.impl.ProdutoUserCase;
+import faculdade.mercadopago.usecase.impl.ProdutoUseCase;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -16,9 +16,9 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-class ProdutoUserCaseTest {
+class ProdutoUseCaseTest {
 
-    private ProdutoUserCase produtoUserCase;
+    private ProdutoUseCase produtoUserCase;
     private IProdutoGateway produtoGateway;
     private ICategoriaGateway categoriaGateway;
 
@@ -26,7 +26,7 @@ class ProdutoUserCaseTest {
 
     @BeforeEach
     void setUp() {
-        produtoUserCase = new ProdutoUserCase();
+        produtoUserCase = new ProdutoUseCase();
         produtoGateway = mock(IProdutoGateway.class);
         categoriaGateway = mock(ICategoriaGateway.class);
     }
