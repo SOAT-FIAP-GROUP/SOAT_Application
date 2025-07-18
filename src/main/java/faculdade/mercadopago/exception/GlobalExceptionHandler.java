@@ -32,16 +32,6 @@ public class GlobalExceptionHandler {
         ));
     }
 
-    @ExceptionHandler(MaxUploadSizeExceededException.class)
-    public ResponseEntity<Map<String, Object>> handleMaxSizeException(MaxUploadSizeExceededException ex) {
-        return ResponseEntity.status(HttpStatus.PAYLOAD_TOO_LARGE).body(Map.of(
-                "status", 400,
-                "erro", "O arquivo enviado excede o tamanho máximo permitido.",
-                "mensagem", ex.getMessage(),
-                "timestamp", LocalDateTime.now()
-        ));
-    }
-
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<Map<String, Object>> handleNotFoundException(EntityNotFoundException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of(
