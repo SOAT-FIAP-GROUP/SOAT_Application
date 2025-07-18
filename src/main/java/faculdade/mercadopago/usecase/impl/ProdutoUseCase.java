@@ -1,16 +1,16 @@
-package faculdade.mercadopago.usercase.impl;
+package faculdade.mercadopago.usecase.impl;
 
 import faculdade.mercadopago.entity.Categoria;
 import faculdade.mercadopago.entity.Produto;
 import faculdade.mercadopago.exception.EntityNotFoundException;
 import faculdade.mercadopago.gateway.ICategoriaGateway;
 import faculdade.mercadopago.gateway.IProdutoGateway;
-import faculdade.mercadopago.usercase.IProdutoUseCase;
+import faculdade.mercadopago.usecase.IProdutoUseCase;
 
 
 import java.util.List;
 
-public class ProdutoUserCase implements IProdutoUseCase {
+public class ProdutoUseCase implements IProdutoUseCase {
     @Override
     public Produto cadastrarProduto(Produto entity, IProdutoGateway gateway) {
         return gateway.save(entity);

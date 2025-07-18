@@ -3,12 +3,11 @@ package faculdade.mercadopago.config;
 import faculdade.mercadopago.api.controller.EntregaAPIController;
 import faculdade.mercadopago.controller.EntregaController;
 import faculdade.mercadopago.controller.mapper.EntregaMapper;
-import faculdade.mercadopago.entity.Entrega;
 import faculdade.mercadopago.gateway.IEntregaGateway;
 import faculdade.mercadopago.gateway.impl.EntregaGateway;
 import faculdade.mercadopago.gateway.persistence.jpa.EntregaRepository;
-import faculdade.mercadopago.usercase.IEntregaUseCase;
-import faculdade.mercadopago.usercase.impl.EntregaUserCase;
+import faculdade.mercadopago.usecase.IEntregaUseCase;
+import faculdade.mercadopago.usecase.impl.EntregaUseCase;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -31,8 +30,8 @@ public class EntregaConfig {
     }
 
     @Bean
-    EntregaUserCase entregaUseCase(){
-        return new EntregaUserCase();
+    EntregaUseCase entregaUseCase(){
+        return new EntregaUseCase();
     }
 
     @Bean

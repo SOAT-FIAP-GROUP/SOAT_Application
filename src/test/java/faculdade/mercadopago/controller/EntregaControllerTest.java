@@ -1,11 +1,7 @@
 package faculdade.mercadopago.controller;
 
-import faculdade.mercadopago.controller.mapper.dto.request.EntregaRequest;
-import faculdade.mercadopago.controller.mapper.dto.response.EntregaResponse;
-import faculdade.mercadopago.entity.Entrega;
 import faculdade.mercadopago.gateway.IEntregaGateway;
-import faculdade.mercadopago.usercase.IEntregaUseCase;
-import org.junit.Test;
+import faculdade.mercadopago.usecase.IEntregaUseCase;
 import org.junit.jupiter.api.BeforeEach;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

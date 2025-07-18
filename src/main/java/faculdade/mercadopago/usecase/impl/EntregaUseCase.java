@@ -1,11 +1,11 @@
-package faculdade.mercadopago.usercase.impl;
+package faculdade.mercadopago.usecase.impl;
 
 import faculdade.mercadopago.entity.Entrega;
 import faculdade.mercadopago.gateway.IEntregaGateway;
-import faculdade.mercadopago.usercase.IEntregaUseCase;
+import faculdade.mercadopago.usecase.IEntregaUseCase;
 
 
-public class EntregaUserCase implements IEntregaUseCase {
+public class EntregaUseCase implements IEntregaUseCase {
 
     @Override
     public Entrega entregarPedido(Long id, IEntregaGateway gateway) {

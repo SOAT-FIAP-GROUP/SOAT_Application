@@ -2,10 +2,14 @@ package faculdade.mercadopago.gateway.entity;
 
 import faculdade.mercadopago.entity.Usuario;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
-@Data
+
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 @Table(name = "usuarios")
 public class UsuarioEntity {
 

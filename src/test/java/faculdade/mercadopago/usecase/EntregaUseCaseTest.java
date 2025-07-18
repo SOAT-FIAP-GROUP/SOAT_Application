@@ -1,24 +1,19 @@
 package faculdade.mercadopago.usecase;
 
-import faculdade.mercadopago.entity.Entrega;
 import faculdade.mercadopago.gateway.IEntregaGateway;
-import faculdade.mercadopago.usercase.impl.EntregaUserCase;
+import faculdade.mercadopago.usecase.impl.EntregaUseCase;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-public class EntregaUserCaseTest {
+public class EntregaUseCaseTest {
 
-    private EntregaUserCase entregaUserCase;
+    private EntregaUseCase entregaUserCase;
     private IEntregaGateway entregaGateway;
 
     @BeforeEach
     void setUp() {
-        entregaUserCase = new EntregaUserCase();
+        entregaUserCase = new EntregaUseCase();
         entregaGateway = mock(IEntregaGateway.class);
     }
 

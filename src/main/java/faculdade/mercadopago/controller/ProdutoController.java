@@ -7,7 +7,7 @@ import faculdade.mercadopago.controller.mapper.dto.response.CategoriaResponse;
 import faculdade.mercadopago.controller.mapper.dto.response.ProdutoResponse;
 import faculdade.mercadopago.gateway.ICategoriaGateway;
 import faculdade.mercadopago.gateway.IProdutoGateway;
-import faculdade.mercadopago.usercase.IProdutoUseCase;
+import faculdade.mercadopago.usecase.IProdutoUseCase;
 
 import java.util.List;
 import java.util.stream.Collectors;
