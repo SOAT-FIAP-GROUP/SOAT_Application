@@ -15,7 +15,7 @@ public class PagamentoUseCase implements IPagamentoUseCase {
     @Override
     public QrCodeRes processarQrCode(QrCodeRequest request, IPagamentoGateway gateway) {
         var listDto = new ArrayList<QrCodeOrder.Item>();
-        for (QrCodeRequest.ItemPedido item : request.Itens()){
+        for (QrCodeRequest.ItemPedido item : request.Itens()) {
             var itemRequest = new QrCodeOrder.Item(
                     item.Codigo().toString(),
                     "lanche",
@@ -38,9 +38,7 @@ public class PagamentoUseCase implements IPagamentoUseCase {
         );
 
         var url = AppConstants.BASEURL_MERCADOPAGO + AppConstants.GENERATEQRCODEURL_MERCADOPAGO;
-        var res = gateway.sendRequest(url, HttpMethod.POST, qrcoderequest, QrCodeRes.class, null);
-        System.out.println(res);
-        return res ;
+        return gateway.sendRequest(url, HttpMethod.POST, qrcoderequest, QrCodeRes.class, null);
 
     }
 }

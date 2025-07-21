@@ -3,6 +3,7 @@
 //import com.fasterxml.jackson.databind.ObjectMapper;
 //import faculdade.mercadopago.AppConstants;
 //import faculdade.mercadopago.controller.mapper.dto.request.ConfirmacaoWebHookRequest;
+//import faculdade.mercadopago.entity.pagamento.QrCodeOrder;
 //import faculdade.mercadopago.gateway.IPagamentoGateway;
 //import faculdade.mercadopago.usecase.IWebHookUseCase;
 //import org.springframework.http.HttpMethod;
@@ -14,11 +15,8 @@
 //    @Override
 //    public void confirmarPagamento(ConfirmacaoWebHookRequest request, IPagamentoGateway pagamentoGateway) {
 //        var url = AppConstants.BASEURL_MERCADOPAGO + AppConstants.CONFIRMPAYMENT_MERCADOPAGO + "/" + request.id();
-//        var response = pagamentoGateway.sendRequest(url, HttpMethod.GET, PixPaymentResponse.class);
-//        var apiResponse = new ApiResponse<>();
-//
+//        var response = pagamentoGateway.sendRequest(url, HttpMethod.GET, QrCodeOrder.class);
 //        if (response.getStatusCode().is2xxSuccessful()) {
-//            apiResponse.setSuccess(true);
 //            apiResponse.setData((PixPaymentResponse) response.getBody());
 //
 //            PixPaymentResponse body = (PixPaymentResponse) response.getBody();
