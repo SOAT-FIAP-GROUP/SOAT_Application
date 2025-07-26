@@ -1,23 +1,76 @@
-# 📦 Tech Challenge - Fase 1
+# 📦 Tech Challenge - Fase 2
 
-Essa aplicação foi construida para entrega do Tech Challenge da fase 1. 
+---
 
-Integrantes grupo:
+Essa aplicação foi construída para entrega do Tech Challenge da fase 2, cujo objetivo principal foi a refatoração do código já existente da arquitetura hexagonal para o padrão Clean Architecture, além da implementação da estrutura Kubernetes para orquestração e escalabilidade.
 
-- Andrew do Prado Soares
-- Edmundo Alves Franco Junior
-- Jose Augusto - RM 361650
-- Nathalia Matielo - RM363100
+## Integrantes do grupo:
 
-A aplicação contempla a construção de APIs que juntas irão fornecer um sistema de gerenciamento para uma lanchonete.
+- Iago Cavalcante Geraldo- RM
+- Jose Augusto dos Santos- RM 361650
+- Nathalia Matielo Rodrigues- RM 363100
+- Rogerio Inacio Silva Junior- RM
+- Vanessa Moreira Wendling - RM
 
-O sistema possui rotas disponiveis para:
+---
 
-- Cadastro e gerenciamento de usuários
-- Cadastro, atualização e exclusão de produtos
-- Inclusão de pedidos
-- Gestão de pagamentos
-- Gerenciamento de status e entrega do pedido
+## 💡 Solução Proposta
+
+Foi desenvolvido um sistema de autoatendimento para fast food, que:
+
+- Permite que o cliente faça pedidos diretamente via interface, podendo se identificar por CPF, cadastrar-se ou permanecer anônimo.
+
+
+- O cliente pode montar o combo em etapas opcionais: Lanche, Acompanhamento e Bebida, com exibição clara de nome, descrição e preço.
+
+
+- Possui integração com Mercado Pago via QRCode para pagamento.
+
+
+- Exibe para o cliente um monitor de acompanhamento do pedido, com status atualizados em tempo real: Recebido, Em preparação, Pronto e Finalizado.
+
+
+- Notifica o cliente quando o pedido estiver pronto para retirada.
+
+
+- Permite ao estabelecimento gerenciar clientes, produtos e acompanhar os pedidos em andamento.
+
+
+
+---
+
+## 📦 Funcionalidades Entregues na Fase 2
+
+- Refatoração do código para Clean Architecture.
+
+
+- APIs REST para:
+    - Cadastro e identificação de usuário
+    - Realização de pedido
+    - Integração com Mercado Pago para geração do QRCode
+    - Webhook para confirmação de pagamento via Mercado Pago
+    - Listagem de pedidos filtrados e ordenados por status e tempo
+    - Controle de pedidos entregues
+    - Gerenciamento de clientes, produtos e pedidos
+
+
+- Implantação em Kubernetes:
+    - Escalabilidade automática (Horizontal Pod Autoscaler).
+    - Uso de ConfigMaps e Secrets para valores sensíveis.
+    - Boas práticas com Deployments e Services para orquestração e exposição.
+
+---
+
+
+##  Arquitetura
+
+![img.png](img.png)
+
+### Requisitos contemplados
+
+- Escalabilidade e alta disponibilidade com Kubernetes.
+- Segurança e gerenciamento de configuração via Secrets e ConfigMaps.
+- Visibilidade e controle total via painel administrativo.
 
 ---
 
@@ -28,47 +81,54 @@ Conheça o DDD do nosso projeto no link: https://miro.com/app/board/uXjVI9DOubQ=
 
 ---
 
-## 🎥 Vídeo do Projeto
+## 🎥 Vídeo Demonstrativo
 
-Veja a execução do nosso projeto no link: https://youtu.be/-9GxpBW_uAE
+Assista ao vídeo com demonstração do funcionamento da aplicação e da arquitetura:
+
 
 ---
 
-## ✅ Tecnologias Utilizadas
+## ⚙️ Tecnologias Utilizadas
 
-- Java 17  
-- Spring Boot 
-
+- Java 17
+- Spring Boot
+- Kubernetes (Minikube)
+- Mercado Pago (integração de pagamento via QRCode)
+- MariaDB (Banco de dados)
 
 ---
 
 ## 🚀 Como Executar Localmente
 
-- Baixar e instalar JDK 17
-- Baixar e instalar Maven
-
-```bash
-git clone https://github.com/JoseAugustoDosSantos/mercadopago-fiap-tc.git
-
-```
-
-Acesse a documentação Swagger:
-```
-http://localhost:8080/swagger-ui/index.html
-```
-
-
-Em caso de erro no cadastro de produtos verifique se as categorias foram incluídas no banco. Caso não retorne registros, execute a inserção manualmente executando o comando no container: 
-```
-mariadb -u <user> -p lanchonetedb
-```
-```
-INSERT INTO `categorias` (`CODIGO`, `NOME`) VALUES
-	(1, 'LANCHE'),
-	(2, 'ACOMPANHAMENTO'),
-	(3, 'BEBIDA'),
-	(4, 'SOBREMESA');
-```
+1. Instale JDK 17 e Maven.
+2. Clone o repositório:
+    ```bash
+    git clone https://github.com/JoseAugustoDosSantos/mercadopago-fiap-tc-fase-2.git
+    cd mercadopago-fiap-tc-fase-2
+    ```
+3. Configure o banco de dados e as categorias (caso não existam) no MariaDB:
+    ```sql
+    INSERT INTO categorias (CODIGO, NOME) VALUES
+      (1, 'LANCHE'),
+      (2, 'ACOMPANHAMENTO'),
+      (3, 'BEBIDA'),
+      (4, 'SOBREMESA');
+    ```
+4. Execute a aplicação via Maven:
+    ```bash
+    mvn spring-boot:run
+    ```
+5. Acesse a documentação Swagger:
+    ```
+    http://localhost:8080/swagger-ui/index.html
+    ```
+6.  Para execução via Kubernetes:
+    - Instale Minikube.
+    - Aplique os manifests YAML:
+      ```bash
+      kubectl apply -f k8s/
+      ```
+    - Configure HPA para escalabilidade automática.
 
 ---
 
@@ -362,6 +422,4 @@ INSERT INTO `categorias` (`CODIGO`, `NOME`) VALUES
 
 ## 📌 Observações Finais
 
-- Todas as respostas seguem o padrão de `ApiResponse<T>`.
 - A API não possui autenticação implementada.
-- Configure o banco de dados no `application.properties`.
