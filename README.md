@@ -6,11 +6,11 @@ Essa aplicação foi construída para entrega do Tech Challenge da fase 2, cujo 
 
 ## Integrantes do grupo:
 
-- Iago Cavalcante Geraldo- RM
+- Iago Cavalcante Geraldo- RM 362832
 - Jose Augusto dos Santos- RM 361650
 - Nathalia Matielo Rodrigues- RM 363100
 - Rogerio Inacio Silva Junior- RM
-- Vanessa Moreira Wendling - RM
+- Vanessa Moreira Wendling - RM 362741
 
 ---
 
