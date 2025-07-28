@@ -38,7 +38,7 @@ public class PagamentoUseCase implements IPagamentoUseCase {
         );
 
         var url = AppConstants.BASEURL_MERCADOPAGO + AppConstants.GENERATEQRCODEURL_MERCADOPAGO;
-        return gateway.sendRequest(url, HttpMethod.POST, qrcoderequest, QrCodeRes.class, null);
+        return gateway.sendRequest(url, HttpMethod.POST, qrcoderequest, QrCodeRes.class, null).getBody();
 
     }
 }

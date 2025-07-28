@@ -1,7 +1,6 @@
 package faculdade.mercadopago.gateway.impl;
 
 import faculdade.mercadopago.AppConstants;
-import faculdade.mercadopago.entity.pagamento.QrCodeOrder;
 import faculdade.mercadopago.gateway.IPagamentoGateway;
 import faculdade.mercadopago.gateway.entity.PagamentoEntity;
 import faculdade.mercadopago.gateway.persistence.jpa.PagamentoRepository;
@@ -20,7 +19,7 @@ public class PagamentoGateway implements IPagamentoGateway {
     }
 
     @Override
-    public <T, R> R sendRequest(String url, HttpMethod method, T request, Class<R> responseType, Map<String, String> extraHeaders) {
+    public <T, R> ResponseEntity<R> sendRequest(String url, HttpMethod method, T request, Class<R> responseType, Map<String, String> extraHeaders) {
         try {
             var headers = new HttpHeaders();
             headers.set("Authorization", "Bearer " + AppConstants.ACCESS_TOKEN);
@@ -34,7 +33,7 @@ public class PagamentoGateway implements IPagamentoGateway {
                     ? new HttpEntity<>(headers)
                     : new HttpEntity<>(request, headers);
 
-            return _restTemplate.exchange(url, method, entity, responseType).getBody();
+            return _restTemplate.exchange(url, method, entity, responseType);
 
         } catch (HttpStatusCodeException ex)  {
             throw new Error(String.valueOf(ResponseEntity
@@ -48,9 +47,28 @@ public class PagamentoGateway implements IPagamentoGateway {
     }
 
     @Override
-    public <R> QrCodeOrder sendRequest(String url, HttpMethod method, Class<R> responseType) {
-        return null;
+    public <R> ResponseEntity<?> sendRequest(String url, HttpMethod method, Class<R> responseType) {
+        return sendRequest(url, method, null, responseType, null);
     }
+
+//    @Override
+//    public boolean criarPagamento(long orderId, BigDecimal value, String status) {
+//        var pedido = _pedidoRepository.findById(orderId).orElseThrow(() -> new Exception("Produto não encontrado"));
+//
+//        PagamentoEntity pagamento = new PagamentoEntity(
+//                pedido,
+//                value,
+//                status
+//        );
+//
+//        try {
+//            var obj = pagamentoRepository.save(pagamento);
+//            return obj.getId() != null;
+//        } catch (Exception e) {
+//            return false;
+//        }
+//    }
+
 
     @Override
     public PagamentoEntity save(PagamentoEntity pagamento) {
