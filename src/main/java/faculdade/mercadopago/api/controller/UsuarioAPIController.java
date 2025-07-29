@@ -30,6 +30,7 @@ public class UsuarioAPIController {
     @Operation(summary = "Cadastrar usuário", description = "Cadastra um novo usuário ou identifica usuário com registro padrão")
     @PostMapping
     public ResponseEntity<UsuarioResponse> criarUsuario(@RequestBody @Valid UsuarioRequest request) throws Exception {
+        request.validar();
         var response = usuarioController.processarUsuario(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
