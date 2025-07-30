@@ -39,4 +39,7 @@ public class ProdutoEntity {
                 this.getCategoria() != null ? this.getCategoria().toModel() : null,this.getPreco(), this.getTempopreparo());
     }
 
+    public ProdutoEntity(Long codigo){
+        this.codigo = codigo;
+    }
 }

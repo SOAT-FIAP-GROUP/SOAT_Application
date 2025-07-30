@@ -21,4 +21,8 @@ public class ProdutoMapper {
         return new ProdutoEntity(entity.id(), entity.nome(), entity.descricao(),
                 CategoriaMapper.toEntityPersistence(entity.categoria()),entity.preco(), entity.tempopreparo());
     }
+
+    public static Produto toResponseByRes(ProdutoResponse response){
+        return new Produto(response.id(), response.nome(), response.descricao(), CategoriaMapper.toResponseByRes(response.categoria()), response.preco(), response.tempopreparo());
+    }
 }

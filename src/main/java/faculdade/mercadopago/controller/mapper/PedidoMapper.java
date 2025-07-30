@@ -1,23 +1,32 @@
 package faculdade.mercadopago.controller.mapper;
 
+import faculdade.mercadopago.controller.mapper.dto.request.PedidoRequest;
 import faculdade.mercadopago.controller.mapper.dto.response.PedidoResponse;
 import faculdade.mercadopago.entity.Pedido;
 import faculdade.mercadopago.entity.Usuario;
+import faculdade.mercadopago.entity.enums.StatusPedidoEnum;
 import faculdade.mercadopago.gateway.entity.PedidoEntity;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 public class PedidoMapper {
 
-    public static PedidoResponse toResponse(Pedido entity){
-        return new PedidoResponse(entity.usuario().codigo(), entity.status(), entity.valorTotal(), entity.dataHoraSolicitacao(),
+    public PedidoResponse toResponse(Pedido entity){
+        return new PedidoResponse(entity.idUsuario(), entity.status(), entity.valorTotal(), entity.dataHoraSolicitacao(),
                 entity.tempoTotalPreparo(),
                 entity.itens().stream().map(PedidoItemMapper::toResponse).toList());
     }
 
-    public static Pedido toEntity(PedidoEntity pedidoEntity) {
-        //Mock usuario REMOVER NO FUTURO
-        Usuario usuario = new Usuario(1L, "teste","teste","teste");
-        return new Pedido(null, usuario, pedidoEntity.getStatus(), pedidoEntity.getValorTotal(), pedidoEntity.getDataHoraSolicitacao(),
-                pedidoEntity.getTempoTotalPreparo(), pedidoEntity.getItens().stream().map(PedidoItemMapper::toEntity).toList());
+    public Pedido toEntity(PedidoRequest pedidoRequest) {
+        return new Pedido(null, pedidoRequest.idUsuario(), StatusPedidoEnum.RECEBIDO, null, LocalDateTime.now(), null, pedidoRequest.itens().stream().map(PedidoItemMapper::toEntity).toList());
     }
 
+    public static PedidoEntity toEntityPersistence(Pedido pedido) {
+        //Mock usuario REMOVER NO FUTURO
+        Usuario usuario = new Usuario(1L, "teste","teste","teste");
+        return new PedidoEntity(pedido.id(), UsuarioMapper.toEntityPersistence(usuario), pedido.status(), pedido.valorTotal(), pedido.dataHoraSolicitacao(),
+                pedido.tempoTotalPreparo(), pedido.itens().stream().map(PedidoItemMapper::toEntityPersistence).collect(Collectors.toCollection(ArrayList::new)));
+    }
 }

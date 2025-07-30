@@ -18,4 +18,8 @@ public class CategoriaMapper {
     public static CategoriaEntity toEntityPersistence(Categoria entity){
         return new CategoriaEntity(entity.id(), entity.nome());
     }
+
+    public static Categoria toResponseByRes(CategoriaResponse response){
+        return new Categoria(response.id(), response.nome());
+    }
 }
