@@ -1,13 +1,12 @@
 package faculdade.mercadopago.usecase.impl;
 
-import faculdade.mercadopago.controller.ProdutoController;
-import faculdade.mercadopago.controller.UsuarioController;
-import faculdade.mercadopago.controller.mapper.ProdutoMapper;
-import faculdade.mercadopago.entity.Pedido;
-import faculdade.mercadopago.entity.PedidoItem;
-import faculdade.mercadopago.entity.Produto;
+import faculdade.mercadopago.entity.*;
+import faculdade.mercadopago.entity.enums.StatusPedidoEnum;
 import faculdade.mercadopago.exception.EntityNotFoundException;
+import faculdade.mercadopago.gateway.IFilaPedidosPreparacaoGateway;
 import faculdade.mercadopago.gateway.IPedidoGateway;
+import faculdade.mercadopago.gateway.IProdutoGateway;
+import faculdade.mercadopago.gateway.IUsuarioGateway;
 import faculdade.mercadopago.usecase.IPedidoUseCase;
 import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
@@ -17,7 +16,6 @@ import java.math.BigDecimal;
 import java.sql.Time;
 import java.time.Duration;
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -27,29 +25,31 @@ public class PedidoUseCase implements IPedidoUseCase {
     public Pedido buscarPedido(Long id, IPedidoGateway gateway) {
         return gateway.findById(id).orElseThrow(() -> new EntityNotFoundException(Pedido.class, id));
     }
+
     @Transactional
     @Override
-    public Pedido criarPedido(Pedido pedido, IPedidoGateway pedidoGateway, ProdutoController produtoController, UsuarioController usuarioController) {
+    public Pedido criarPedido(Pedido pedido, IPedidoGateway pedidoGateway, IProdutoGateway produtoGateway,
+                              IUsuarioGateway usuarioGateway) {
 
-        Pedido pedidoSalvar = new Pedido(
-                pedido.id(),
-                pedido.idUsuario(),
-                pedido.status(),
-                null,
-                pedido.dataHoraSolicitacao(),
-                pedido.tempoTotalPreparo(),
-                new ArrayList<>()
-        );
+        usuarioGateway.findById(pedido.idUsuario())
+                .orElseThrow(() -> new EntityNotFoundException(Usuario.class, pedido.idUsuario()));
+
+        Pedido pedidoSalvar = pedido.preSalvar(pedido.idUsuario(), pedido.status(),pedido.dataHoraSolicitacao());
 
         Pedido pedidoSalvo = pedidoGateway.save(pedidoSalvar);
+
         AtomicReference<Duration> totalPreparo = new AtomicReference<>(Duration.ZERO);
+
         List<PedidoItem> itens = pedido.itens().stream()
                 .map(item -> {
-                    Produto produto = ProdutoMapper.toResponseByRes(produtoController.buscarProduto(item.id()));
+                    Produto produto = produtoGateway.findById(item.id())
+                            .orElseThrow(() -> new EntityNotFoundException(Produto.class, item.id()));
+
                     Duration tempoItem = Duration.between(LocalTime.MIDNIGHT, produto.tempopreparo().toLocalTime())
                             .multipliedBy(item.quantidade());
                     totalPreparo.updateAndGet(tp -> tp.plus(tempoItem));
-                    return new PedidoItem(null, pedidoSalvo.id(), produto.id(), item.quantidade(), produto.preco(), produto.preco().multiply(BigDecimal.valueOf(item.quantidade())));
+                    return new PedidoItem(null, pedidoSalvo.id(), produto.id(), item.quantidade(), produto.preco(),
+                            produto.preco().multiply(BigDecimal.valueOf(item.quantidade())));
                 }).toList();
 
         if (itens.isEmpty()) {
@@ -79,6 +79,31 @@ public class PedidoUseCase implements IPedidoUseCase {
                 itens
         );
         return pedidoGateway.save(pedidoAtualizar);
+    }
+
+    @Override
+    public List<Pedido> listarPedidos(StatusPedidoEnum status, IPedidoGateway pedidoGateway) {
+        return pedidoGateway.findAllByStatus(status);
+    }
+
+    @Override
+    public Pedido alterarPedido(Long id, StatusPedidoEnum status, IPedidoGateway pedidoGateway) {
+        Pedido pedido = this.buscarPedido(id, pedidoGateway);
+        Pedido pedidoAtualizar = pedido.withStatus(status);
+        return pedidoGateway.save(pedidoAtualizar);
+    }
+
+    @Override
+    public FilaPedidosPreparacao adicionarPedidoNaFila(Long id, IPedidoGateway pedidoGateway, IFilaPedidosPreparacaoGateway filaPedidosPreparacaoGateway) {
+        Pedido pedido = this.buscarPedido(id, pedidoGateway);
+        FilaPedidosPreparacao filaPedidosPreparacao = new FilaPedidosPreparacao(null, pedido);
+        return filaPedidosPreparacaoGateway.save(filaPedidosPreparacao);
+    }
+
+    @Override
+    public void removerPedidoDaFila(Long id, IPedidoGateway pedidoGateway, IFilaPedidosPreparacaoGateway filaPedidosPreparacaoGateway) {
+        FilaPedidosPreparacao filaPedidosPreparacao = filaPedidosPreparacaoGateway.findByPedidocodigoId(id).orElseThrow(() -> new EntityNotFoundException(FilaPedidosPreparacao.class, id));
+        filaPedidosPreparacaoGateway.removerPedidoDaFila(filaPedidosPreparacao);
     }
 
 }

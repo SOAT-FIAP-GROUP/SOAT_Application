@@ -1,55 +1,64 @@
 package faculdade.mercadopago.controller;
 
+import faculdade.mercadopago.controller.mapper.EntregaMapper;
 import faculdade.mercadopago.controller.mapper.dto.request.EntregaRequest;
 import faculdade.mercadopago.controller.mapper.dto.response.EntregaResponse;
 import faculdade.mercadopago.entity.Entrega;
-import faculdade.mercadopago.entity.Pedido;
-import faculdade.mercadopago.entity.enums.StatusPedidoEnum;
 import faculdade.mercadopago.gateway.IEntregaGateway;
+import faculdade.mercadopago.gateway.IFilaPedidosPreparacaoGateway;
+import faculdade.mercadopago.gateway.IPedidoGateway;
 import faculdade.mercadopago.usecase.IEntregaUseCase;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.MockedStatic;
 
 import java.time.LocalDateTime;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
 
 public class EntregaControllerTest {
 
     private IEntregaUseCase entregaUseCase;
     private IEntregaGateway entregaGateway;
+    private IPedidoGateway pedidoGateway;
+    private IFilaPedidosPreparacaoGateway filaGateway;
+
     private EntregaController entregaController;
 
     @BeforeEach
     public void setUp() {
         entregaUseCase = mock(IEntregaUseCase.class);
         entregaGateway = mock(IEntregaGateway.class);
-        entregaController = new EntregaController(entregaUseCase, entregaGateway);
+        pedidoGateway = mock(IPedidoGateway.class);
+        filaGateway = mock(IFilaPedidosPreparacaoGateway.class);
+
+        entregaController = new EntregaController(entregaUseCase, entregaGateway, pedidoGateway, filaGateway);
     }
 
     @Test
     public void deveRetornarEntregaResponseQuandoPedidoForEntregueComSucesso() {
-        long codigo = 10;
-        long pedidoId = 100;
-        StatusPedidoEnum status = StatusPedidoEnum.FINALIZADO;
-        LocalDateTime dataHoraSolicitacao = LocalDateTime.now();
-        LocalDateTime dataHoraEntrega = LocalDateTime.now();
+        Long entregaId = 1L;
+        LocalDateTime dataEntrega = LocalDateTime.now();
 
-        EntregaRequest request = new EntregaRequest(codigo, pedidoId, status, dataHoraSolicitacao);
+        EntregaRequest entregaRequest = mock(EntregaRequest.class);
+        Entrega entrega = mock(Entrega.class);
+        Entrega entregaSalva = mock(Entrega.class);
+        EntregaResponse entregaResponse = mock(EntregaResponse.class);
 
-        Pedido pedido = mock(Pedido.class);
+        try (MockedStatic<EntregaMapper> mockedMapper = mockStatic(EntregaMapper.class)) {
+            mockedMapper.when(() -> EntregaMapper.toEntity(entregaRequest)).thenReturn(entrega);
+            mockedMapper.when(() -> EntregaMapper.toResponse(entregaSalva)).thenReturn(entregaResponse);
 
-        Entrega entrega = new Entrega(codigo, pedido, dataHoraEntrega);
+            when(entregaUseCase.entregarPedido(entrega, entregaGateway, pedidoGateway, filaGateway))
+                    .thenReturn(entregaSalva);
 
-        when(entregaUseCase.entregarPedido(codigo, entregaGateway)).thenReturn(entrega);
+            EntregaResponse resultado = entregaController.entregarPedido(entregaRequest);
 
-        EntregaResponse response = entregaController.entregarPedido(request);
-
-        assertNotNull(response);
-        assertEquals(codigo, response.id());
-        assertEquals(dataHoraEntrega, response.dataHoraEntrega());
-
-        verify(entregaUseCase, times(1)).entregarPedido(codigo, entregaGateway);
+            assertNotNull(resultado);
+            assertEquals(entregaResponse, resultado);
+            verify(entregaUseCase, times(1)).entregarPedido(entrega, entregaGateway, pedidoGateway, filaGateway);
+        }
     }
 }

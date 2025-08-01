@@ -1,76 +1,70 @@
-CREATE TABLE categorias
-(
-    codigo BIGINT AUTO_INCREMENT NOT NULL,
-    nome   VARCHAR(255) NULL,
-    CONSTRAINT pk_categorias PRIMARY KEY (codigo)
+CREATE TABLE categorias (
+    codigo BIGINT NOT NULL AUTO_INCREMENT,
+    nome VARCHAR(255) NULL,
+    PRIMARY KEY (codigo)
 );
 
-CREATE TABLE entregas
-(
-    codigo          BIGINT AUTO_INCREMENT NOT NULL,
-    pedidocodigo    BIGINT NULL,
-    datahoraentrega datetime NULL,
-    CONSTRAINT pk_entregas PRIMARY KEY (codigo)
-);
-
-CREATE TABLE filapedidospreparacao
-(
-    codigo       BIGINT AUTO_INCREMENT NOT NULL,
+CREATE TABLE entregas (
+    codigo BIGINT NOT NULL AUTO_INCREMENT,
     pedidocodigo BIGINT NULL,
-    CONSTRAINT pk_filapedidospreparacao PRIMARY KEY (codigo)
+    datahoraentrega DATETIME NULL,
+    PRIMARY KEY (codigo)
 );
 
-CREATE TABLE pagamentos
-(
-    codigo            BIGINT AUTO_INCREMENT NOT NULL,
-    pedidocodigo      BIGINT NULL,
-    valorpago         DECIMAL NULL,
-    status            VARCHAR(255) NULL,
-    datahorapagamento datetime NULL,
-    CONSTRAINT pk_pagamentos PRIMARY KEY (codigo)
+CREATE TABLE filapedidospreparacao (
+    codigo BIGINT NOT NULL AUTO_INCREMENT,
+    pedidocodigo BIGINT NULL,
+    PRIMARY KEY (codigo)
 );
 
-CREATE TABLE pedidoitem
-(
-    codigo        BIGINT AUTO_INCREMENT NOT NULL,
-    pedidocodigo  BIGINT NULL,
+CREATE TABLE pagamentos (
+    codigo BIGINT NOT NULL AUTO_INCREMENT,
+    pedidocodigo BIGINT NULL,
+    valorpago DECIMAL(10,2) NULL,
+    status VARCHAR(255) NULL,
+    datahorapagamento DATETIME NULL,
+    PRIMARY KEY (codigo)
+);
+
+CREATE TABLE pedidoitem (
+    codigo BIGINT NOT NULL AUTO_INCREMENT,
+    pedidocodigo BIGINT NULL,
     produtocodigo BIGINT NULL,
-    quantidade    INT NULL,
-    precounitario DECIMAL NULL,
-    precototal    DECIMAL NULL,
-    CONSTRAINT pk_pedidoitem PRIMARY KEY (codigo)
+    quantidade INT NULL,
+    precounitario DECIMAL(10,2) NULL,
+    precototal DECIMAL(10,2) NULL,
+    PRIMARY KEY (codigo)
 );
 
-CREATE TABLE pedidos
-(
-    codigo              BIGINT AUTO_INCREMENT NOT NULL,
-    usuariocodigo       BIGINT NULL,
-    status              VARCHAR(255) NULL,
-    valortotal          DECIMAL NULL,
-    datahorasolicitacao datetime NULL,
-    tempototalpreparo   time NULL,
-    CONSTRAINT pk_pedidos PRIMARY KEY (codigo)
+CREATE TABLE pedidos (
+    codigo BIGINT NOT NULL AUTO_INCREMENT,
+    usuariocodigo BIGINT NULL,
+    status VARCHAR(255) NULL,
+    valortotal DECIMAL(10,2) NULL,
+    datahorasolicitacao DATETIME NULL,
+    tempototalpreparo TIME NULL,
+    PRIMARY KEY (codigo)
 );
 
-CREATE TABLE produtos
-(
-    codigo          BIGINT AUTO_INCREMENT NOT NULL,
-    nome            VARCHAR(255) NULL,
-    descricao       VARCHAR(255) NULL,
+CREATE TABLE produtos (
+    codigo BIGINT NOT NULL AUTO_INCREMENT,
+    nome VARCHAR(255) NULL,
+    descricao VARCHAR(255) NULL,
     categoriacodigo BIGINT NULL,
-    preco           DECIMAL NULL,
-    tempopreparo    time NULL,
-    CONSTRAINT pk_produtos PRIMARY KEY (codigo)
+    preco DECIMAL(10,2) NULL,
+    tempopreparo TIME NULL,
+    PRIMARY KEY (codigo)
 );
 
-CREATE TABLE usuarios
-(
-    codigo BIGINT AUTO_INCREMENT NOT NULL,
-    nome   VARCHAR(255) NULL,
-    cpf    VARCHAR(255) NULL,
-    email  VARCHAR(255) NULL,
-    CONSTRAINT pk_usuarios PRIMARY KEY (codigo)
+CREATE TABLE usuarios (
+    codigo BIGINT NOT NULL AUTO_INCREMENT,
+    nome VARCHAR(255) NOT NULL,
+    cpf VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    PRIMARY KEY (codigo)
 );
+
+-- Constraints
 
 ALTER TABLE entregas
     ADD CONSTRAINT uc_entregas_pedidocodigo UNIQUE (pedidocodigo);
@@ -81,8 +75,13 @@ ALTER TABLE filapedidospreparacao
 ALTER TABLE pagamentos
     ADD CONSTRAINT uc_pagamentos_pedidocodigo UNIQUE (pedidocodigo);
 
-ALTER TABLE produtos
-    ADD CONSTRAINT uc_produtos_categoriacodigo UNIQUE (categoriacodigo);
+ALTER TABLE usuarios
+    ADD CONSTRAINT uc_usuarios_cpf UNIQUE (cpf);
+
+ALTER TABLE usuarios
+    ADD CONSTRAINT uc_usuarios_email UNIQUE (email);
+
+-- Foreign Keys
 
 ALTER TABLE entregas
     ADD CONSTRAINT FK_ENTREGAS_ON_PEDIDOCODIGO FOREIGN KEY (pedidocodigo) REFERENCES pedidos (codigo);

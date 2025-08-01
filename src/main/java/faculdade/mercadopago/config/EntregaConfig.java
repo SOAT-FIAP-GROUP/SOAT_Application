@@ -4,6 +4,8 @@ import faculdade.mercadopago.api.controller.EntregaAPIController;
 import faculdade.mercadopago.controller.EntregaController;
 import faculdade.mercadopago.controller.mapper.EntregaMapper;
 import faculdade.mercadopago.gateway.IEntregaGateway;
+import faculdade.mercadopago.gateway.IFilaPedidosPreparacaoGateway;
+import faculdade.mercadopago.gateway.IPedidoGateway;
 import faculdade.mercadopago.gateway.impl.EntregaGateway;
 import faculdade.mercadopago.gateway.persistence.jpa.EntregaRepository;
 import faculdade.mercadopago.usecase.IEntregaUseCase;
@@ -20,8 +22,8 @@ public class EntregaConfig {
     }
 
     @Bean
-    EntregaController entregaController(IEntregaUseCase entregaUseCase, IEntregaGateway entregaGateway){
-        return new EntregaController(entregaUseCase, entregaGateway);
+    EntregaController entregaController(IEntregaUseCase entregaUseCase, IEntregaGateway entregaGateway, IPedidoGateway pedidoGateway, IFilaPedidosPreparacaoGateway filaPedidosPreparacaoGateway){
+        return new EntregaController(entregaUseCase, entregaGateway, pedidoGateway, filaPedidosPreparacaoGateway);
     }
 
     @Bean

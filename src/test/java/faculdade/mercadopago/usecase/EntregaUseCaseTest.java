@@ -1,52 +1,61 @@
 package faculdade.mercadopago.usecase;
 
 import faculdade.mercadopago.entity.Entrega;
+import faculdade.mercadopago.entity.FilaPedidosPreparacao;
+import faculdade.mercadopago.entity.Pedido;
+import faculdade.mercadopago.entity.enums.StatusPedidoEnum;
 import faculdade.mercadopago.gateway.IEntregaGateway;
+import faculdade.mercadopago.gateway.IFilaPedidosPreparacaoGateway;
+import faculdade.mercadopago.gateway.IPedidoGateway;
+import faculdade.mercadopago.mocks.MockGenerator;
 import faculdade.mercadopago.usecase.impl.EntregaUseCase;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 
-import java.util.Optional;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 public class EntregaUseCaseTest {
 
-    private EntregaUseCase entregaUserCase;
     private IEntregaGateway entregaGateway;
+    private IPedidoGateway pedidoGateway;
+    private IFilaPedidosPreparacaoGateway filaGateway;
+    private EntregaUseCase entregaUseCase;
 
     @BeforeEach
-    public void setUp() {
-        entregaUserCase = new EntregaUseCase();
+    public void setup() {
         entregaGateway = mock(IEntregaGateway.class);
+        pedidoGateway = mock(IPedidoGateway.class);
+        filaGateway = mock(IFilaPedidosPreparacaoGateway.class);
+        entregaUseCase = new EntregaUseCase();
     }
 
     @Test
-    public void deveRetornarEntregaQuandoIdExistir() {
-        Long id = 1L;
-        Entrega entregaEsperada = mock(Entrega.class);
+    public void deveEntregarPedidoComSucesso() {
+        Pedido pedido = MockGenerator.generatePedidoMock();
 
-        when(entregaGateway.findById(id)).thenReturn(Optional.of(entregaEsperada));
+        Entrega entrega = MockGenerator.generateEntregaMock();
 
-        Entrega entregaRetornada = entregaUserCase.entregarPedido(id, entregaGateway);
+        Pedido pedidoFinalizado = pedido.withStatus(StatusPedidoEnum.FINALIZADO);
 
-        assertNotNull(entregaRetornada);
-        assertEquals(entregaEsperada, entregaRetornada);
-        verify(entregaGateway, times(1)).findById(id);
-    }
+        Entrega entregaSalva = new Entrega(10L, pedidoFinalizado, entrega.dataHoraEntrega());
 
+        FilaPedidosPreparacao fila = MockGenerator.generateFilaPedidosPreparacaoMock();
 
-    @Test
-    public void deveLancarExcecaoQuandoEntregaNaoForEncontrada() {
-        Long id = 99L;
-        when(entregaGateway.findById(id)).thenReturn(Optional.empty());
+        when(pedidoGateway.findById(anyLong())).thenReturn(Optional.of(pedido));
+        when(entregaGateway.save(any())).thenReturn(entregaSalva);
+        when(filaGateway.findByPedidocodigoId(anyLong())).thenReturn(Optional.of(fila));
 
-        assertThrows(NoSuchElementException.class, () -> {
-            entregaUserCase.entregarPedido(id, entregaGateway);
-        });
+        Entrega resultado = entregaUseCase.entregarPedido(entrega, entregaGateway, pedidoGateway, filaGateway);
 
-        verify(entregaGateway, times(1)).findById(id);
+        assertNotNull(resultado);
+        assertEquals(10L, resultado.id());
+        assertEquals(StatusPedidoEnum.FINALIZADO, resultado.pedido().status());
+        verify(entregaGateway, times(1)).save(any());
+        verify(filaGateway, times(1)).removerPedidoDaFila(fila);
     }
 }

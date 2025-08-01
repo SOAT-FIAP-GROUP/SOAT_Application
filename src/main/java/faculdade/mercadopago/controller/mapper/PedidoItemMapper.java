@@ -10,7 +10,11 @@ import faculdade.mercadopago.gateway.entity.ProdutoEntity;
 public class PedidoItemMapper {
 
     public static PedidoItemResponse toResponse(PedidoItem entity){
-        return new PedidoItemResponse(entity.id(), entity.quantidade(), entity.precoUnitario(), entity.precoTotal());
+        return new PedidoItemResponse(entity.id(), entity.pedidoId(), entity.produtoId(), entity.quantidade(), entity.precoUnitario(), entity.precoTotal());
+    }
+
+    public static PedidoItem fromResponse(PedidoItemResponse pedidoItem){
+        return new PedidoItem(pedidoItem.id(), pedidoItem.pedidoId(), pedidoItem.produtoId(), pedidoItem.quantidade(), pedidoItem.precoUnitario(), pedidoItem.precoTotal());
     }
 
     public static PedidoItem toEntity(PedidoItemRequest pedidoItemRequest) {

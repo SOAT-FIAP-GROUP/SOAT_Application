@@ -7,5 +7,5 @@ import java.sql.Time;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public record PedidoResponse(Long idUsuario, StatusPedidoEnum status, BigDecimal valorTotal, LocalDateTime dataHoraSolicitacao, Time tempoTotalPreparo, List<PedidoItemResponse> itens) {
+public record PedidoResponse(Long id, Long idUsuario, StatusPedidoEnum status, BigDecimal valorTotal, LocalDateTime dataHoraSolicitacao, Time tempoTotalPreparo, List<PedidoItemResponse> itens) {
 }

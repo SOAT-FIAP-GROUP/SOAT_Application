@@ -8,6 +8,5 @@ public interface IEntregaGateway {
 
     Optional<Entrega> findById (Long id);
 
-    interface IUsuarioGateway {
-    }
+    Entrega save(Entrega entity);
 }

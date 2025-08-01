@@ -26,8 +26,8 @@ public class ProdutoEntity {
     private String nome;
     private String descricao;
 
-    @OneToOne
     @JoinColumn(name = "categoriacodigo", referencedColumnName = "codigo")
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH}, fetch = FetchType.EAGER)
     private CategoriaEntity categoria;
 
     private BigDecimal preco;

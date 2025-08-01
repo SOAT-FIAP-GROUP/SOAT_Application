@@ -2,6 +2,7 @@ package faculdade.mercadopago.controller.mapper;
 
 import faculdade.mercadopago.controller.mapper.dto.request.ProdutoRequest;
 import faculdade.mercadopago.controller.mapper.dto.response.ProdutoResponse;
+import faculdade.mercadopago.entity.Categoria;
 import faculdade.mercadopago.entity.Produto;
 import faculdade.mercadopago.gateway.entity.ProdutoEntity;
 
@@ -13,8 +14,9 @@ public class ProdutoMapper {
     }
 
     public static Produto toEntity(ProdutoRequest produto) {
+        Categoria categoria = new Categoria(produto.categoriaId(), null);
         return new Produto(null, produto.nome(), produto.descricao(),
-                produto.categoria(), produto.preco(), produto.tempopreparo());
+                categoria, produto.preco(), produto.tempopreparo());
     }
 
     public static ProdutoEntity toEntityPersistence(Produto entity) {
