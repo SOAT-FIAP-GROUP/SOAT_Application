@@ -8,6 +8,8 @@ import faculdade.mercadopago.gateway.IPedidoGateway;
 import faculdade.mercadopago.gateway.IProdutoGateway;
 import faculdade.mercadopago.gateway.IUsuarioGateway;
 import faculdade.mercadopago.usecase.IPedidoUseCase;
+import faculdade.mercadopago.usecase.IProdutoUseCase;
+import faculdade.mercadopago.usecase.IUsuarioUseCase;
 import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
@@ -29,10 +31,9 @@ public class PedidoUseCase implements IPedidoUseCase {
     @Transactional
     @Override
     public Pedido criarPedido(Pedido pedido, IPedidoGateway pedidoGateway, IProdutoGateway produtoGateway,
-                              IUsuarioGateway usuarioGateway) {
+            IProdutoUseCase produtoUseCase, IUsuarioGateway usuarioGateway, IUsuarioUseCase usuarioUseCase) {
 
-        usuarioGateway.findById(pedido.idUsuario())
-                .orElseThrow(() -> new EntityNotFoundException(Usuario.class, pedido.idUsuario()));
+        usuarioUseCase.buscaUsuarioPorId(pedido.idUsuario(), usuarioGateway);
 
         Pedido pedidoSalvar = pedido.preSalvar(pedido.idUsuario(), pedido.status(),pedido.dataHoraSolicitacao());
 
@@ -42,9 +43,7 @@ public class PedidoUseCase implements IPedidoUseCase {
 
         List<PedidoItem> itens = pedido.itens().stream()
                 .map(item -> {
-                    Produto produto = produtoGateway.findById(item.id())
-                            .orElseThrow(() -> new EntityNotFoundException(Produto.class, item.id()));
-
+                    Produto produto = produtoUseCase.buscarProduto(item.id(), produtoGateway);
                     Duration tempoItem = Duration.between(LocalTime.MIDNIGHT, produto.tempopreparo().toLocalTime())
                             .multipliedBy(item.quantidade());
                     totalPreparo.updateAndGet(tp -> tp.plus(tempoItem));
@@ -104,6 +103,11 @@ public class PedidoUseCase implements IPedidoUseCase {
     public void removerPedidoDaFila(Long id, IPedidoGateway pedidoGateway, IFilaPedidosPreparacaoGateway filaPedidosPreparacaoGateway) {
         FilaPedidosPreparacao filaPedidosPreparacao = filaPedidosPreparacaoGateway.findByPedidocodigoId(id).orElseThrow(() -> new EntityNotFoundException(FilaPedidosPreparacao.class, id));
         filaPedidosPreparacaoGateway.removerPedidoDaFila(filaPedidosPreparacao);
+    }
+
+    @Override
+    public List<Pedido> listaPedidosOrd(IPedidoGateway pedidoGateway) {
+        return pedidoGateway.findAllOrdenado();
     }
 
 }

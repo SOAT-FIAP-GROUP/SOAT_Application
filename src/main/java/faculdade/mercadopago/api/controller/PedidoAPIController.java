@@ -57,4 +57,12 @@ public class PedidoAPIController {
         pedidoController.removerPedidoDaFila(codigoPedido);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
     }
+
+    @GetMapping("listarPedidos")
+    @Transactional
+    @Operation(summary = "Lista pedidos de forma ordenada", description = "Lista pedidos de forma ordenada por Status e Tempo")
+    public ResponseEntity<List<PedidoResponse>> listaPedidosOrdenadados(){
+        pedidoController.listaPedidosOrd();
+        return ResponseEntity.status(HttpStatus.OK).body(pedidoController.listaPedidosOrd());
+    }
 }

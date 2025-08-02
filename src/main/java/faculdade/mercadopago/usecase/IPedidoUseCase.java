@@ -14,8 +14,8 @@ public interface IPedidoUseCase {
 
     Pedido buscarPedido(Long id, IPedidoGateway gateway);
 
-    Pedido criarPedido(Pedido pedido, IPedidoGateway pedidoGateway, IProdutoGateway produtoGateway,
-                       IUsuarioGateway usuarioGateway);
+    Pedido criarPedido(Pedido pedido, IPedidoGateway pedidoGateway, IProdutoGateway produtoGateway, IProdutoUseCase produtoUseCase,
+                       IUsuarioGateway usuarioGateway, IUsuarioUseCase usuarioUseCase);
 
     List<Pedido> listarPedidos(StatusPedidoEnum status, IPedidoGateway pedidoGateway);
 
@@ -24,4 +24,6 @@ public interface IPedidoUseCase {
     FilaPedidosPreparacao adicionarPedidoNaFila(Long id, IPedidoGateway pedidoGateway, IFilaPedidosPreparacaoGateway filaPedidosPreparacaoGateway);
 
     void removerPedidoDaFila(Long id, IPedidoGateway pedidoGateway, IFilaPedidosPreparacaoGateway filaPedidosPreparacaoGateway);
+
+    List<Pedido> listaPedidosOrd(IPedidoGateway pedidoGateway);
 }

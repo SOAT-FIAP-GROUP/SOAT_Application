@@ -12,4 +12,6 @@ public interface IPedidoGateway {
     Pedido save (Pedido entity);
 
     List<Pedido> findAllByStatus(StatusPedidoEnum status);
+
+    List<Pedido> findAllOrdenado();
 }

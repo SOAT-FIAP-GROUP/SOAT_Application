@@ -56,4 +56,8 @@ public class UsuarioUseCase implements IUsuarioUseCase {
 
         return usuario.get();
     }
+
+    public Usuario buscaUsuarioPorId(Long codigo, IUsuarioGateway gateway){
+        return gateway.findById(codigo).orElseThrow(() -> new EntityNotFoundException(Usuario.class, "Código Usuário não localizado na base"));
+    }
 }
