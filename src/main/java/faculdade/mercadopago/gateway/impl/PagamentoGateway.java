@@ -1,21 +1,27 @@
 package faculdade.mercadopago.gateway.impl;
 
 import faculdade.mercadopago.AppConstants;
+import faculdade.mercadopago.entity.Pedido;
 import faculdade.mercadopago.gateway.IPagamentoGateway;
 import faculdade.mercadopago.gateway.entity.PagamentoEntity;
 import faculdade.mercadopago.gateway.persistence.jpa.PagamentoRepository;
+import faculdade.mercadopago.gateway.persistence.jpa.PedidoRepository;
 import org.springframework.http.*;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 
+import java.math.BigDecimal;
 import java.util.Map;
 
 public class PagamentoGateway implements IPagamentoGateway {
     private final PagamentoRepository pagamentoRepository;
-    private final RestTemplate _restTemplate = new RestTemplate();
+    private final PedidoRepository pedidoRepository;
+    private final RestTemplate _restTemplate;
 
-    public PagamentoGateway(PagamentoRepository pagamentoRepository) {
+    public PagamentoGateway(PagamentoRepository pagamentoRepository, PedidoRepository pedidoRepository, RestTemplate restTemplate) {
         this.pagamentoRepository = pagamentoRepository;
+        this.pedidoRepository = pedidoRepository;
+        _restTemplate = restTemplate;
     }
 
     @Override
@@ -35,14 +41,16 @@ public class PagamentoGateway implements IPagamentoGateway {
 
             return _restTemplate.exchange(url, method, entity, responseType);
 
-        } catch (HttpStatusCodeException ex)  {
-            throw new Error(String.valueOf(ResponseEntity
-                    .status(ex.getStatusCode())
-                    .body(ex.getResponseBodyAsString())));
+        } catch (HttpStatusCodeException ex) {
+            throw new RuntimeException(
+                    "Erro HTTP: " +
+                            ex.getStatusCode() +
+                            " - " +
+                            ex.getResponseBodyAsString()
+            );
+
         } catch (Exception ex) {
-            throw new Error(String.valueOf(ResponseEntity
-                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Erro interno: " + ex.getMessage())));
+            throw new RuntimeException("Erro interno: " + ex.getMessage(), ex);
         }
     }
 
@@ -51,29 +59,19 @@ public class PagamentoGateway implements IPagamentoGateway {
         return sendRequest(url, method, null, responseType, null);
     }
 
-//    @Override
-//    public boolean criarPagamento(long orderId, BigDecimal value, String status) {
-//        var pedido = _pedidoRepository.findById(orderId).orElseThrow(() -> new Exception("Produto não encontrado"));
-//
-//        PagamentoEntity pagamento = new PagamentoEntity(
-//                pedido,
-//                value,
-//                status
-//        );
-//
-//        try {
-//            var obj = pagamentoRepository.save(pagamento);
-//            return obj.getId() != null;
-//        } catch (Exception e) {
-//            return false;
-//        }
-//    }
-
-
     @Override
-    public PagamentoEntity save(PagamentoEntity pagamento) {
-        return null;
+    public PagamentoEntity save(Pedido pedido, BigDecimal valor) {
+        var pedidoEntity = pedidoRepository.findById(pedido.id()).
+                orElseThrow(() -> new IllegalArgumentException(
+                        "Pedido não encontrado: " +
+                                pedido.id())
+                );
+        var pagamento = new PagamentoEntity(
+                pedidoEntity,
+                valor,
+                "approved"
+        );
+
+        return pagamentoRepository.save(pagamento);
     }
-
-
 }

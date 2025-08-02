@@ -35,12 +35,12 @@ public class PedidoController {
         return pedidoMapper.toResponse(pedidoUseCase.buscarPedido(id, pedidoGateway));
     }
 
-    public PedidoResponse criarPedido(PedidoRequest pedidoRequest){
-                return pedidoMapper.toResponse(pedidoUseCase.criarPedido(pedidoMapper.toEntity(pedidoRequest), pedidoGateway, produtoGateway, usuarioGateway));
+    public PedidoResponse criarPedido(PedidoRequest pedidoRequest) {
+        return pedidoMapper.toResponse(pedidoUseCase.criarPedido(pedidoMapper.toEntity(pedidoRequest), pedidoGateway, produtoGateway, usuarioGateway));
     }
 
     public List<PedidoResponse> listarPedidos(StatusPedidoEnum status) {
-        return  pedidoUseCase.listarPedidos(status, pedidoGateway).stream().map(pedidoMapper::toResponse)
+        return pedidoUseCase.listarPedidos(status, pedidoGateway).stream().map(pedidoMapper::toResponse)
                 .collect(Collectors.toList());
     }
 

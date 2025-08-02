@@ -6,10 +6,12 @@ import faculdade.mercadopago.controller.mapper.PagamentoMapper;
 import faculdade.mercadopago.gateway.IPagamentoGateway;
 import faculdade.mercadopago.gateway.impl.PagamentoGateway;
 import faculdade.mercadopago.gateway.persistence.jpa.PagamentoRepository;
+import faculdade.mercadopago.gateway.persistence.jpa.PedidoRepository;
 import faculdade.mercadopago.usecase.IPagamentoUseCase;
 import faculdade.mercadopago.usecase.impl.PagamentoUseCase;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.client.RestTemplate;
 
 @Configuration
 public class PagamentoConfig {
@@ -29,8 +31,8 @@ public class PagamentoConfig {
     }
 
     @Bean
-    PagamentoGateway pagamentoGateway(PagamentoRepository pagamentoRepository){
-        return new PagamentoGateway(pagamentoRepository);
+    PagamentoGateway pagamentoGateway(PagamentoRepository pagamentoRepository, PedidoRepository pedidoRepository){
+        return new PagamentoGateway(pagamentoRepository,pedidoRepository, new RestTemplate());
     }
 
     @Bean

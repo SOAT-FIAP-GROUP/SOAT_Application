@@ -1,5 +1,7 @@
 package faculdade.mercadopago.gateway;
 
+import faculdade.mercadopago.entity.Pedido;
+import faculdade.mercadopago.entity.pagamento.DadosPedidoPago;
 import faculdade.mercadopago.entity.pagamento.QrCodeOrder;
 import faculdade.mercadopago.gateway.entity.PagamentoEntity;
 import org.springframework.http.HttpMethod;
@@ -22,8 +24,7 @@ public interface IPagamentoGateway {
             Class<R> responseType
     );
 
-//    boolean criarPagamento(long orderId, BigDecimal value, String status);
 
-    PagamentoEntity save(PagamentoEntity pagamento);
+    PagamentoEntity save(Pedido pedido, BigDecimal valor);
 
 }

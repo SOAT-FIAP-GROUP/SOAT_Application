@@ -2,6 +2,7 @@ package faculdade.mercadopago.usecase.impl;
 
 import faculdade.mercadopago.AppConstants;
 import faculdade.mercadopago.controller.mapper.dto.request.QrCodeRequest;
+import faculdade.mercadopago.entity.Pedido;
 import faculdade.mercadopago.entity.pagamento.QrCodeOrder;
 import faculdade.mercadopago.entity.pagamento.QrCodeRes;
 import faculdade.mercadopago.gateway.IPagamentoGateway;
@@ -39,6 +40,10 @@ public class PagamentoUseCase implements IPagamentoUseCase {
 
         var url = AppConstants.BASEURL_MERCADOPAGO + AppConstants.GENERATEQRCODEURL_MERCADOPAGO;
         return gateway.sendRequest(url, HttpMethod.POST, qrcoderequest, QrCodeRes.class, null).getBody();
+    }
 
+    @Override
+    public void salvarPagamento(Pedido pedido, BigDecimal valor, IPagamentoGateway gateway) {
+        gateway.save(pedido, valor);
     }
 }

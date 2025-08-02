@@ -6,11 +6,11 @@ public record ConfirmacaoWebHookRequest(
         String type,
         String date_created,
         Long user_id,
-        Long api_version,
+        String api_version,
         String action,
         ConfirmacaoWebHookRequest.PaymentData data
 ) {
     record PaymentData(
-            Long id
+            String id
     ){}
 }

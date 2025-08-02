@@ -17,7 +17,7 @@ public class PagamentoController {
     }
 
 
-    public QrCodeResponse gerarQrCode(QrCodeRequest request){
+    public QrCodeResponse gerarQrCode(QrCodeRequest request) {
         return PagamentoMapper.toResponse(pagamentoUseCase.processarQrCode(request, pagamentoGateway));
     }
 }
