@@ -15,6 +15,8 @@ import faculdade.mercadopago.gateway.impl.PedidoGateway;
 import faculdade.mercadopago.gateway.persistence.jpa.FilaPedidosPreparacaoRepository;
 import faculdade.mercadopago.gateway.persistence.jpa.PedidoRepository;
 import faculdade.mercadopago.usecase.IPedidoUseCase;
+import faculdade.mercadopago.usecase.IProdutoUseCase;
+import faculdade.mercadopago.usecase.IUsuarioUseCase;
 import faculdade.mercadopago.usecase.impl.PedidoUseCase;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,8 +30,11 @@ public class PedidoConfig {
     }
 
     @Bean
-    PedidoController pedidoController(IPedidoUseCase pedidoUseCase, PedidoMapper pedidoMapper, IPedidoGateway pedidoGateway, IProdutoGateway produtoGateway, IUsuarioGateway usuarioGateway, IFilaPedidosPreparacaoGateway filaPedidosPreparacaoGateway){
-        return new PedidoController(pedidoUseCase, pedidoMapper, pedidoGateway, produtoGateway, usuarioGateway, filaPedidosPreparacaoGateway);
+    PedidoController pedidoController(IPedidoUseCase pedidoUseCase, PedidoMapper pedidoMapper,
+                                      IPedidoGateway pedidoGateway, IProdutoGateway produtoGateway,
+                                      IUsuarioGateway usuarioGateway, IFilaPedidosPreparacaoGateway filaPedidosPreparacaoGateway,
+                                      IProdutoUseCase produtoUseCase, IUsuarioUseCase usuarioUseCase){
+        return new PedidoController(pedidoUseCase, pedidoMapper, pedidoGateway, produtoGateway, usuarioGateway, filaPedidosPreparacaoGateway, produtoUseCase, usuarioUseCase);
     }
 
     @Bean

@@ -9,6 +9,9 @@ import faculdade.mercadopago.gateway.IPedidoGateway;
 import faculdade.mercadopago.gateway.IProdutoGateway;
 import faculdade.mercadopago.gateway.IUsuarioGateway;
 import faculdade.mercadopago.usecase.IPedidoUseCase;
+import faculdade.mercadopago.usecase.IProdutoUseCase;
+import faculdade.mercadopago.usecase.IUsuarioUseCase;
+import faculdade.mercadopago.usecase.impl.ProdutoUseCase;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -20,14 +23,22 @@ public class PedidoController {
     private final IProdutoGateway produtoGateway;
     private final IUsuarioGateway usuarioGateway;
     private final IFilaPedidosPreparacaoGateway filaPedidosPreparacaoGateway;
+    private final IProdutoUseCase produtoUseCase;
+    private final IUsuarioUseCase usuarioUseCase;
 
-    public PedidoController(IPedidoUseCase pedidoUseCase, PedidoMapper pedidoMapper, IPedidoGateway pedidoGateway, IProdutoGateway produtoGateway, IUsuarioGateway usuarioGateway, IFilaPedidosPreparacaoGateway filaPedidosPreparacaoGateway) {
+    public PedidoController(IPedidoUseCase pedidoUseCase, PedidoMapper pedidoMapper, IPedidoGateway pedidoGateway,
+                            IProdutoGateway produtoGateway, IUsuarioGateway usuarioGateway,
+                            IFilaPedidosPreparacaoGateway filaPedidosPreparacaoGateway,
+                            IProdutoUseCase produtoUseCase, IUsuarioUseCase usuarioUseCase
+    ) {
         this.pedidoUseCase = pedidoUseCase;
         this.pedidoMapper = pedidoMapper;
         this.pedidoGateway = pedidoGateway;
         this.produtoGateway = produtoGateway;
         this.usuarioGateway = usuarioGateway;
         this.filaPedidosPreparacaoGateway = filaPedidosPreparacaoGateway;
+        this.produtoUseCase = produtoUseCase;
+        this.usuarioUseCase = usuarioUseCase;
     }
 
 
@@ -35,8 +46,8 @@ public class PedidoController {
         return pedidoMapper.toResponse(pedidoUseCase.buscarPedido(id, pedidoGateway));
     }
 
-    public PedidoResponse criarPedido(PedidoRequest pedidoRequest) {
-        return pedidoMapper.toResponse(pedidoUseCase.criarPedido(pedidoMapper.toEntity(pedidoRequest), pedidoGateway, produtoGateway, usuarioGateway));
+    public PedidoResponse criarPedido(PedidoRequest pedidoRequest){
+                return pedidoMapper.toResponse(pedidoUseCase.criarPedido(pedidoMapper.toEntity(pedidoRequest), pedidoGateway, produtoGateway, produtoUseCase, usuarioGateway, usuarioUseCase));
     }
 
     public List<PedidoResponse> listarPedidos(StatusPedidoEnum status) {
@@ -50,5 +61,10 @@ public class PedidoController {
 
     public void removerPedidoDaFila(Long codigoPedido) {
         pedidoUseCase.removerPedidoDaFila(codigoPedido, pedidoGateway, filaPedidosPreparacaoGateway);
+    }
+
+    public List<PedidoResponse> listaPedidosOrd() {
+        return pedidoUseCase.listaPedidosOrd(pedidoGateway).stream().map(pedidoMapper::toResponse)
+                .collect(Collectors.toList());
     }
 }

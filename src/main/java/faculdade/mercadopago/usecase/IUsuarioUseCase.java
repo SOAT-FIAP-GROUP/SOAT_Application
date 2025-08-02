@@ -9,4 +9,6 @@ public interface IUsuarioUseCase {
     Usuario buscarUsuarioPorCpf(String cpf, IUsuarioGateway gateway);
 
     Usuario processarUsuario(UsuarioRequest request, IUsuarioGateway gateway);
+
+    Usuario buscaUsuarioPorId(Long codigo, IUsuarioGateway gateway);
 }
