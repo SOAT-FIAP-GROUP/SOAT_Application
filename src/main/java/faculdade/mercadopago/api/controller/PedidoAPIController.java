@@ -1,14 +1,16 @@
 package faculdade.mercadopago.api.controller;
 
 import faculdade.mercadopago.controller.PedidoController;
+import faculdade.mercadopago.controller.mapper.dto.request.PedidoRequest;
 import faculdade.mercadopago.controller.mapper.dto.response.PedidoResponse;
+import faculdade.mercadopago.entity.enums.StatusPedidoEnum;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/pedido")
@@ -20,10 +22,39 @@ public class PedidoAPIController {
     }
 
     @Operation(summary = "Buscar pedido por codigo", description = "Retorna um pedido especifico cadastrado no codigo")
-    @GetMapping("/buscar/pedido/{codigoProduto}")
-    public ResponseEntity<PedidoResponse> buscarPorProduto(@PathVariable Long codigoPedido) throws Exception {
-        var response = pedidoController.buscarProduto(codigoPedido);
+    @GetMapping("/buscar/{codigoPedido}")
+    public ResponseEntity<PedidoResponse> buscarPedido(@PathVariable Long codigoPedido) throws Exception {
+        var response = pedidoController.buscarPedido(codigoPedido);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
+    @Operation(summary = "Criar pedido", description = "Retorna um novo Pedido")
+    @PostMapping
+    public ResponseEntity<PedidoResponse> criarPedido(@RequestBody PedidoRequest pedidoRequest) throws Exception {
+        var response = pedidoController.criarPedido(pedidoRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @GetMapping
+    @Operation(summary = "Listar pedidos por status", description = "Lista um pedido a partir de um dos status pré definidos")
+    public ResponseEntity<List<PedidoResponse>> listarPedidos(@RequestParam StatusPedidoEnum status){
+        var response = pedidoController.listarPedidos(status);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    @PutMapping("/status/{codigo}")
+    @Transactional
+    @Operation(summary = "Alterar o status do pedido", description = "Altera o status de um pedido com base no código do pedido e status pré definidos")
+    public ResponseEntity<?> alterarStatusPedido(@PathVariable Long codigo, @RequestParam StatusPedidoEnum status){
+        var response = pedidoController.alterarPedido(codigo, status);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    @DeleteMapping("remover/fila/{codigoPedido}")
+    @Transactional
+    @Operation(summary = "Remove pedido da fila de preparo", description = "Remove pedido da fila de preparo com base no código do pedido")
+    public ResponseEntity<Void> removerPedidoDaFilaDePreparo(@PathVariable Long codigoPedido){
+        pedidoController.removerPedidoDaFila(codigoPedido);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+    }
 }

@@ -43,28 +43,8 @@ public class PedidoItemEntity {
     private BigDecimal precoTotal;
 
 
-    public BigDecimal calcularPrecoTotalItem() {
-        if (this.produtoCodigo != null && this.produtoCodigo.getPreco() != null && quantidade > 0) {
-            return this.precoTotal = this.produtoCodigo.getPreco().multiply(BigDecimal.valueOf(quantidade));
-        } else {
-            return this.precoTotal = BigDecimal.ZERO;
-        }
-    }
-
-    public Time calcularTempoTotalItem() {
-        LocalTime tempoUnitario = produtoCodigo.getTempopreparo().toLocalTime();
-        Duration duracaoUnitario = Duration.ofHours(tempoUnitario.getHour())
-                .plusMinutes(tempoUnitario.getMinute())
-                .plusSeconds(tempoUnitario.getSecond());
-
-        Duration duracaoTotal = duracaoUnitario.multipliedBy(quantidade);
-        LocalTime tempoTotal = LocalTime.MIDNIGHT.plus(duracaoTotal);
-
-        return Time.valueOf(tempoTotal);
-    }
-
     public PedidoItem toModel() {
-        return new PedidoItem(this.codigo, this.quantidade, this.precoUnitario, this.precoTotal);
+        return new PedidoItem(this.codigo, this.pedido.getCodigo(), this.produtoCodigo.getCodigo(), this.quantidade, this.precoUnitario, this.precoTotal);
     }
 
 }

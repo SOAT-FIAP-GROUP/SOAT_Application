@@ -2,9 +2,11 @@ package faculdade.mercadopago.usecase.impl;
 
 import faculdade.mercadopago.controller.mapper.dto.request.UsuarioRequest;
 import faculdade.mercadopago.entity.Usuario;
+import faculdade.mercadopago.exception.BusinessException;
 import faculdade.mercadopago.exception.EntityNotFoundException;
 import faculdade.mercadopago.gateway.IUsuarioGateway;
 import faculdade.mercadopago.usecase.IUsuarioUseCase;
+import org.apache.coyote.BadRequestException;
 
 import java.util.Optional;
 
@@ -17,9 +19,17 @@ public class UsuarioUseCase implements IUsuarioUseCase {
     }
 
     @Override
-    public Usuario processarUsuario(UsuarioRequest request, IUsuarioGateway gateway) {
+    public Usuario processarUsuario(UsuarioRequest request, IUsuarioGateway gateway) throws BusinessException {
         if (!request.identificarUsuario()) {
             return carregarUsuarioPadrao(gateway);
+        }
+
+        Optional<Usuario> usuarioExistente = gateway.buscarUsuarioCpf(request.cpf());
+
+        if (usuarioExistente.isPresent()) {
+            throw new BusinessException(
+                    "Usuário já cadastrado com o CPF: " + request.cpf()
+            );
         }
 
         Usuario usuario = new Usuario(

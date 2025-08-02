@@ -5,11 +5,13 @@ import faculdade.mercadopago.controller.mapper.ProdutoMapper;
 import faculdade.mercadopago.controller.mapper.dto.request.ProdutoRequest;
 import faculdade.mercadopago.controller.mapper.dto.response.CategoriaResponse;
 import faculdade.mercadopago.controller.mapper.dto.response.ProdutoResponse;
-import faculdade.mercadopago.entity.Categoria;
-import faculdade.mercadopago.entity.Produto;
+import faculdade.mercadopago.entity.*;
+import faculdade.mercadopago.entity.enums.StatusPedidoEnum;
 
 import java.math.BigDecimal;
 import java.sql.Time;
+import java.time.LocalDateTime;
+import java.util.List;
 
 public class MockGenerator {
 
@@ -39,7 +41,7 @@ public class MockGenerator {
         ProdutoRequest produtoRequest = new ProdutoRequest(
                 "batata recheada",
                 "batata recheada e é isso",
-                generateCategoriaMock(),
+                ID,
                 BigDecimal.valueOf(9.89D),
                 Time.valueOf("0:10:00"));
         return produtoRequest;
@@ -48,5 +50,22 @@ public class MockGenerator {
     public static CategoriaResponse generateCategoriaResponseMock() {
         CategoriaMapper categoriaMapper = new CategoriaMapper();
         return categoriaMapper.toResponse(generateCategoriaMock());
+    }
+
+    public static Pedido generatePedidoMock(){
+        Pedido pedido = new Pedido(ID, ID, StatusPedidoEnum.PRONTO,
+                BigDecimal.valueOf(50), LocalDateTime.now(),
+                Time.valueOf("00:10:00"), List.of());
+        return pedido;
+    }
+
+    public static Entrega generateEntregaMock(){
+        Entrega entrega = new Entrega(null, generatePedidoMock(), LocalDateTime.now());
+        return entrega;
+    }
+
+    public static FilaPedidosPreparacao generateFilaPedidosPreparacaoMock(){
+        FilaPedidosPreparacao fila = new FilaPedidosPreparacao(ID, generatePedidoMock());
+        return fila;
     }
 }

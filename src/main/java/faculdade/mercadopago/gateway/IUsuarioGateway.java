@@ -8,5 +8,7 @@ public interface IUsuarioGateway {
 
     Optional<Usuario> buscarUsuarioCpf(String cpf);
 
+    Optional<Usuario> findById(Long id);
+
     Usuario save(Usuario entity);
 }

@@ -26,8 +26,8 @@ public class ProdutoEntity {
     private String nome;
     private String descricao;
 
-    @OneToOne
     @JoinColumn(name = "categoriacodigo", referencedColumnName = "codigo")
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH}, fetch = FetchType.EAGER)
     private CategoriaEntity categoria;
 
     private BigDecimal preco;
@@ -39,4 +39,7 @@ public class ProdutoEntity {
                 this.getCategoria() != null ? this.getCategoria().toModel() : null,this.getPreco(), this.getTempopreparo());
     }
 
+    public ProdutoEntity(Long codigo){
+        this.codigo = codigo;
+    }
 }

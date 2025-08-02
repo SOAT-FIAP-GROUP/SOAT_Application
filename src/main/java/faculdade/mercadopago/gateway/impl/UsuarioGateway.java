@@ -22,6 +22,11 @@ public class UsuarioGateway implements IUsuarioGateway {
     }
 
     @Override
+    public Optional<Usuario> findById(Long id) {
+        return usuarioRepositoty.findById(id).map(UsuarioEntity::toModel);
+    }
+
+    @Override
     public Usuario save(Usuario entity) {
         return usuarioRepositoty.save(UsuarioMapper.toEntityPersistence(entity))
                 .toModel();

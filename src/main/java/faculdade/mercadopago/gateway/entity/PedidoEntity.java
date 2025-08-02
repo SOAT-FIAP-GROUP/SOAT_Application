@@ -1,9 +1,8 @@
 package faculdade.mercadopago.gateway.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-import faculdade.mercadopago.entity.enums.StatusPedidoEnum;
 import faculdade.mercadopago.entity.Pedido;
+import faculdade.mercadopago.entity.enums.StatusPedidoEnum;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,9 +11,7 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.sql.Time;
-import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.List;
 
 @Data
@@ -50,10 +47,14 @@ public class PedidoEntity {
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PedidoItemEntity> itens;
 
+    public PedidoEntity(Long codigo){
+        this.codigo = codigo;
+    }
+
     public Pedido toModel() {
         return new Pedido(
                 codigo,
-                usuario != null ? usuario.toModel() : null,
+                usuario != null ? usuario.toModel().codigo() : null,
                 status,
                 valorTotal,
                 dataHoraSolicitacao,
@@ -62,22 +63,5 @@ public class PedidoEntity {
                         ? itens.stream().map(PedidoItemEntity::toModel).toList()
                         : List.of()
         );
-    }
-
-    public BigDecimal calcularValorTotalPedido(List<PedidoItemEntity> itens){
-        return itens.stream()
-                .map(PedidoItemEntity::calcularPrecoTotalItem)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
-    }
-
-    public Time calcularTempoTotalDePreparo(List<PedidoItemEntity> itens) {
-        Duration tempoTotal = itens.stream()
-                .map(PedidoItemEntity::calcularTempoTotalItem)
-                .map(Time::toLocalTime)
-                .map(t -> Duration.ofHours(t.getHour()).plusMinutes(t.getMinute()).plusSeconds(t.getSecond()))
-                .reduce(Duration.ZERO, Duration::plus   );
-
-        LocalTime totalTime = LocalTime.MIDNIGHT.plus(tempoTotal);
-        return Time.valueOf(totalTime);
     }
 }

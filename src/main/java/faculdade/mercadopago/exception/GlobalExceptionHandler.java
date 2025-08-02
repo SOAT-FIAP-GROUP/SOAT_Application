@@ -40,5 +40,15 @@ public class GlobalExceptionHandler {
                 "timestamp", LocalDateTime.now()
         ));
     }
+
+    @ExceptionHandler(BusinessException.class)
+    public ResponseEntity<Map<String, Object>> handleBusinessException(BusinessException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of(
+                "status", 400,
+                "erro", "Requisição não atende aos parâmetros necessários.",
+                "mensagem", ex.getMessage(),
+                "timestamp", LocalDateTime.now()
+        ));
+    }
 }
 
