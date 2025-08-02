@@ -51,7 +51,7 @@ public class PedidoController {
     }
 
     public List<PedidoResponse> listarPedidos(StatusPedidoEnum status) {
-        return  pedidoUseCase.listarPedidos(status, pedidoGateway).stream().map(pedidoMapper::toResponse)
+        return pedidoUseCase.listarPedidos(status, pedidoGateway).stream().map(pedidoMapper::toResponse)
                 .collect(Collectors.toList());
     }
 
