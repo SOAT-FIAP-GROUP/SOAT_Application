@@ -123,21 +123,10 @@ Assista ao vídeo com demonstração do funcionamento da aplicação e da arquit
     http://localhost:8080/swagger-ui/index.html
     ```
 6.  Para execução via Kubernetes:
-    - Habilite o metrics-server (necessário para HPA funcionar):
-    - **Minikube:**
-
+    - Se estiver usando **Minikube** habilite o metrics-server (necessário para HPA funcionar):
     ```bash
     minikube addons enable metrics-server
     ```
-
-    - **Docker Desktop:**
-
-    ```bash
-    kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
-    ```
-    > 💡 Após aplicar, verifique com `kubectl top nodes` se está funcionando corretamente.  
-       Caso necessário, edite o deployment para adicionar o argumento `--kubelet-insecure-tls`.
-
     - Aplique os manifetos YAML:
     ```bash
     kubectl apply -f k8s/
@@ -157,7 +146,17 @@ Assista ao vídeo com demonstração do funcionamento da aplicação e da arquit
     - http://localhost:30000/
     - http://localhost:30000/swagger-ui/index.html
 
-   Neles você poderá visualizar a documentação interativa (OpenAPI/Swagger) dos endpoints disponíveis.
+    Neles você poderá visualizar a documentação interativa (OpenAPI/Swagger) dos endpoints disponíveis.
+   
+    - Endpoints para Health Checks:
+      - Liveness Probe:
+      ```bash
+      /actuator/health/liveness
+      ```
+      - Readiness Probe:
+      ```bash
+      /actuator/health/readiness
+      ```
 
 ---
 
