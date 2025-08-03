@@ -37,7 +37,7 @@ public class PedidoAPIController {
 
     @GetMapping
     @Operation(summary = "Listar pedidos por status", description = "Lista um pedido a partir de um dos status pré definidos")
-    public ResponseEntity<List<PedidoResponse>> listarPedidos(@RequestParam StatusPedidoEnum status){
+    public ResponseEntity<List<PedidoResponse>> listarPedidos(@RequestParam StatusPedidoEnum status) {
         var response = pedidoController.listarPedidos(status);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
@@ -45,7 +45,7 @@ public class PedidoAPIController {
     @PutMapping("/status/{codigo}")
     @Transactional
     @Operation(summary = "Alterar o status do pedido", description = "Altera o status de um pedido com base no código do pedido e status pré definidos")
-    public ResponseEntity<?> alterarStatusPedido(@PathVariable Long codigo, @RequestParam StatusPedidoEnum status){
+    public ResponseEntity<?> alterarStatusPedido(@PathVariable Long codigo, @RequestParam StatusPedidoEnum status) {
         var response = pedidoController.alterarPedido(codigo, status);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
@@ -53,7 +53,7 @@ public class PedidoAPIController {
     @DeleteMapping("remover/fila/{codigoPedido}")
     @Transactional
     @Operation(summary = "Remove pedido da fila de preparo", description = "Remove pedido da fila de preparo com base no código do pedido")
-    public ResponseEntity<Void> removerPedidoDaFilaDePreparo(@PathVariable Long codigoPedido){
+    public ResponseEntity<Void> removerPedidoDaFilaDePreparo(@PathVariable Long codigoPedido) {
         pedidoController.removerPedidoDaFila(codigoPedido);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
     }
