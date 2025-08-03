@@ -5,9 +5,8 @@ import faculdade.mercadopago.controller.mapper.dto.request.ConfirmacaoWebHookReq
 import faculdade.mercadopago.entity.enums.StatusPedidoEnum;
 import faculdade.mercadopago.entity.pagamento.ConfirmacaoPagamentoRes;
 import faculdade.mercadopago.entity.pagamento.DadosPedidoPago;
-import faculdade.mercadopago.gateway.IFilaPedidosPreparacaoGateway;
 import faculdade.mercadopago.gateway.IPagamentoGateway;
-import faculdade.mercadopago.gateway.IPedidoGateway;
+import faculdade.mercadopago.usecase.IFilaPedidosPreparacaoUseCase;
 import faculdade.mercadopago.usecase.IPagamentoUseCase;
 import faculdade.mercadopago.usecase.IPedidoUseCase;
 import faculdade.mercadopago.usecase.IWebHookUseCase;
@@ -17,15 +16,13 @@ import java.math.BigDecimal;
 
 public class WebHookUseCase implements IWebHookUseCase {
     public final IPedidoUseCase pedidoUseCase;
-    public final IPedidoGateway pedidoGateway;
     public final IPagamentoUseCase pagamentoUseCase;
-    public final IFilaPedidosPreparacaoGateway filaPedidosPreparacaoGateway;
+    public final IFilaPedidosPreparacaoUseCase filaPedidosPreparacaoUseCase;
 
-    public WebHookUseCase(IPedidoUseCase pedidoUseCase, IPedidoGateway pedidoGateway, IPagamentoUseCase pagamentoUseCase, IFilaPedidosPreparacaoGateway filaPedidosPreparacaoGateway) {
+    public WebHookUseCase(IPedidoUseCase pedidoUseCase, IPagamentoUseCase pagamentoUseCase, IFilaPedidosPreparacaoUseCase filaPedidosPreparacaoUseCase) {
         this.pedidoUseCase = pedidoUseCase;
-        this.pedidoGateway = pedidoGateway;
         this.pagamentoUseCase = pagamentoUseCase;
-        this.filaPedidosPreparacaoGateway = filaPedidosPreparacaoGateway;
+        this.filaPedidosPreparacaoUseCase = filaPedidosPreparacaoUseCase;
     }
 
     private String urlPagamento(String id) {
@@ -33,9 +30,9 @@ public class WebHookUseCase implements IWebHookUseCase {
     }
 
     @Override
-    public boolean confirmarPagamento(ConfirmacaoWebHookRequest request, IPagamentoGateway pagamentoGateway) {
+    public boolean confirmarPagamento(ConfirmacaoWebHookRequest request) {
         var url = urlPagamento(request.id());
-        var response = pagamentoGateway.sendRequest(url, HttpMethod.GET, ConfirmacaoPagamentoRes.class);
+        var response = pagamentoUseCase.buscarDados(url, HttpMethod.GET, ConfirmacaoPagamentoRes.class);
         if (response.getStatusCode().is2xxSuccessful()) {
 
             ConfirmacaoPagamentoRes body = (ConfirmacaoPagamentoRes) response.getBody();
@@ -48,9 +45,9 @@ public class WebHookUseCase implements IWebHookUseCase {
     }
 
     @Override
-    public DadosPedidoPago retornarPedidoPago(ConfirmacaoWebHookRequest request, IPagamentoGateway pagamentoGateway) {
+    public DadosPedidoPago retornarPedidoPago(ConfirmacaoWebHookRequest request) {
         var url = urlPagamento(request.id());
-        var response = pagamentoGateway.sendRequest(url, HttpMethod.GET, ConfirmacaoPagamentoRes.class);
+        var response = pagamentoUseCase.buscarDados(url, HttpMethod.GET, ConfirmacaoPagamentoRes.class);
         if (response.getStatusCode().is2xxSuccessful()) {
             ConfirmacaoPagamentoRes body = (ConfirmacaoPagamentoRes) response.getBody();
             if (body == null) {
@@ -71,17 +68,17 @@ public class WebHookUseCase implements IWebHookUseCase {
     }
 
     @Override
-    public void processarPagamento(ConfirmacaoWebHookRequest request, IPagamentoGateway pagamentoGateway) {
-        if (!confirmarPagamento(request, pagamentoGateway)) {
+    public void processarPagamento(ConfirmacaoWebHookRequest request) {
+        if (!confirmarPagamento(request)) {
             throw new RuntimeException("Pagamento " + request.id() + " não confirmado");
         }
 
-        DadosPedidoPago dados = retornarPedidoPago(request, pagamentoGateway);
+        DadosPedidoPago dados = retornarPedidoPago(request);
         Long id = Long.parseLong(dados.codigo());
         BigDecimal valor = BigDecimal.valueOf(dados.valorPago());
-        var pedido = pedidoUseCase.buscarPedido(id, pedidoGateway);
-        pagamentoUseCase.salvarPagamento(pedido, valor, pagamentoGateway);
-        pedidoUseCase.alterarPedido(id, StatusPedidoEnum.EM_PREPARACAO, pedidoGateway);
-        pedidoUseCase.adicionarPedidoNaFila(id, pedidoGateway, filaPedidosPreparacaoGateway);
+        var pedido = pedidoUseCase.buscarPedido(id);
+        pagamentoUseCase.salvarPagamento(pedido, valor);
+        pedidoUseCase.alterarPedido(id, StatusPedidoEnum.EM_PREPARACAO);
+        pedidoUseCase.adicionarPedidoNaFila(id);
     }
 }

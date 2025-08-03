@@ -21,13 +21,13 @@ public class PagamentoConfig {
     }
 
     @Bean
-    PagamentoController pagamentoController(IPagamentoUseCase pagamentoUseCase, IPagamentoGateway pagamentoGateway){
-        return new PagamentoController(pagamentoUseCase, pagamentoGateway);
+    PagamentoController pagamentoController(IPagamentoUseCase pagamentoUseCase){
+        return new PagamentoController(pagamentoUseCase);
     }
 
     @Bean
-    PagamentoUseCase pagamentoUseCase(){
-        return new PagamentoUseCase();
+    PagamentoUseCase pagamentoUseCase(IPagamentoGateway pagamentoGateway){
+        return new PagamentoUseCase(pagamentoGateway);
     }
 
     @Bean

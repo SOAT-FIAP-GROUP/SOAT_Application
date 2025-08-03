@@ -37,4 +37,11 @@ public class PedidoGateway implements IPedidoGateway {
                 .map(PedidoEntity::toModel)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public List<Pedido> findAllOrdenado() {
+        return pedidoRepository.findAllOrdenado().stream()
+                .map(PedidoEntity::toModel)
+                .collect(Collectors.toList());
+    }
 }

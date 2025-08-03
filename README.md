@@ -92,7 +92,7 @@ Assista ao vídeo com demonstração do funcionamento da aplicação e da arquit
 
 - Java 17
 - Spring Boot
-- Kubernetes (Minikube)
+- Kubernetes local (Minikube ou Docker Desktop)
 - Mercado Pago (integração de pagamento via QRCode)
 - MariaDB (Banco de dados)
 
@@ -123,12 +123,40 @@ Assista ao vídeo com demonstração do funcionamento da aplicação e da arquit
     http://localhost:8080/swagger-ui/index.html
     ```
 6.  Para execução via Kubernetes:
-    - Instale Minikube.
-    - Aplique os manifests YAML:
+    - Se estiver usando **Minikube** habilite o metrics-server (necessário para HPA funcionar):
+    ```bash
+    minikube addons enable metrics-server
+    ```
+    - Aplique os manifetos YAML:
+    ```bash
+    kubectl apply -f k8s/
+    ```
+    - **Se estiver usando Minikube:**
+    ```bash
+    minikube service lanchonete-service
+    ```
+
+    Esse comando deve abrir automaticamente uma aba no navegador com a URL.  
+    Acesse `.../swagger-ui/index.html` no final da URL para ver a documentação dos endpoints.
+
+    - **Se estiver usando Docker Desktop:**
+
+    Acesse diretamente no navegador:
+
+    - http://localhost:30000/
+    - http://localhost:30000/swagger-ui/index.html
+
+    Neles você poderá visualizar a documentação interativa (OpenAPI/Swagger) dos endpoints disponíveis.
+   
+    - Endpoints para Health Checks:
+      - Liveness Probe:
       ```bash
-      kubectl apply -f k8s/
+      /actuator/health/liveness
       ```
-    - Configure HPA para escalabilidade automática.
+      - Readiness Probe:
+      ```bash
+      /actuator/health/readiness
+      ```
 
 ---
 

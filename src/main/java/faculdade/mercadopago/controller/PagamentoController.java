@@ -9,15 +9,13 @@ import faculdade.mercadopago.usecase.IPagamentoUseCase;
 public class PagamentoController {
 
     private final IPagamentoUseCase pagamentoUseCase;
-    private final IPagamentoGateway pagamentoGateway;
 
-    public PagamentoController(IPagamentoUseCase pagamentoUseCase, IPagamentoGateway pagamentoGateway) {
+    public PagamentoController(IPagamentoUseCase pagamentoUseCase) {
         this.pagamentoUseCase = pagamentoUseCase;
-        this.pagamentoGateway = pagamentoGateway;
     }
 
 
     public QrCodeResponse gerarQrCode(QrCodeRequest request) {
-        return PagamentoMapper.toResponse(pagamentoUseCase.processarQrCode(request, pagamentoGateway));
+        return PagamentoMapper.toResponse(pagamentoUseCase.processarQrCode(request));
     }
 }

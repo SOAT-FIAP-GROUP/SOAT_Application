@@ -7,39 +7,47 @@ import faculdade.mercadopago.gateway.ICategoriaGateway;
 import faculdade.mercadopago.gateway.IProdutoGateway;
 import faculdade.mercadopago.usecase.IProdutoUseCase;
 
-
 import java.util.List;
 
 public class ProdutoUseCase implements IProdutoUseCase {
-    @Override
-    public Produto cadastrarProduto(Produto entity, IProdutoGateway gateway) {
-        return gateway.save(entity);
+
+    private final IProdutoGateway produtoGateway;
+    private final ICategoriaGateway categoriaGateway;
+
+    public ProdutoUseCase(IProdutoGateway produtoGateway, ICategoriaGateway categoriaGateway) {
+        this.produtoGateway = produtoGateway;
+        this.categoriaGateway = categoriaGateway;
     }
 
     @Override
-    public Produto buscarProduto(Long id, IProdutoGateway gateway) {
-        return gateway.findById(id).orElseThrow(() -> new EntityNotFoundException(Produto.class, id));
+    public Produto cadastrarProduto(Produto entity) {
+        return produtoGateway.save(entity);
     }
 
     @Override
-    public Produto atualizarProduto(Long id, Produto entity, IProdutoGateway gateway) {
-        this.buscarProduto(id,gateway);
-        return gateway.save(entity);
+    public Produto buscarProduto(Long id) {
+        return produtoGateway.findById(id).orElseThrow(() -> new EntityNotFoundException(Produto.class, id));
     }
 
     @Override
-    public void removerProduto(Long id, IProdutoGateway gateway) {
-        var produto = this.buscarProduto(id,gateway);
-        gateway.removerProduto(produto);
+    public Produto atualizarProduto(Long id, Produto entity) {
+        this.buscarProduto(id);
+        return produtoGateway.save(entity);
     }
 
     @Override
-    public List<Produto> buscarProdutosPorCategoria(Long id, IProdutoGateway gateway) {
-        return gateway.findByCategoriaCodigo(id);
+    public void removerProduto(Long id) {
+        var produto = this.buscarProduto(id);
+        produtoGateway.removerProduto(produto);
     }
 
     @Override
-    public Categoria buscarCategoria(Long id, ICategoriaGateway gateway) {
-        return gateway.findById(id).orElseThrow(() -> new EntityNotFoundException(Categoria.class, id));
+    public List<Produto> buscarProdutosPorCategoria(Long id) {
+        return produtoGateway.findByCategoriaCodigo(id);
+    }
+
+    @Override
+    public Categoria buscarCategoria(Long id) {
+        return categoriaGateway.findById(id).orElseThrow(() -> new EntityNotFoundException(Categoria.class, id));
     }
 }
