@@ -1,23 +1,24 @@
 package faculdade.mercadopago.mocks;
 
 import faculdade.mercadopago.controller.mapper.CategoriaMapper;
+import faculdade.mercadopago.controller.mapper.PagamentoMapper;
 import faculdade.mercadopago.controller.mapper.ProdutoMapper;
 import faculdade.mercadopago.controller.mapper.dto.request.ProdutoRequest;
 import faculdade.mercadopago.controller.mapper.dto.request.QrCodeRequest;
 import faculdade.mercadopago.controller.mapper.dto.response.CategoriaResponse;
+import faculdade.mercadopago.controller.mapper.dto.response.PagamentoStatusResponse;
 import faculdade.mercadopago.controller.mapper.dto.response.ProdutoResponse;
 import faculdade.mercadopago.entity.*;
 import faculdade.mercadopago.entity.enums.StatusPedidoEnum;
 import faculdade.mercadopago.entity.pagamento.ConfirmacaoPagamentoRes;
 import faculdade.mercadopago.entity.pagamento.QrCodeRes;
+import org.springframework.http.ResponseEntity;
 
 import java.math.BigDecimal;
 import java.sql.Time;
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
-
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 public class MockGenerator {
 
@@ -90,15 +91,4 @@ public class MockGenerator {
         );
     }
 
-    public static ConfirmacaoPagamentoRes ConfirmacaoPagamentoResMock() {
-        ConfirmacaoPagamentoRes mock = mock(ConfirmacaoPagamentoRes.class);
-        when(mock.status()).thenReturn("approved");
-        when(mock.external_reference()).thenReturn("external_ref_mock");
-
-        ConfirmacaoPagamentoRes.TransactionDetails transactionDetailsMock = mock(ConfirmacaoPagamentoRes.TransactionDetails.class);
-        when(transactionDetailsMock.total_paid_amount()).thenReturn(150.0);
-        when(mock.transaction_details()).thenReturn(transactionDetailsMock);
-
-        return mock;
-    }
 }
