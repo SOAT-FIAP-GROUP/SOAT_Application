@@ -2,9 +2,8 @@ package faculdade.mercadopago.config;
 
 import faculdade.mercadopago.api.controller.WebHookAPIController;
 import faculdade.mercadopago.controller.WebHookController;
-import faculdade.mercadopago.gateway.IFilaPedidosPreparacaoGateway;
 import faculdade.mercadopago.gateway.IPagamentoGateway;
-import faculdade.mercadopago.gateway.IPedidoGateway;
+import faculdade.mercadopago.usecase.IFilaPedidosPreparacaoUseCase;
 import faculdade.mercadopago.usecase.IPagamentoUseCase;
 import faculdade.mercadopago.usecase.IPedidoUseCase;
 import faculdade.mercadopago.usecase.IWebHookUseCase;
@@ -25,7 +24,7 @@ public class WebHookConfig {
     }
 
     @Bean
-    WebHookUseCase webHookUseCase(IPedidoUseCase pedidoUseCase, IPedidoGateway pedidoGateway, IPagamentoUseCase pagamentoUseCase, IFilaPedidosPreparacaoGateway filaPedidosPreparacaoGateway) {
-        return new WebHookUseCase(pedidoUseCase, pedidoGateway, pagamentoUseCase, filaPedidosPreparacaoGateway);
+    WebHookUseCase webHookUseCase(IPedidoUseCase pedidoUseCase, IPagamentoUseCase pagamentoUseCase, IFilaPedidosPreparacaoUseCase filaPedidosPreparacaoUseCase) {
+        return new WebHookUseCase(pedidoUseCase, pagamentoUseCase, filaPedidosPreparacaoUseCase);
     }
 }

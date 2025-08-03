@@ -3,18 +3,26 @@ package faculdade.mercadopago.usecase.impl;
 import faculdade.mercadopago.AppConstants;
 import faculdade.mercadopago.controller.mapper.dto.request.QrCodeRequest;
 import faculdade.mercadopago.entity.Pedido;
+import faculdade.mercadopago.entity.pagamento.ConfirmacaoPagamentoRes;
 import faculdade.mercadopago.entity.pagamento.QrCodeOrder;
 import faculdade.mercadopago.entity.pagamento.QrCodeRes;
 import faculdade.mercadopago.gateway.IPagamentoGateway;
 import faculdade.mercadopago.usecase.IPagamentoUseCase;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 
 public class PagamentoUseCase implements IPagamentoUseCase {
+    private final IPagamentoGateway pagamentoGateway;
+
+    public PagamentoUseCase(IPagamentoGateway pagamentoGateway) {
+        this.pagamentoGateway = pagamentoGateway;
+    }
+
     @Override
-    public QrCodeRes processarQrCode(QrCodeRequest request, IPagamentoGateway gateway) {
+    public QrCodeRes processarQrCode(QrCodeRequest request) {
         var listDto = new ArrayList<QrCodeOrder.Item>();
         for (QrCodeRequest.ItemPedido item : request.Itens()) {
             var itemRequest = new QrCodeOrder.Item(
@@ -39,11 +47,16 @@ public class PagamentoUseCase implements IPagamentoUseCase {
         );
 
         var url = AppConstants.BASEURL_MERCADOPAGO + AppConstants.GENERATEQRCODEURL_MERCADOPAGO;
-        return gateway.sendRequest(url, HttpMethod.POST, qrcoderequest, QrCodeRes.class, null).getBody();
+        return pagamentoGateway.sendRequest(url, HttpMethod.POST, qrcoderequest, QrCodeRes.class, null).getBody();
     }
 
     @Override
-    public void salvarPagamento(Pedido pedido, BigDecimal valor, IPagamentoGateway gateway) {
-        gateway.save(pedido, valor);
+    public void salvarPagamento(Pedido pedido, BigDecimal valor) {
+        pagamentoGateway.save(pedido, valor);
+    }
+
+    @Override
+    public ResponseEntity<?> buscarDados(String url, HttpMethod http, Class<ConfirmacaoPagamentoRes> confirmacaoPagamentoResClass) {
+        return pagamentoGateway.sendRequest(url, http, confirmacaoPagamentoResClass);
     }
 }

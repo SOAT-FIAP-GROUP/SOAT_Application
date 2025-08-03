@@ -15,7 +15,7 @@ public class WebHookController {
 
 
     public void confirmarPagamento(ConfirmacaoWebHookRequest request) {
-        webHookUseCase.processarPagamento(request, pagamentoGateway);
+        webHookUseCase.processarPagamento(request);
     }
 
 
