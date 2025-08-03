@@ -26,9 +26,9 @@ class ProdutoUseCaseTest {
 
     @BeforeEach
     void setUp() {
-        produtoUserCase = new ProdutoUseCase(produtoGateway, categoriaGateway);
         produtoGateway = mock(IProdutoGateway.class);
         categoriaGateway = mock(ICategoriaGateway.class);
+        produtoUserCase = new ProdutoUseCase(produtoGateway, categoriaGateway);
     }
 
     @Test
