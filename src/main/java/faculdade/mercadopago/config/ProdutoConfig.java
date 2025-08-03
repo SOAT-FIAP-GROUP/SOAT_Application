@@ -24,11 +24,8 @@ public class ProdutoConfig {
     }
 
     @Bean
-    ProdutoController produtoController(IProdutoUseCase produtoUseCase, IProdutoGateway produtoGateway,
-                                        ProdutoMapper produtoMapper, ICategoriaGateway categoriaGateway,
-                                        CategoriaMapper categoriaMapper) {
-        return new ProdutoController(produtoUseCase, produtoGateway, produtoMapper, categoriaGateway,
-                categoriaMapper);
+    ProdutoController produtoController(IProdutoUseCase produtoUseCase, ProdutoMapper produtoMapper, CategoriaMapper categoriaMapper) {
+        return new ProdutoController(produtoUseCase, produtoMapper, categoriaMapper);
     }
 
     @Bean
@@ -47,8 +44,8 @@ public class ProdutoConfig {
     }
 
     @Bean
-    ProdutoUseCase produtoUserCase(){
-        return new ProdutoUseCase();
+    ProdutoUseCase produtoUserCase(IProdutoGateway produtoGateway, ICategoriaGateway categoriaGateway){
+        return new ProdutoUseCase(produtoGateway, categoriaGateway);
     }
 
     @Bean

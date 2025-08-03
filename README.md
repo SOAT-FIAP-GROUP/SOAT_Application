@@ -496,7 +496,7 @@ Assista ao vídeo com demonstração do funcionamento da aplicação e da arquit
 
 #### 🧾 Gerar QR Code de pagamento
 
-**POST** `/api/payments`
+**POST** `/api/pagamento`
 
 **Body:**
 ```json
@@ -555,9 +555,9 @@ Assista ao vídeo com demonstração do funcionamento da aplicação e da arquit
 } 
 ```
 
-#### ✅ Confirmar pagamento
+#### ✅ Webhook - confirmação de pagamento
 
-**POST** `/api/payments/mercadopago/confirmapagamento`
+**POST** `/webhook/mercadopago/confirmapagamento`
 
 **Body:**
 ```json
@@ -583,6 +583,20 @@ Assista ao vídeo com demonstração do funcionamento da aplicação e da arquit
   "success": true
 }
 ```
+
+#### 🧾 Consultar pagamento
+
+**GET** `/api/pagamento?id=1340035121`
+
+**Resposta:**
+```json
+{
+  "pedidoId": "1",
+  "mercadoPagoIdPagamento": 1340035121,
+  "status": "pending"
+}
+```
+
 
 ---
 

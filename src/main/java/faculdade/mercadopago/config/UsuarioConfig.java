@@ -15,8 +15,8 @@ import org.springframework.context.annotation.Configuration;
 public class UsuarioConfig {
 
     @Bean
-    UsuarioUseCase usuarioUseCase(){
-        return new UsuarioUseCase();
+    UsuarioUseCase usuarioUseCase(IUsuarioGateway gateway){
+        return new UsuarioUseCase(gateway);
     }
 
     @Bean
@@ -25,8 +25,8 @@ public class UsuarioConfig {
     }
 
     @Bean
-    UsuarioController usuarioController(IUsuarioUseCase usuarioUseCase, IUsuarioGateway usuarioGateway, UsuarioMapper usuarioMapper){
-        return new UsuarioController(usuarioUseCase, usuarioGateway, usuarioMapper);
+    UsuarioController usuarioController(IUsuarioUseCase usuarioUseCase, UsuarioMapper usuarioMapper){
+        return new UsuarioController(usuarioUseCase, usuarioMapper);
     }
 
     @Bean

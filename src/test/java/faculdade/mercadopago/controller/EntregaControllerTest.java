@@ -4,9 +4,6 @@ import faculdade.mercadopago.controller.mapper.EntregaMapper;
 import faculdade.mercadopago.controller.mapper.dto.request.EntregaRequest;
 import faculdade.mercadopago.controller.mapper.dto.response.EntregaResponse;
 import faculdade.mercadopago.entity.Entrega;
-import faculdade.mercadopago.gateway.IEntregaGateway;
-import faculdade.mercadopago.gateway.IFilaPedidosPreparacaoGateway;
-import faculdade.mercadopago.gateway.IPedidoGateway;
 import faculdade.mercadopago.usecase.IEntregaUseCase;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,20 +18,14 @@ import static org.mockito.Mockito.*;
 public class EntregaControllerTest {
 
     private IEntregaUseCase entregaUseCase;
-    private IEntregaGateway entregaGateway;
-    private IPedidoGateway pedidoGateway;
-    private IFilaPedidosPreparacaoGateway filaGateway;
 
     private EntregaController entregaController;
 
     @BeforeEach
     public void setUp() {
         entregaUseCase = mock(IEntregaUseCase.class);
-        entregaGateway = mock(IEntregaGateway.class);
-        pedidoGateway = mock(IPedidoGateway.class);
-        filaGateway = mock(IFilaPedidosPreparacaoGateway.class);
 
-        entregaController = new EntregaController(entregaUseCase, entregaGateway, pedidoGateway, filaGateway);
+        entregaController = new EntregaController(entregaUseCase);
     }
 
     @Test
@@ -51,14 +42,14 @@ public class EntregaControllerTest {
             mockedMapper.when(() -> EntregaMapper.toEntity(entregaRequest)).thenReturn(entrega);
             mockedMapper.when(() -> EntregaMapper.toResponse(entregaSalva)).thenReturn(entregaResponse);
 
-            when(entregaUseCase.entregarPedido(entrega, entregaGateway, pedidoGateway, filaGateway))
+            when(entregaUseCase.entregarPedido(entrega))
                     .thenReturn(entregaSalva);
 
             EntregaResponse resultado = entregaController.entregarPedido(entregaRequest);
 
             assertNotNull(resultado);
             assertEquals(entregaResponse, resultado);
-            verify(entregaUseCase, times(1)).entregarPedido(entrega, entregaGateway, pedidoGateway, filaGateway);
+            verify(entregaUseCase, times(1)).entregarPedido(entrega);
         }
     }
 }

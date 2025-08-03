@@ -20,12 +20,17 @@ public class WebHookConfig {
     }
 
     @Bean
-    WebHookController webHookController(IWebHookUseCase webHookUseCase, IPagamentoGateway pagamentoGateway) {
-        return new WebHookController(webHookUseCase, pagamentoGateway);
+    WebHookController webHookController(IWebHookUseCase webHookUseCase) {
+        return new WebHookController(webHookUseCase);
     }
 
     @Bean
-    WebHookUseCase webHookUseCase(IPedidoUseCase pedidoUseCase, IPedidoGateway pedidoGateway, IPagamentoUseCase pagamentoUseCase, IFilaPedidosPreparacaoGateway filaPedidosPreparacaoGateway) {
-        return new WebHookUseCase(pedidoUseCase, pedidoGateway, pagamentoUseCase, filaPedidosPreparacaoGateway);
+    WebHookUseCase webHookUseCase(IPedidoUseCase pedidoUseCase, IPedidoGateway pedidoGateway, IPagamentoUseCase pagamentoUseCase, IPagamentoGateway pagamentoGateway, IFilaPedidosPreparacaoGateway filaPedidosPreparacaoGateway) {
+        return new WebHookUseCase(
+                pedidoUseCase,
+                pedidoGateway,
+                pagamentoUseCase,
+                pagamentoGateway,
+                filaPedidosPreparacaoGateway);
     }
 }

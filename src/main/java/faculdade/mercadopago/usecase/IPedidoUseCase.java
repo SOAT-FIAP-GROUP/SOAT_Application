@@ -3,27 +3,22 @@ package faculdade.mercadopago.usecase;
 import faculdade.mercadopago.entity.FilaPedidosPreparacao;
 import faculdade.mercadopago.entity.Pedido;
 import faculdade.mercadopago.entity.enums.StatusPedidoEnum;
-import faculdade.mercadopago.gateway.IFilaPedidosPreparacaoGateway;
-import faculdade.mercadopago.gateway.IPedidoGateway;
-import faculdade.mercadopago.gateway.IProdutoGateway;
-import faculdade.mercadopago.gateway.IUsuarioGateway;
 
 import java.util.List;
 
 public interface IPedidoUseCase {
 
-    Pedido buscarPedido(Long id, IPedidoGateway gateway);
+    Pedido buscarPedido(Long id);
 
-    Pedido criarPedido(Pedido pedido, IPedidoGateway pedidoGateway, IProdutoGateway produtoGateway, IProdutoUseCase produtoUseCase,
-                       IUsuarioGateway usuarioGateway, IUsuarioUseCase usuarioUseCase);
+    Pedido criarPedido(Pedido pedido);
 
-    List<Pedido> listarPedidos(StatusPedidoEnum status, IPedidoGateway pedidoGateway);
+    List<Pedido> listarPedidos(StatusPedidoEnum status);
 
-    Pedido alterarPedido(Long id, StatusPedidoEnum status, IPedidoGateway pedidoGateway);
+    Pedido alterarPedido(Long id, StatusPedidoEnum status);
 
-    FilaPedidosPreparacao adicionarPedidoNaFila(Long id, IPedidoGateway pedidoGateway, IFilaPedidosPreparacaoGateway filaPedidosPreparacaoGateway);
+    FilaPedidosPreparacao adicionarPedidoNaFila(Long id);
 
-    void removerPedidoDaFila(Long id, IPedidoGateway pedidoGateway, IFilaPedidosPreparacaoGateway filaPedidosPreparacaoGateway);
+    void removerPedidoDaFila(Long id);
 
-    List<Pedido> listaPedidosOrd(IPedidoGateway pedidoGateway);
+    List<Pedido> listaPedidosOrd();
 }

@@ -16,7 +16,8 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
 class ProdutoControllerTest {
@@ -39,7 +40,7 @@ class ProdutoControllerTest {
         categoriaMapper = mock(CategoriaMapper.class);
 
         produtoController = new ProdutoController(
-                produtoUseCase, produtoGateway, produtoMapper, categoriaGateway, categoriaMapper
+                produtoUseCase, produtoMapper, categoriaMapper
         );
     }
 
@@ -48,13 +49,13 @@ class ProdutoControllerTest {
         Produto produto = MockGenerator.generateProdutoMock();
         ProdutoResponse response = MockGenerator.generateProdutoResponseMock();
 
-        when(produtoUseCase.buscarProduto(anyLong(), eq(produtoGateway))).thenReturn(produto);
+        when(produtoUseCase.buscarProduto(anyLong())).thenReturn(produto);
         when(produtoMapper.toResponse(produto)).thenReturn(response);
 
         ProdutoResponse resultado = produtoController.buscarProduto(ID);
 
         assertEquals(response, resultado);
-        verify(produtoUseCase).buscarProduto(ID, produtoGateway);
+        verify(produtoUseCase).buscarProduto(ID);
         verify(produtoMapper).toResponse(produto);
     }
 
@@ -63,13 +64,13 @@ class ProdutoControllerTest {
         Categoria categoria = MockGenerator.generateCategoriaMock();
         CategoriaResponse response = MockGenerator.generateCategoriaResponseMock();
 
-        when(produtoUseCase.buscarCategoria(anyLong(), eq(categoriaGateway))).thenReturn(categoria);
+        when(produtoUseCase.buscarCategoria(anyLong())).thenReturn(categoria);
         //when(categoriaMapper.toResponse(categoria)).thenReturn(response);
 
         CategoriaResponse resultado = produtoController.buscarCategoria(ID);
 
         assertEquals(response, resultado);
-        verify(produtoUseCase).buscarCategoria(ID, categoriaGateway);
+        verify(produtoUseCase).buscarCategoria(ID);
         //verify(categoriaMapper).toResponse(categoria);
     }
 
@@ -78,7 +79,7 @@ class ProdutoControllerTest {
         Produto produto = MockGenerator.generateProdutoMock();
         ProdutoResponse response = MockGenerator.generateProdutoResponseMock();
 
-        when(produtoUseCase.buscarProdutosPorCategoria(anyLong(), eq(produtoGateway)))
+        when(produtoUseCase.buscarProdutosPorCategoria(anyLong()))
                 .thenReturn(List.of(produto));
         when(produtoMapper.toResponse(any(Produto.class))).thenReturn(response);
 
@@ -87,7 +88,7 @@ class ProdutoControllerTest {
         assertEquals(ID, resultado.size());
         assertTrue(resultado.contains(response));
 
-        verify(produtoUseCase).buscarProdutosPorCategoria(anyLong(), eq(produtoGateway));
+        verify(produtoUseCase).buscarProdutosPorCategoria(anyLong());
         verify(produtoMapper).toResponse(produto);
     }
 
@@ -97,13 +98,13 @@ class ProdutoControllerTest {
         Produto produto = MockGenerator.generateProdutoMock();
         ProdutoResponse response = MockGenerator.generateProdutoResponseMock();
 
-        when(produtoUseCase.cadastrarProduto(any(Produto.class), eq(produtoGateway))).thenReturn(produto);
+        when(produtoUseCase.cadastrarProduto(any(Produto.class))).thenReturn(produto);
         when(produtoMapper.toResponse(any(Produto.class))).thenReturn(response);
 
         ProdutoResponse resultado = produtoController.cadastrarProduto(request);
 
         assertEquals(response, resultado);
-        verify(produtoUseCase).cadastrarProduto(any(Produto.class), eq(produtoGateway));
+        verify(produtoUseCase).cadastrarProduto(any(Produto.class));
         verify(produtoMapper).toResponse(produto);
     }
 
@@ -112,7 +113,7 @@ class ProdutoControllerTest {
 
         produtoController.removerProduto(ID);
 
-        verify(produtoUseCase).removerProduto(ID, produtoGateway);
+        verify(produtoUseCase).removerProduto(ID);
     }
 
     @Test
@@ -121,13 +122,13 @@ class ProdutoControllerTest {
         Produto produto = MockGenerator.generateProdutoMock();
         ProdutoResponse response = MockGenerator.generateProdutoResponseMock();
 
-        when(produtoUseCase.atualizarProduto(anyLong(), any(Produto.class), eq(produtoGateway))).thenReturn(produto);
+        when(produtoUseCase.atualizarProduto(anyLong(), any(Produto.class))).thenReturn(produto);
         when(produtoMapper.toResponse(any(Produto.class))).thenReturn(response);
 
         ProdutoResponse resultado = produtoController.atualizarProduto(request, ID);
 
         assertEquals(response, resultado);
-        verify(produtoUseCase).atualizarProduto(anyLong(), any(Produto.class), eq(produtoGateway));
+        verify(produtoUseCase).atualizarProduto(anyLong(), any(Produto.class));
         verify(produtoMapper).toResponse(produto);
     }
 }
