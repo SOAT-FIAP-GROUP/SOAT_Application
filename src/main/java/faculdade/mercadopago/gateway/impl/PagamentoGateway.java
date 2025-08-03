@@ -18,6 +18,8 @@ public class PagamentoGateway implements IPagamentoGateway {
     private final PedidoRepository pedidoRepository;
     private final RestTemplate _restTemplate;
 
+    private final String STATUS = "approved";
+
     public PagamentoGateway(PagamentoRepository pagamentoRepository, PedidoRepository pedidoRepository, RestTemplate restTemplate) {
         this.pagamentoRepository = pagamentoRepository;
         this.pedidoRepository = pedidoRepository;
@@ -69,7 +71,7 @@ public class PagamentoGateway implements IPagamentoGateway {
         var pagamento = new PagamentoEntity(
                 pedidoEntity,
                 valor,
-                "approved"
+                this.STATUS
         );
 
         return pagamentoRepository.save(pagamento);

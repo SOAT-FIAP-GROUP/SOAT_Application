@@ -15,11 +15,12 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 
 public class PagamentoUseCase implements IPagamentoUseCase {
-    private final IPagamentoGateway pagamentoGateway;
+    private final IPagamentoGateway gateway;
 
-    public PagamentoUseCase(IPagamentoGateway pagamentoGateway) {
-        this.pagamentoGateway = pagamentoGateway;
+    public PagamentoUseCase(IPagamentoGateway gateway) {
+        this.gateway = gateway;
     }
+
 
     @Override
     public QrCodeRes processarQrCode(QrCodeRequest request) {
@@ -47,16 +48,21 @@ public class PagamentoUseCase implements IPagamentoUseCase {
         );
 
         var url = AppConstants.BASEURL_MERCADOPAGO + AppConstants.GENERATEQRCODEURL_MERCADOPAGO;
-        return pagamentoGateway.sendRequest(url, HttpMethod.POST, qrcoderequest, QrCodeRes.class, null).getBody();
+        return gateway.sendRequest(url, HttpMethod.POST, qrcoderequest, QrCodeRes.class, null).getBody();
     }
 
     @Override
     public void salvarPagamento(Pedido pedido, BigDecimal valor) {
-        pagamentoGateway.save(pedido, valor);
+        gateway.save(pedido, valor);
+    }
+
+    private String urlPagamento(String id) {
+        return AppConstants.BASEURL_MERCADOPAGO + AppConstants.CONFIRMPAYMENT_MERCADOPAGO + "/" + id;
     }
 
     @Override
-    public ResponseEntity<?> buscarDados(String url, HttpMethod http, Class<ConfirmacaoPagamentoRes> confirmacaoPagamentoResClass) {
-        return pagamentoGateway.sendRequest(url, http, confirmacaoPagamentoResClass);
+    public ResponseEntity<?> consultarPagamento(String id) {
+        var url = urlPagamento(id);
+        return gateway.sendRequest(url, HttpMethod.GET, ConfirmacaoPagamentoRes.class);
     }
 }

@@ -1,53 +1,57 @@
 package faculdade.mercadopago.usecase.impl;
 
-import faculdade.mercadopago.AppConstants;
 import faculdade.mercadopago.controller.mapper.dto.request.ConfirmacaoWebHookRequest;
 import faculdade.mercadopago.entity.enums.StatusPedidoEnum;
 import faculdade.mercadopago.entity.pagamento.ConfirmacaoPagamentoRes;
 import faculdade.mercadopago.entity.pagamento.DadosPedidoPago;
+import faculdade.mercadopago.gateway.IFilaPedidosPreparacaoGateway;
 import faculdade.mercadopago.gateway.IPagamentoGateway;
-import faculdade.mercadopago.usecase.IFilaPedidosPreparacaoUseCase;
+import faculdade.mercadopago.gateway.IPedidoGateway;
 import faculdade.mercadopago.usecase.IPagamentoUseCase;
 import faculdade.mercadopago.usecase.IPedidoUseCase;
 import faculdade.mercadopago.usecase.IWebHookUseCase;
-import org.springframework.http.HttpMethod;
 
 import java.math.BigDecimal;
 
 public class WebHookUseCase implements IWebHookUseCase {
     public final IPedidoUseCase pedidoUseCase;
+    public final IPedidoGateway pedidoGateway;
     public final IPagamentoUseCase pagamentoUseCase;
-    public final IFilaPedidosPreparacaoUseCase filaPedidosPreparacaoUseCase;
+    public final IPagamentoGateway pagamentoGateway;
+    public final IFilaPedidosPreparacaoGateway filaPedidosPreparacaoGateway;
 
-    public WebHookUseCase(IPedidoUseCase pedidoUseCase, IPagamentoUseCase pagamentoUseCase, IFilaPedidosPreparacaoUseCase filaPedidosPreparacaoUseCase) {
+    private static final String STATUS_APROVADO = "approved";
+
+
+    public WebHookUseCase(IPedidoUseCase pedidoUseCase, IPedidoGateway pedidoGateway, IPagamentoUseCase pagamentoUseCase, IPagamentoGateway pagamentoGateway, IFilaPedidosPreparacaoGateway filaPedidosPreparacaoGateway) {
         this.pedidoUseCase = pedidoUseCase;
+        this.pedidoGateway = pedidoGateway;
         this.pagamentoUseCase = pagamentoUseCase;
-        this.filaPedidosPreparacaoUseCase = filaPedidosPreparacaoUseCase;
-    }
-
-    private String urlPagamento(String id) {
-        return AppConstants.BASEURL_MERCADOPAGO + AppConstants.CONFIRMPAYMENT_MERCADOPAGO + "/" + id;
+        this.pagamentoGateway = pagamentoGateway;
+        this.filaPedidosPreparacaoGateway = filaPedidosPreparacaoGateway;
     }
 
     @Override
     public boolean confirmarPagamento(ConfirmacaoWebHookRequest request) {
-        var url = urlPagamento(request.id());
-        var response = pagamentoUseCase.buscarDados(url, HttpMethod.GET, ConfirmacaoPagamentoRes.class);
+        var response = pagamentoUseCase.consultarPagamento(request.id());
         if (response.getStatusCode().is2xxSuccessful()) {
 
             ConfirmacaoPagamentoRes body = (ConfirmacaoPagamentoRes) response.getBody();
             System.out.println(body);
-            assert body != null;
+            if (body == null) {
+                throw new RuntimeException("Mercado Pago retornou uma resposta vazia");
+            }
+
             String status = body.status();
-            return status.equals("approved");
+            //status = "approved";
+            return status.equals(STATUS_APROVADO);
         }
         return false;
     }
 
     @Override
     public DadosPedidoPago retornarPedidoPago(ConfirmacaoWebHookRequest request) {
-        var url = urlPagamento(request.id());
-        var response = pagamentoUseCase.buscarDados(url, HttpMethod.GET, ConfirmacaoPagamentoRes.class);
+        var response = pagamentoUseCase.consultarPagamento(request.id());
         if (response.getStatusCode().is2xxSuccessful()) {
             ConfirmacaoPagamentoRes body = (ConfirmacaoPagamentoRes) response.getBody();
             if (body == null) {
