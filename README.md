@@ -9,7 +9,7 @@ Essa aplicação foi construída para entrega do Tech Challenge da fase 2, cujo 
 - Iago Cavalcante Geraldo- RM 362832
 - Jose Augusto dos Santos- RM 361650
 - Nathalia Matielo Rodrigues- RM 363100
-- Rogerio Inacio Silva Junior- RM
+- Rogerio Inacio Silva Junior- RM 364104
 - Vanessa Moreira Wendling - RM 362741
 
 ---
@@ -64,7 +64,7 @@ Foi desenvolvido um sistema de autoatendimento para fast food, que:
 
 ##  Arquitetura
 
-![img.png](img.png)
+![diagrama.png](diagrama.png)
 
 ### Requisitos contemplados
 
@@ -172,13 +172,11 @@ Assista ao vídeo com demonstração do funcionamento da aplicação e da arquit
 **Resposta:**
 ```json
 {
-  "success": true,
-  "data": {
-    "id": 1,
-    "nome": "João Silva",
-    "cpf": "12345678900"
-  }
-}
+  "id": 1,
+  "nome": "Maria",
+  "cpf": "12345678901",
+  "email": "teste@teste.com"
+} 
 ```
 
 
@@ -199,38 +197,16 @@ Assista ao vídeo com demonstração do funcionamento da aplicação e da arquit
 **Resposta:**
 ```json
 {
-  "success": true,
-  "data": {
-    "id": 2,
-    "nome": "Maria Oliveira",
-    "cpf": "98765432100",
-    "email": "mariaoliveira@gmail.com"
-  }
+  "id": 1,
+  "nome": "Maria",
+  "cpf": "12345678901",
+  "email": "teste@teste.com"
 }
 ```
 
 ---
 
 ### 📦 Produto
-
-#### 🔍 Buscar produto por código
-
-**GET** `/api/produtos/buscar/produto/1`
-
-**Resposta:**
-```json
-{
-  "success": true,
-  "data": {
-    "codigo": 1,
-    "nome": "X-Burger",
-    "descricao": "Hambúrguer artesanal",
-    "categoria": 10,
-    "preco": 19.90,
-    "tempopreparo": "00:15:00"
-  }
-}
-```
 
 #### ➕ Cadastrar novo produto
 
@@ -241,7 +217,7 @@ Assista ao vídeo com demonstração do funcionamento da aplicação e da arquit
 {
   "nome": "Coca-Cola",
   "descricao": "Refrigerante 350ml",
-  "categoria": 3,
+  "categoriaId": 3,
   "preco": 5.00,
   "tempopreparo": "00:01:00"
 }
@@ -250,75 +226,267 @@ Assista ao vídeo com demonstração do funcionamento da aplicação e da arquit
 **Resposta:**
 ```json
 {
-  "success": true,
-  "data": {
-    "codigo": 2,
-    "nome": "Coca-Cola",
-    "descricao": "Refrigerante 350ml",
-    "categoria": 3,
-    "preco": 5.00,
-    "tempopreparo": "00:01:00"
-  }
+  "id": 9,
+  "nome": "X-Burguer Bão Demais",
+  "descricao": "Pão, hambúrguer, queijo e molho especial",
+  "categoria": {
+    "id": 1,
+    "nome": null
+  },
+  "preco": 19.99,
+  "tempopreparo": "00:15:00"
 }
 ```
 
----
 
-### 🧾 Pedido
+#### 🔍 Buscar produto por código
 
-#### 📄 Listar pedidos por status
-
-**GET** `/pedido?status=RECEBIDO`
+**GET** `/api/produtos/buscar/produto/1`
 
 **Resposta:**
 ```json
 {
-  "data": [
-    {
-      "pedido": 1,
-      "usuario": 1,
-      "status": "EM_PREPARACAO",
-      "valorTotal": 10.00,
-      "dataHoraSolicitacao": "2025-06-03T03:36:23.414949",
-      "tempoTotalPreparo": "00:02:00"
-    }
-  ],
-  "errors": [],
-  "success": true
+  "id": 1,
+  "nome": "X-Burguer",
+  "descricao": "Pão, hambúrguer, queijo e molho especial",
+  "categoria": {
+    "id": 1,
+    "nome": "LANCHE"
+  },
+  "preco": 15.90,
+  "tempopreparo": "00:10:00"
 }
 ```
 
-#### 🔄 Alterar status do pedido
+#### 🔍 Buscar produto por categoria
 
-**PUT** `/pedido/1`
+**GET** `/api/produtos/buscar/categoria/:codigoCategoria`
+
+**Resposta:**
+```json
+{
+  "id": 1,
+  "nome": "LANCHE"
+}
+```
+
+#### 🔍 Buscar lista de produto por categoria
+
+**GET** `/api/produtos/buscar/categoria/:codigoCategoria/produtos`
+
+**Resposta:**
+```json
+[
+  {
+    "id": 1,
+    "nome": "X-Burguer",
+    "descricao": "Pão, hambúrguer, queijo e molho especial",
+    "categoria": {
+      "id": 1,
+      "nome": "LANCHE"
+    },
+    "preco": 15.90,
+    "tempopreparo": "00:10:00"
+  },
+  {
+    "id": 2,
+    "nome": "X-Salada",
+    "descricao": "Pão, hambúrguer, queijo, alface e tomate",
+    "categoria": {
+      "id": 1,
+      "nome": "LANCHE"
+    },
+    "preco": 16.90,
+    "tempopreparo": "00:12:00"
+  },
+  {
+    "id": 9,
+    "nome": "X-Burguer Bão Demais",
+    "descricao": "Pão, hambúrguer, queijo e molho especial",
+    "categoria": {
+      "id": 1,
+      "nome": "LANCHE"
+    },
+    "preco": 19.99,
+    "tempopreparo": "00:15:00"
+  },
+  {
+    "id": 10,
+    "nome": "X-Burguer Bão",
+    "descricao": "Pão, hambúrguer, queijo e molho especial",
+    "categoria": {
+      "id": 1,
+      "nome": "LANCHE"
+    },
+    "preco": 19.99,
+    "tempopreparo": "00:15:00"
+  }
+]
+```
+
+#### Atualizar informações produtos
+
+**PUT** `/api/produtos/:codigo`
 
 **Body:**
 ```json
 {
-  "codigo":  1,
-  "status": "EM_PREPARACAO"
+  "nome": "X-Burguer Bão",
+  "descricao": "Pão, hambúrguer, queijo e molho especial",
+  "categoriaId": 1,
+  "preco": 19.99,
+  "tempopreparo": "00:15:00"
 }
 ```
 
 **Resposta:**
 ```json
 {
-  "data": {
-    "pedido": 1,
-    "usuario": 1,
-    "status": "EM_PREPARACAO",
-    "valorTotal": 10.00,
-    "dataHoraSolicitacao": "2025-06-03T03:36:23.414949",
-    "tempoTotalPreparo": "00:02:00"
+  "id": 10,
+  "nome": "X-Burguer Bão",
+  "descricao": "Pão, hambúrguer, queijo e molho especial",
+  "categoria": {
+    "id": 1,
+    "nome": null
   },
-  "errors": [],
-  "success": true
+  "preco": 19.99,
+  "tempopreparo": "00:15:00"
 }
 ```
 
 #### ❌ Remover pedido da fila de preparo
 
-**DELETE** `/pedido/1`
+**DELETE** `/api/produtos/:codigo`
+
+**Resposta:** `204 No Content`
+
+
+---
+
+### 🧾 Pedido
+
+#### ➕ Cadastrar novo pedido
+
+**POST** `/api/pedido`
+
+**Body:**
+```json
+{
+  "idUsuario": 1,
+  "itens": [
+    {
+      "produtoId": 1,
+      "quantidade": 2
+    }
+  ]
+}
+```
+
+**Resposta:**
+```json
+{
+  "id": 2,
+  "idUsuario": 1,
+  "status": "RECEBIDO",
+  "valorTotal": 31.80,
+  "dataHoraSolicitacao": "2025-08-03T17:26:30.8292112",
+  "tempoTotalPreparo": "00:20:00",
+  "itens": [
+    {
+      "id": 2,
+      "pedidoId": 2,
+      "produtoId": 1,
+      "quantidade": 2,
+      "precoUnitario": 15.90,
+      "precoTotal": 31.80
+    }
+  ]
+}
+```
+
+#### 📄 Buscar pedidos por status
+
+**GET** `/api/pedido?status=RECEBIDO`
+
+**Resposta:**
+```json
+[
+  {
+    "id": 2,
+    "idUsuario": 1,
+    "status": "RECEBIDO",
+    "valorTotal": 31.80,
+    "dataHoraSolicitacao": "2025-08-03T17:26:30",
+    "tempoTotalPreparo": "00:20:00",
+    "itens": [
+      {
+        "id": 2,
+        "pedidoId": 2,
+        "produtoId": 1,
+        "quantidade": 2,
+        "precoUnitario": 15.90,
+        "precoTotal": 31.80
+      }
+    ]
+  }
+]
+```
+
+#### 📄 Buscar pedidos por codigo
+
+**GET** `/api/pedido/buscar/:codigoPedido`
+
+**Resposta:**
+```json
+{
+  "id": 1,
+  "idUsuario": 1,
+  "status": "EM_PREPARACAO",
+  "valorTotal": 31.80,
+  "dataHoraSolicitacao": "2025-08-03T17:10:53",
+  "tempoTotalPreparo": "00:20:00",
+  "itens": [
+    {
+      "id": 1,
+      "pedidoId": 1,
+      "produtoId": 1,
+      "quantidade": 2,
+      "precoUnitario": 15.90,
+      "precoTotal": 31.80
+    }
+  ]
+}
+```
+
+#### 🔄 Alterar status do pedido
+
+**PUT** `/api/pedido/status/:codigo?status=EM_PREPARACAO`
+
+**Resposta:**
+```json
+{
+  "id": 1,
+  "idUsuario": 1,
+  "status": "EM_PREPARACAO",
+  "valorTotal": 31.80,
+  "dataHoraSolicitacao": "2025-08-03T17:10:53",
+  "tempoTotalPreparo": "00:20:00",
+  "itens": [
+    {
+      "id": 1,
+      "pedidoId": 1,
+      "produtoId": 1,
+      "quantidade": 2,
+      "precoUnitario": 15.90,
+      "precoTotal": 31.80
+    }
+  ]
+}
+```
+
+#### ❌ Remover pedido da fila de preparo
+
+**DELETE** `/api/pedido/remover/fila/:codigoPedido`
 
 **Resposta:** `204 No Content`
 
@@ -427,9 +595,9 @@ Assista ao vídeo com demonstração do funcionamento da aplicação e da arquit
 **Body:**
 ```json
 {
-  "codigo":  1,
-  "status": "FINALIZADO"
-} 
+  "pedidoId": 1,
+  "dataHoraSolicitacao": "2025-08-02T12:54:53Z"
+}
 ```
 
 **Resposta:**
