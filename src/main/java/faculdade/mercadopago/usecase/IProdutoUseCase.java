@@ -2,24 +2,22 @@ package faculdade.mercadopago.usecase;
 
 import faculdade.mercadopago.entity.Categoria;
 import faculdade.mercadopago.entity.Produto;
-import faculdade.mercadopago.gateway.ICategoriaGateway;
-import faculdade.mercadopago.gateway.IProdutoGateway;
 
 import java.util.List;
 
 public interface IProdutoUseCase {
 
-    Produto cadastrarProduto(Produto entity, IProdutoGateway gateway);
+    Produto cadastrarProduto(Produto entity);
 
-    Produto buscarProduto(Long id, IProdutoGateway gateway);
+    Produto buscarProduto(Long id);
 
-    Produto atualizarProduto(Long id, Produto entity, IProdutoGateway gateway);
+    Produto atualizarProduto(Long id, Produto entity);
 
-    void removerProduto(Long id, IProdutoGateway gateway);
+    void removerProduto(Long id);
 
-    List<Produto> buscarProdutosPorCategoria(Long id, IProdutoGateway gateway);
+    List<Produto> buscarProdutosPorCategoria(Long id);
 
-    Categoria buscarCategoria(Long id, ICategoriaGateway gateway);
+    Categoria buscarCategoria(Long id);
 
 
 }

@@ -5,7 +5,7 @@ import faculdade.mercadopago.entity.Usuario;
 import faculdade.mercadopago.gateway.entity.UsuarioEntity;
 
 public class UsuarioMapper {
-    public static UsuarioResponse toResponse(Usuario entity) {
+    public UsuarioResponse toResponse(Usuario entity) {
         return new UsuarioResponse(entity.codigo(), entity.nome(), entity.cpf(), entity.email());
     }
     public static UsuarioEntity toEntityPersistence(Usuario entity) {

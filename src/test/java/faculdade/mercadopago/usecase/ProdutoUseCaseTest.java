@@ -26,7 +26,7 @@ class ProdutoUseCaseTest {
 
     @BeforeEach
     void setUp() {
-        produtoUserCase = new ProdutoUseCase();
+        produtoUserCase = new ProdutoUseCase(produtoGateway, categoriaGateway);
         produtoGateway = mock(IProdutoGateway.class);
         categoriaGateway = mock(ICategoriaGateway.class);
     }
@@ -36,7 +36,7 @@ class ProdutoUseCaseTest {
         Produto produto = MockGenerator.generateProdutoMock();
         when(produtoGateway.save(any(Produto.class))).thenReturn(produto);
 
-        Produto resultado = produtoUserCase.cadastrarProduto(produto, produtoGateway);
+        Produto resultado = produtoUserCase.cadastrarProduto(produto);
 
         assertNotNull(resultado);
         verify(produtoGateway, times(1)).save(produto);
@@ -47,7 +47,7 @@ class ProdutoUseCaseTest {
         Produto produto = MockGenerator.generateProdutoMock();
         when(produtoGateway.findById(anyLong())).thenReturn(Optional.of(produto));
 
-        Produto resultado = produtoUserCase.buscarProduto(ID, produtoGateway);
+        Produto resultado = produtoUserCase.buscarProduto(ID);
 
         assertNotNull(resultado);
         verify(produtoGateway).findById(ID);
@@ -59,7 +59,7 @@ class ProdutoUseCaseTest {
         when(produtoGateway.findById(anyLong())).thenReturn(Optional.empty());
 
         assertThrows(EntityNotFoundException.class, () ->
-                produtoUserCase.buscarProduto(ID, produtoGateway));
+                produtoUserCase.buscarProduto(ID));
     }
 
     @Test
@@ -68,7 +68,7 @@ class ProdutoUseCaseTest {
         when(produtoGateway.findById(anyLong())).thenReturn(Optional.of(produto));
         when(produtoGateway.save(any(Produto.class))).thenReturn(produto);
 
-        Produto resultado = produtoUserCase.atualizarProduto(ID, produto, produtoGateway);
+        Produto resultado = produtoUserCase.atualizarProduto(ID, produto);
 
         assertNotNull(resultado);
         verify(produtoGateway).findById(ID);
@@ -80,7 +80,7 @@ class ProdutoUseCaseTest {
         Produto produto = MockGenerator.generateProdutoMock();
         when(produtoGateway.findById(anyLong())).thenReturn(Optional.of(produto));
 
-        produtoUserCase.removerProduto(ID, produtoGateway);
+        produtoUserCase.removerProduto(ID);
 
         verify(produtoGateway).findById(ID);
         verify(produtoGateway).removerProduto(produto);
@@ -91,7 +91,7 @@ class ProdutoUseCaseTest {
         List<Produto> produtos = List.of(MockGenerator.generateProdutoMock());
         when(produtoGateway.findByCategoriaCodigo(anyLong())).thenReturn(produtos);
 
-        List<Produto> resultado = produtoUserCase.buscarProdutosPorCategoria(ID, produtoGateway);
+        List<Produto> resultado = produtoUserCase.buscarProdutosPorCategoria(ID);
 
         assertEquals(ID, resultado.size());
         verify(produtoGateway).findByCategoriaCodigo(ID);
@@ -102,7 +102,7 @@ class ProdutoUseCaseTest {
         Categoria categoria = MockGenerator.generateCategoriaMock();
         when(categoriaGateway.findById(anyLong())).thenReturn(Optional.of(categoria));
 
-        Categoria resultado = produtoUserCase.buscarCategoria(ID, categoriaGateway);
+        Categoria resultado = produtoUserCase.buscarCategoria(ID);
 
         assertNotNull(resultado);
         verify(categoriaGateway).findById(ID);
@@ -113,7 +113,7 @@ class ProdutoUseCaseTest {
         when(categoriaGateway.findById(anyLong())).thenReturn(Optional.empty());
 
         assertThrows(EntityNotFoundException.class, () ->
-                produtoUserCase.buscarCategoria(ID, categoriaGateway));
+                produtoUserCase.buscarCategoria(ID));
     }
 }
 
