@@ -7,8 +7,6 @@ import faculdade.mercadopago.controller.mapper.dto.response.CategoriaResponse;
 import faculdade.mercadopago.controller.mapper.dto.response.ProdutoResponse;
 import faculdade.mercadopago.entity.Categoria;
 import faculdade.mercadopago.entity.Produto;
-import faculdade.mercadopago.gateway.ICategoriaGateway;
-import faculdade.mercadopago.gateway.IProdutoGateway;
 import faculdade.mercadopago.mocks.MockGenerator;
 import faculdade.mercadopago.usecase.IProdutoUseCase;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,9 +22,7 @@ class ProdutoControllerTest {
 
     private ProdutoController produtoController;
     private IProdutoUseCase produtoUseCase;
-    private IProdutoGateway produtoGateway;
     private ProdutoMapper produtoMapper;
-    private ICategoriaGateway categoriaGateway;
     private CategoriaMapper categoriaMapper;
 
     private static final Long ID = 1L;
@@ -34,9 +30,7 @@ class ProdutoControllerTest {
     @BeforeEach
     void setUp() {
         produtoUseCase = mock(IProdutoUseCase.class);
-        produtoGateway = mock(IProdutoGateway.class);
         produtoMapper = mock(ProdutoMapper.class);
-        categoriaGateway = mock(ICategoriaGateway.class);
         categoriaMapper = mock(CategoriaMapper.class);
 
         produtoController = new ProdutoController(

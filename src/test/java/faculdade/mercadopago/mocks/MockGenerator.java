@@ -2,11 +2,15 @@ package faculdade.mercadopago.mocks;
 
 import faculdade.mercadopago.controller.mapper.CategoriaMapper;
 import faculdade.mercadopago.controller.mapper.PagamentoMapper;
+import faculdade.mercadopago.controller.mapper.PedidoMapper;
 import faculdade.mercadopago.controller.mapper.ProdutoMapper;
+import faculdade.mercadopago.controller.mapper.dto.request.PedidoItemRequest;
+import faculdade.mercadopago.controller.mapper.dto.request.PedidoRequest;
 import faculdade.mercadopago.controller.mapper.dto.request.ProdutoRequest;
 import faculdade.mercadopago.controller.mapper.dto.request.QrCodeRequest;
 import faculdade.mercadopago.controller.mapper.dto.response.CategoriaResponse;
 import faculdade.mercadopago.controller.mapper.dto.response.PagamentoStatusResponse;
+import faculdade.mercadopago.controller.mapper.dto.response.PedidoResponse;
 import faculdade.mercadopago.controller.mapper.dto.response.ProdutoResponse;
 import faculdade.mercadopago.entity.*;
 import faculdade.mercadopago.entity.enums.StatusPedidoEnum;
@@ -88,6 +92,50 @@ public class MockGenerator {
         return new QrCodeRes(
                 "mocked_qrcode",
                 "mocked_url"
+        );
+    }
+
+    public static PedidoResponse generatePedidoResponseMock() {
+        PedidoMapper pedidoMapper = new PedidoMapper();
+        return pedidoMapper.toResponse(generatePedidoMock());
+    }
+
+    public static PedidoRequest generatePedidoRequestMock() {
+        PedidoItemRequest item1 = new PedidoItemRequest(1L, 2); // produtoId = 1, quantidade = 2
+        PedidoItemRequest item2 = new PedidoItemRequest(2L, 1); // produtoId = 2, quantidade = 1
+
+        return new PedidoRequest(
+                1L,
+                List.of(item1, item2)
+        );
+    }
+
+    public static Pedido generatePedidoMockComItensVazios() {
+        return new Pedido(
+                null,
+                1L,
+                StatusPedidoEnum.RECEBIDO,
+                null,
+                LocalDateTime.now(),
+                null,
+                List.of()
+        );
+    }
+
+    public static Pedido generatePedidoMockSemId() {
+        PedidoItem item1 = new PedidoItem(null, null,1L,2, new BigDecimal("10.00"), new BigDecimal("20.00")
+        );
+
+        PedidoItem item2 = new PedidoItem(null, null,2L,1, new BigDecimal("15.00"),new BigDecimal("15.00"));
+
+        return new Pedido(
+                null,
+                1L,
+                StatusPedidoEnum.RECEBIDO,
+                null,
+                LocalDateTime.now(),
+                null,
+                List.of(item1, item2)
         );
     }
 
