@@ -6,4 +6,4 @@ data:
   spring.datasource.url: jdbc:mariadb://mariadb:3306/lanchonetedb?createDatabaseIfNotExist=true
   spring.datasource.db-name: lanchonetedb
   spring.datasource.username: root
-  spring.profiles.active: docker
+  spring.profiles.active: develop
