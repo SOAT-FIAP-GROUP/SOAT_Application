@@ -124,8 +124,8 @@ Assista ao vídeo com demonstração do funcionamento da aplicação e da arquit
     http://localhost:8080/swagger-ui/index.html
     ```
 ## 🚀 Como Executar via Kubernetes
-1. Instalar Kubernetes
-2. Instalar Minikube ou Docker Desktop
+1. Instalar Kubernetes com Minikube, ou 
+2. Instalar Docker Desktop e ativar Kubernetes
     - Se estiver usando **Minikube** habilite o metrics-server (necessário para HPA funcionar):
     ```bash
     minikube addons enable metrics-server
