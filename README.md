@@ -122,7 +122,9 @@ Assista ao vídeo com demonstração do funcionamento da aplicação e da arquit
     ```
     http://localhost:8080/swagger-ui/index.html
     ```
-6.  Para execução via Kubernetes:
+## 🚀 Como Executar via Kubernetes
+1. Instalar Kubernetes
+2. Instalar Minikube ou Docker Desktop
     - Se estiver usando **Minikube** habilite o metrics-server (necessário para HPA funcionar):
     ```bash
     minikube addons enable metrics-server
@@ -161,6 +163,12 @@ Assista ao vídeo com demonstração do funcionamento da aplicação e da arquit
 ---
 
 ## 📚 Endpoints e Exemplos
+
+
+#### 🔍📚 Collection API (Postman)
+
+Para ter acesso aos Endpoints e exemplos faça o download da collection e importe na sua IDE de preferência:
+[Collection API](API de Lanchonete Fase 2.postman_collection.json)
 
 ### 👤 Usuário
 
