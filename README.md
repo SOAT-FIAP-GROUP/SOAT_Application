@@ -169,7 +169,7 @@ Assista ao vídeo com demonstração do funcionamento da aplicação e da arquit
 #### 🔍📚 Collection API (Postman)
 
 Para ter acesso aos Endpoints e exemplos faça o download da collection e importe na sua IDE de preferência:
-[Collection API](api-de-lanchonete-fase-2.postman_collection.json)
+[Collection API](https://drive.google.com/uc?export=download&id=1ZiQsbaLV5pB5lrymth4xrdRVKrV6t2Z-)
 
 ### 👤 Usuário
 

@@ -8,7 +8,7 @@
 	},
 	"item": [
 		{
-			"name": "pagamenrto",
+			"name": "pagamento",
 			"item": [
 				{
 					"name": "Gerar um Qr Code",
