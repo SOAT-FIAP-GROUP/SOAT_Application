@@ -1,0 +1,56 @@
+package faculdade.mercadopago.config;
+
+import faculdade.mercadopago.api.controller.ProdutoAPIController;
+import faculdade.mercadopago.controller.ProdutoController;
+import faculdade.mercadopago.controller.mapper.CategoriaMapper;
+import faculdade.mercadopago.controller.mapper.ProdutoMapper;
+import faculdade.mercadopago.gateway.ICategoriaGateway;
+import faculdade.mercadopago.gateway.IProdutoGateway;
+import faculdade.mercadopago.gateway.impl.CategoriaGateway;
+import faculdade.mercadopago.gateway.impl.ProdutoGateway;
+import faculdade.mercadopago.gateway.persistence.jpa.CategoriaRepository;
+import faculdade.mercadopago.gateway.persistence.jpa.ProdutoRepository;
+import faculdade.mercadopago.usecase.IProdutoUseCase;
+import faculdade.mercadopago.usecase.impl.ProdutoUseCase;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class ProdutoConfig {
+
+    @Bean
+    ProdutoGateway produtoGateway(ProdutoRepository produtoRepository) {
+        return new ProdutoGateway(produtoRepository);
+    }
+
+    @Bean
+    ProdutoController produtoController(IProdutoUseCase produtoUseCase, ProdutoMapper produtoMapper, CategoriaMapper categoriaMapper) {
+        return new ProdutoController(produtoUseCase, produtoMapper, categoriaMapper);
+    }
+
+    @Bean
+    ProdutoAPIController produtoAPIController(ProdutoController produtoController) {
+        return new ProdutoAPIController(produtoController);
+    }
+
+    @Bean
+    ProdutoMapper produtoMapper(){
+        return new ProdutoMapper();
+    }
+
+    @Bean
+    CategoriaMapper categoriaMapper(){
+        return new CategoriaMapper();
+    }
+
+    @Bean
+    ProdutoUseCase produtoUserCase(IProdutoGateway produtoGateway, ICategoriaGateway categoriaGateway){
+        return new ProdutoUseCase(produtoGateway, categoriaGateway);
+    }
+
+    @Bean
+    CategoriaGateway categoriaGateway(CategoriaRepository categoriaRepository) {
+        return new CategoriaGateway(categoriaRepository);
+    }
+
+}

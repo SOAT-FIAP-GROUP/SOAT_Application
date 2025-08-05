@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lanchonete-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: lanchonete-app
+  template:
+    metadata:
+      labels:
+        app: lanchonete-app
+    spec:
+      containers:
+      - name: lanchonete-container
+        image: ashenonedev/lanchonete-app:latest
+#        imagePullPolicy: Never
+        ports:
+        - containerPort: 8080
+        env:
+        - name: SPRING_DATASOURCE_URL
+          valueFrom:
+            configMapKeyRef:
+              name: lanchonete-config
+              key: spring.datasource.url
+        - name: SPRING_DATASOURCE_USERNAME
+          valueFrom:
+            configMapKeyRef:
+              name: lanchonete-config
+              key: spring.datasource.username
+        - name: SPRING_PROFILES_ACTIVE
+          valueFrom:
+            configMapKeyRef:
+              name: lanchonete-config
+              key: spring.profiles.active
+        - name: SPRING_DATASOURCE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: lanchonete-secret
+              key: spring.datasource.password
+        resources:
+          requests:
+            cpu: "300m"
+            memory: 200Mi
+          limits:
+            cpu: "500m"
+            memory: 400Mi
+#        livenessProbe:
+#          httpGet:
+#            path: /actuator/health/liveness
+#            port: 8080
+#          initialDelaySeconds: 120
+#          periodSeconds: 5
+#        readinessProbe:
+#          httpGet:
+#            path: /actuator/health/readiness
+#            port: 8080
+#          initialDelaySeconds: 120
+#          periodSeconds: 5

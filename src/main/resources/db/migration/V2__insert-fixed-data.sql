@@ -1,0 +1,5 @@
+INSERT INTO categorias (CODIGO, NOME) VALUES
+  (1, 'LANCHE'),
+  (2, 'ACOMPANHAMENTO'),
+  (3, 'BEBIDA'),
+  (4, 'SOBREMESA');

@@ -1,23 +1,76 @@
-# 📦 Tech Challenge - Fase 1
+# 📦 Tech Challenge - Fase 2
 
-Essa aplicação foi construida para entrega do Tech Challenge da fase 1. 
+---
 
-Integrantes grupo:
+Essa aplicação foi construída para entrega do Tech Challenge da fase 2, cujo objetivo principal foi a refatoração do código já existente da arquitetura hexagonal para o padrão Clean Architecture, além da implementação da estrutura Kubernetes para orquestração e escalabilidade.
 
-- Andrew do Prado Soares
-- Edmundo Alves Franco Junior
-- Jose Augusto - RM 361650
-- Nathalia Matielo - RM363100
+## Integrantes do grupo:
 
-A aplicação contempla a construção de APIs que juntas irão fornecer um sistema de gerenciamento para uma lanchonete.
+- Iago Cavalcante Geraldo- RM 362832
+- Jose Augusto dos Santos- RM 361650
+- Nathalia Matielo Rodrigues- RM 363100
+- Rogerio Inacio Silva Junior- RM 364104
+- Vanessa Moreira Wendling - RM 362741
 
-O sistema possui rotas disponiveis para:
+---
 
-- Cadastro e gerenciamento de usuários
-- Cadastro, atualização e exclusão de produtos
-- Inclusão de pedidos
-- Gestão de pagamentos
-- Gerenciamento de status e entrega do pedido
+## 💡 Solução Proposta
+
+Foi desenvolvido um sistema de autoatendimento para fast food, que:
+
+- Permite que o cliente faça pedidos diretamente via interface, podendo se identificar por CPF, cadastrar-se ou permanecer anônimo.
+
+
+- O cliente pode montar o combo em etapas opcionais: Lanche, Acompanhamento e Bebida, com exibição clara de nome, descrição e preço.
+
+
+- Possui integração com Mercado Pago via QRCode para pagamento.
+
+
+- Exibe para o cliente um monitor de acompanhamento do pedido, com status atualizados em tempo real: Recebido, Em preparação, Pronto e Finalizado.
+
+
+- Notifica o cliente quando o pedido estiver pronto para retirada.
+
+
+- Permite ao estabelecimento gerenciar clientes, produtos e acompanhar os pedidos em andamento.
+
+
+
+---
+
+## 📦 Funcionalidades Entregues na Fase 2
+
+- Refatoração do código para Clean Architecture.
+
+
+- APIs REST para:
+    - Cadastro e identificação de usuário
+    - Realização de pedido
+    - Integração com Mercado Pago para geração do QRCode
+    - Webhook para confirmação de pagamento via Mercado Pago
+    - Listagem de pedidos filtrados e ordenados por status e tempo
+    - Controle de pedidos entregues
+    - Gerenciamento de clientes, produtos e pedidos
+
+
+- Implantação em Kubernetes:
+    - Escalabilidade automática (Horizontal Pod Autoscaler).
+    - Uso de ConfigMaps e Secrets para valores sensíveis.
+    - Boas práticas com Deployments e Services para orquestração e exposição.
+
+---
+
+
+##  Arquitetura
+
+![diagrama.png](diagrama.png)
+
+### Requisitos contemplados
+
+- Escalabilidade e alta disponibilidade com Kubernetes.
+- Segurança e gerenciamento de configuração via Secrets e ConfigMaps.
+- Visibilidade e controle total via painel administrativo.
 
 ---
 
@@ -28,47 +81,82 @@ Conheça o DDD do nosso projeto no link: https://miro.com/app/board/uXjVI9DOubQ=
 
 ---
 
-## 🎥 Vídeo do Projeto
+## 🎥 Vídeo Demonstrativo
 
-Veja a execução do nosso projeto no link: https://youtu.be/-9GxpBW_uAE
+Assista ao vídeo com demonstração do funcionamento da aplicação e da arquitetura:
+
 
 ---
 
-## ✅ Tecnologias Utilizadas
+## ⚙️ Tecnologias Utilizadas
 
-- Java 17  
-- Spring Boot 
-
+- Java 17
+- Spring Boot
+- Kubernetes local (Minikube ou Docker Desktop)
+- Mercado Pago (integração de pagamento via QRCode)
+- MariaDB (Banco de dados)
 
 ---
 
 ## 🚀 Como Executar Localmente
 
-- Baixar e instalar JDK 17
-- Baixar e instalar Maven
+1. Instale JDK 17 e Maven.
+2. Clone o repositório:
+    ```bash
+    git clone https://github.com/JoseAugustoDosSantos/mercadopago-fiap-tc-fase-2.git
+    cd mercadopago-fiap-tc-fase-2
+    ```
+3. Configure o banco de dados e as categorias (caso não existam) no MariaDB:
+    ```sql
+    INSERT INTO categorias (CODIGO, NOME) VALUES
+      (1, 'LANCHE'),
+      (2, 'ACOMPANHAMENTO'),
+      (3, 'BEBIDA'),
+      (4, 'SOBREMESA');
+    ```
+4. Execute a aplicação via Maven:
+    ```bash
+    mvn spring-boot:run
+    ```
+5. Acesse a documentação Swagger:
+    ```
+    http://localhost:8080/swagger-ui/index.html
+    ```
+6.  Para execução via Kubernetes:
+    - Se estiver usando **Minikube** habilite o metrics-server (necessário para HPA funcionar):
+    ```bash
+    minikube addons enable metrics-server
+    ```
+    - Aplique os manifetos YAML:
+    ```bash
+    kubectl apply -f k8s/
+    ```
+    - **Se estiver usando Minikube:**
+    ```bash
+    minikube service lanchonete-service
+    ```
 
-```bash
-git clone https://github.com/JoseAugustoDosSantos/mercadopago-fiap-tc.git
+    Esse comando deve abrir automaticamente uma aba no navegador com a URL.  
+    Acesse `.../swagger-ui/index.html` no final da URL para ver a documentação dos endpoints.
 
-```
+    - **Se estiver usando Docker Desktop:**
 
-Acesse a documentação Swagger:
-```
-http://localhost:8080/swagger-ui/index.html
-```
+    Acesse diretamente no navegador:
 
+    - http://localhost:30000/
+    - http://localhost:30000/swagger-ui/index.html
 
-Em caso de erro no cadastro de produtos verifique se as categorias foram incluídas no banco. Caso não retorne registros, execute a inserção manualmente executando o comando no container: 
-```
-mariadb -u <user> -p lanchonetedb
-```
-```
-INSERT INTO `categorias` (`CODIGO`, `NOME`) VALUES
-	(1, 'LANCHE'),
-	(2, 'ACOMPANHAMENTO'),
-	(3, 'BEBIDA'),
-	(4, 'SOBREMESA');
-```
+    Neles você poderá visualizar a documentação interativa (OpenAPI/Swagger) dos endpoints disponíveis.
+   
+    - Endpoints para Health Checks:
+      - Liveness Probe:
+      ```bash
+      /actuator/health/liveness
+      ```
+      - Readiness Probe:
+      ```bash
+      /actuator/health/readiness
+      ```
 
 ---
 
@@ -84,13 +172,11 @@ INSERT INTO `categorias` (`CODIGO`, `NOME`) VALUES
 **Resposta:**
 ```json
 {
-  "success": true,
-  "data": {
-    "id": 1,
-    "nome": "João Silva",
-    "cpf": "12345678900"
-  }
-}
+  "id": 1,
+  "nome": "Maria",
+  "cpf": "12345678901",
+  "email": "teste@teste.com"
+} 
 ```
 
 
@@ -111,38 +197,16 @@ INSERT INTO `categorias` (`CODIGO`, `NOME`) VALUES
 **Resposta:**
 ```json
 {
-  "success": true,
-  "data": {
-    "id": 2,
-    "nome": "Maria Oliveira",
-    "cpf": "98765432100",
-    "email": "mariaoliveira@gmail.com"
-  }
+  "id": 1,
+  "nome": "Maria",
+  "cpf": "12345678901",
+  "email": "teste@teste.com"
 }
 ```
 
 ---
 
 ### 📦 Produto
-
-#### 🔍 Buscar produto por código
-
-**GET** `/api/produtos/buscar/produto/1`
-
-**Resposta:**
-```json
-{
-  "success": true,
-  "data": {
-    "codigo": 1,
-    "nome": "X-Burger",
-    "descricao": "Hambúrguer artesanal",
-    "categoria": 10,
-    "preco": 19.90,
-    "tempopreparo": "00:15:00"
-  }
-}
-```
 
 #### ➕ Cadastrar novo produto
 
@@ -153,7 +217,7 @@ INSERT INTO `categorias` (`CODIGO`, `NOME`) VALUES
 {
   "nome": "Coca-Cola",
   "descricao": "Refrigerante 350ml",
-  "categoria": 3,
+  "categoriaId": 3,
   "preco": 5.00,
   "tempopreparo": "00:01:00"
 }
@@ -162,75 +226,267 @@ INSERT INTO `categorias` (`CODIGO`, `NOME`) VALUES
 **Resposta:**
 ```json
 {
-  "success": true,
-  "data": {
-    "codigo": 2,
-    "nome": "Coca-Cola",
-    "descricao": "Refrigerante 350ml",
-    "categoria": 3,
-    "preco": 5.00,
-    "tempopreparo": "00:01:00"
-  }
+  "id": 9,
+  "nome": "X-Burguer Bão Demais",
+  "descricao": "Pão, hambúrguer, queijo e molho especial",
+  "categoria": {
+    "id": 1,
+    "nome": null
+  },
+  "preco": 19.99,
+  "tempopreparo": "00:15:00"
 }
 ```
 
----
 
-### 🧾 Pedido
+#### 🔍 Buscar produto por código
 
-#### 📄 Listar pedidos por status
-
-**GET** `/pedido?status=RECEBIDO`
+**GET** `/api/produtos/buscar/produto/1`
 
 **Resposta:**
 ```json
 {
-  "data": [
-    {
-      "pedido": 1,
-      "usuario": 1,
-      "status": "EM_PREPARACAO",
-      "valorTotal": 10.00,
-      "dataHoraSolicitacao": "2025-06-03T03:36:23.414949",
-      "tempoTotalPreparo": "00:02:00"
-    }
-  ],
-  "errors": [],
-  "success": true
+  "id": 1,
+  "nome": "X-Burguer",
+  "descricao": "Pão, hambúrguer, queijo e molho especial",
+  "categoria": {
+    "id": 1,
+    "nome": "LANCHE"
+  },
+  "preco": 15.90,
+  "tempopreparo": "00:10:00"
 }
 ```
 
-#### 🔄 Alterar status do pedido
+#### 🔍 Buscar produto por categoria
 
-**PUT** `/pedido/1`
+**GET** `/api/produtos/buscar/categoria/:codigoCategoria`
+
+**Resposta:**
+```json
+{
+  "id": 1,
+  "nome": "LANCHE"
+}
+```
+
+#### 🔍 Buscar lista de produto por categoria
+
+**GET** `/api/produtos/buscar/categoria/:codigoCategoria/produtos`
+
+**Resposta:**
+```json
+[
+  {
+    "id": 1,
+    "nome": "X-Burguer",
+    "descricao": "Pão, hambúrguer, queijo e molho especial",
+    "categoria": {
+      "id": 1,
+      "nome": "LANCHE"
+    },
+    "preco": 15.90,
+    "tempopreparo": "00:10:00"
+  },
+  {
+    "id": 2,
+    "nome": "X-Salada",
+    "descricao": "Pão, hambúrguer, queijo, alface e tomate",
+    "categoria": {
+      "id": 1,
+      "nome": "LANCHE"
+    },
+    "preco": 16.90,
+    "tempopreparo": "00:12:00"
+  },
+  {
+    "id": 9,
+    "nome": "X-Burguer Bão Demais",
+    "descricao": "Pão, hambúrguer, queijo e molho especial",
+    "categoria": {
+      "id": 1,
+      "nome": "LANCHE"
+    },
+    "preco": 19.99,
+    "tempopreparo": "00:15:00"
+  },
+  {
+    "id": 10,
+    "nome": "X-Burguer Bão",
+    "descricao": "Pão, hambúrguer, queijo e molho especial",
+    "categoria": {
+      "id": 1,
+      "nome": "LANCHE"
+    },
+    "preco": 19.99,
+    "tempopreparo": "00:15:00"
+  }
+]
+```
+
+#### Atualizar informações produtos
+
+**PUT** `/api/produtos/:codigo`
 
 **Body:**
 ```json
 {
-  "codigo":  1,
-  "status": "EM_PREPARACAO"
+  "nome": "X-Burguer Bão",
+  "descricao": "Pão, hambúrguer, queijo e molho especial",
+  "categoriaId": 1,
+  "preco": 19.99,
+  "tempopreparo": "00:15:00"
 }
 ```
 
 **Resposta:**
 ```json
 {
-  "data": {
-    "pedido": 1,
-    "usuario": 1,
-    "status": "EM_PREPARACAO",
-    "valorTotal": 10.00,
-    "dataHoraSolicitacao": "2025-06-03T03:36:23.414949",
-    "tempoTotalPreparo": "00:02:00"
+  "id": 10,
+  "nome": "X-Burguer Bão",
+  "descricao": "Pão, hambúrguer, queijo e molho especial",
+  "categoria": {
+    "id": 1,
+    "nome": null
   },
-  "errors": [],
-  "success": true
+  "preco": 19.99,
+  "tempopreparo": "00:15:00"
 }
 ```
 
 #### ❌ Remover pedido da fila de preparo
 
-**DELETE** `/pedido/1`
+**DELETE** `/api/produtos/:codigo`
+
+**Resposta:** `204 No Content`
+
+
+---
+
+### 🧾 Pedido
+
+#### ➕ Cadastrar novo pedido
+
+**POST** `/api/pedido`
+
+**Body:**
+```json
+{
+  "idUsuario": 1,
+  "itens": [
+    {
+      "produtoId": 1,
+      "quantidade": 2
+    }
+  ]
+}
+```
+
+**Resposta:**
+```json
+{
+  "id": 2,
+  "idUsuario": 1,
+  "status": "RECEBIDO",
+  "valorTotal": 31.80,
+  "dataHoraSolicitacao": "2025-08-03T17:26:30.8292112",
+  "tempoTotalPreparo": "00:20:00",
+  "itens": [
+    {
+      "id": 2,
+      "pedidoId": 2,
+      "produtoId": 1,
+      "quantidade": 2,
+      "precoUnitario": 15.90,
+      "precoTotal": 31.80
+    }
+  ]
+}
+```
+
+#### 📄 Buscar pedidos por status
+
+**GET** `/api/pedido?status=RECEBIDO`
+
+**Resposta:**
+```json
+[
+  {
+    "id": 2,
+    "idUsuario": 1,
+    "status": "RECEBIDO",
+    "valorTotal": 31.80,
+    "dataHoraSolicitacao": "2025-08-03T17:26:30",
+    "tempoTotalPreparo": "00:20:00",
+    "itens": [
+      {
+        "id": 2,
+        "pedidoId": 2,
+        "produtoId": 1,
+        "quantidade": 2,
+        "precoUnitario": 15.90,
+        "precoTotal": 31.80
+      }
+    ]
+  }
+]
+```
+
+#### 📄 Buscar pedidos por codigo
+
+**GET** `/api/pedido/buscar/:codigoPedido`
+
+**Resposta:**
+```json
+{
+  "id": 1,
+  "idUsuario": 1,
+  "status": "EM_PREPARACAO",
+  "valorTotal": 31.80,
+  "dataHoraSolicitacao": "2025-08-03T17:10:53",
+  "tempoTotalPreparo": "00:20:00",
+  "itens": [
+    {
+      "id": 1,
+      "pedidoId": 1,
+      "produtoId": 1,
+      "quantidade": 2,
+      "precoUnitario": 15.90,
+      "precoTotal": 31.80
+    }
+  ]
+}
+```
+
+#### 🔄 Alterar status do pedido
+
+**PUT** `/api/pedido/status/:codigo?status=EM_PREPARACAO`
+
+**Resposta:**
+```json
+{
+  "id": 1,
+  "idUsuario": 1,
+  "status": "EM_PREPARACAO",
+  "valorTotal": 31.80,
+  "dataHoraSolicitacao": "2025-08-03T17:10:53",
+  "tempoTotalPreparo": "00:20:00",
+  "itens": [
+    {
+      "id": 1,
+      "pedidoId": 1,
+      "produtoId": 1,
+      "quantidade": 2,
+      "precoUnitario": 15.90,
+      "precoTotal": 31.80
+    }
+  ]
+}
+```
+
+#### ❌ Remover pedido da fila de preparo
+
+**DELETE** `/api/pedido/remover/fila/:codigoPedido`
 
 **Resposta:** `204 No Content`
 
@@ -240,7 +496,7 @@ INSERT INTO `categorias` (`CODIGO`, `NOME`) VALUES
 
 #### 🧾 Gerar QR Code de pagamento
 
-**POST** `/api/payments`
+**POST** `/api/pagamento`
 
 **Body:**
 ```json
@@ -299,9 +555,9 @@ INSERT INTO `categorias` (`CODIGO`, `NOME`) VALUES
 } 
 ```
 
-#### ✅ Confirmar pagamento
+#### ✅ Webhook - confirmação de pagamento
 
-**POST** `/api/payments/mercadopago/confirmapagamento`
+**POST** `/webhook/mercadopago/confirmapagamento`
 
 **Body:**
 ```json
@@ -328,6 +584,20 @@ INSERT INTO `categorias` (`CODIGO`, `NOME`) VALUES
 }
 ```
 
+#### 🧾 Consultar pagamento
+
+**GET** `/api/pagamento?id=1340035121`
+
+**Resposta:**
+```json
+{
+  "pedidoId": "1",
+  "mercadoPagoIdPagamento": 1340035121,
+  "status": "pending"
+}
+```
+
+
 ---
 
 ### 🛵 Entrega
@@ -339,9 +609,9 @@ INSERT INTO `categorias` (`CODIGO`, `NOME`) VALUES
 **Body:**
 ```json
 {
-  "codigo":  1,
-  "status": "FINALIZADO"
-} 
+  "pedidoId": 1,
+  "dataHoraSolicitacao": "2025-08-02T12:54:53Z"
+}
 ```
 
 **Resposta:**
@@ -362,6 +632,4 @@ INSERT INTO `categorias` (`CODIGO`, `NOME`) VALUES
 
 ## 📌 Observações Finais
 
-- Todas as respostas seguem o padrão de `ApiResponse<T>`.
 - A API não possui autenticação implementada.
-- Configure o banco de dados no `application.properties`.
