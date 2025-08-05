@@ -48,6 +48,7 @@ Foi desenvolvido um sistema de autoatendimento para fast food, que:
     - Cadastro e identificação de usuário
     - Realização de pedido
     - Integração com Mercado Pago para geração do QRCode
+    - Consulta de pagamentos
     - Webhook para confirmação de pagamento via Mercado Pago
     - Listagem de pedidos filtrados e ordenados por status e tempo
     - Controle de pedidos entregues
