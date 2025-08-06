@@ -84,7 +84,7 @@ Conheça o DDD do nosso projeto no link: https://miro.com/app/board/uXjVI9DOubQ=
 
 ## 🎥 Vídeo Demonstrativo
 
-Assista ao vídeo com demonstração do funcionamento da aplicação e da arquitetura:
+Assista ao vídeo com demonstração do funcionamento da aplicação e da arquitetura: https://youtu.be/hqAwc3LQJfs
 
 
 ---
@@ -124,7 +124,7 @@ Assista ao vídeo com demonstração do funcionamento da aplicação e da arquit
     http://localhost:8080/swagger-ui/index.html
     ```
 ## 🚀 Como Executar via Kubernetes
-1. Instalar Kubernetes com Minikube, ou 
+1. Instalar Kubernetes com Minikube, ou
 2. Instalar Docker Desktop e ativar Kubernetes
     - Se estiver usando **Minikube** habilite o metrics-server (necessário para HPA funcionar):
     ```bash
@@ -139,24 +139,24 @@ Assista ao vídeo com demonstração do funcionamento da aplicação e da arquit
     minikube service lanchonete-service
     ```
 
-    Esse comando deve abrir automaticamente uma aba no navegador com a URL.  
-    Acesse `.../swagger-ui/index.html` no final da URL para ver a documentação dos endpoints.
+   Esse comando deve abrir automaticamente uma aba no navegador com a URL.  
+   Acesse `.../swagger-ui/index.html` no final da URL para ver a documentação dos endpoints.
 
     - **Se estiver usando Docker Desktop:**
 
-    Acesse diretamente no navegador:
+   Acesse diretamente no navegador:
 
     - http://localhost:30000/
     - http://localhost:30000/swagger-ui/index.html
 
-    Neles você poderá visualizar a documentação interativa (OpenAPI/Swagger) dos endpoints disponíveis.
-   
+   Neles você poderá visualizar a documentação interativa (OpenAPI/Swagger) dos endpoints disponíveis.
+
     - Endpoints para Health Checks:
-      - Liveness Probe:
+        - Liveness Probe:
       ```bash
       /actuator/health/liveness
       ```
-      - Readiness Probe:
+        - Readiness Probe:
       ```bash
       /actuator/health/readiness
       ```
@@ -169,7 +169,7 @@ Assista ao vídeo com demonstração do funcionamento da aplicação e da arquit
 #### 🔍📚 Collection API (Postman)
 
 Para ter acesso aos Endpoints e exemplos faça o download da collection e importe na sua IDE de preferência:
-[Collection API](https://drive.google.com/uc?export=download&id=1ZiQsbaLV5pB5lrymth4xrdRVKrV6t2Z-)
+[Collection API](https://drive.google.com/uc?export=download&id=1xp52ZV3tcdlxPq5wG7C6tpEA4O6jXKvB)
 
 ### 👤 Usuário
 
@@ -492,6 +492,34 @@ Para ter acesso aos Endpoints e exemplos faça o download da collection e import
   ]
 }
 ```
+
+#### 📄 Lista de pedidos ordenada
+
+**GET** `/api/pedido/listarPedidos`
+
+**Resposta:**
+```json
+[
+    {
+        "id": 3,
+        "idUsuario": 1,
+        "status": "PRONTO",
+        "valorTotal": 31.80,
+        "dataHoraSolicitacao": "2025-08-05T20:39:12",
+        "tempoTotalPreparo": "00:20:00",
+        "itens": [
+            {
+                "id": 3,
+                "pedidoId": 3,
+                "produtoId": 1,
+                "quantidade": 2,
+                "precoUnitario": 15.90,
+                "precoTotal": 31.80
+            }
+        ]
+    }
+]
+````
 
 #### ❌ Remover pedido da fila de preparo
 
