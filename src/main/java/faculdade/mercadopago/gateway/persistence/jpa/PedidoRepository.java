@@ -19,7 +19,7 @@ public interface PedidoRepository extends JpaRepository<PedidoEntity, Long> {
             ORDER BY
               CASE p.status
                 WHEN 'PRONTO' THEN 1
-                WHEN 'EM PREPARACAO' THEN 2
+                WHEN 'EM_PREPARACAO' THEN 2
                 WHEN 'RECEBIDO' THEN 3
                 ELSE 4
               END,
