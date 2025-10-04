@@ -3,11 +3,10 @@ kind: Service
 metadata:
   name: lanchonete-service
 spec:
-  type: NodePort
+  type: LoadBalancer
   selector:
     app: lanchonete-app
   ports:
   - port: 8080
     targetPort: 8080
-    nodePort: 30000
 
