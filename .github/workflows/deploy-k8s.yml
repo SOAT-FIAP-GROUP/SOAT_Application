@@ -1,0 +1,46 @@
+name: Deploy to Kubernetes
+
+on:
+  workflow_run:
+    workflows: ["Build Docker Image"]
+    types:
+      - completed
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set Docker image variable
+        run: |
+          if [ -n "${{ github.event.workflow_run }}" ]; then
+            # Se veio do workflow_run automático
+            DOCKER_IMAGE="${{ github.event.workflow_run.outputs['docker-image'] }}"
+          else
+            # Se veio do workflow_dispatch manual
+            DOCKER_IMAGE="${{ secrets.DOCKER_USERNAME }}/lanchonete-app:latest"
+          fi
+          echo "DOCKER_IMAGE=$DOCKER_IMAGE" >> $GITHUB_ENV
+
+
+      - name: Render Deployment
+        run: envsubst < k8s/deployment.yaml > k8s/deployment_rendered.yaml
+
+      - name: Configure kubectl
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ASSUME_ROLE_ARN_EKS }}
+          role-session-name: GitHub_to_AWS_via_FederatedOIDC
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Update kubeconfig
+        run: aws eks update-kubeconfig --name lanchonete-app-dev --region ${{ secrets.AWS_REGION }}
+
+      - name: Apply Kubernetes manifests
+        run: |
+          kubectl apply -f k8s/
+          kubectl rollout status deployment/lanchonete-app
