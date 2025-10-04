@@ -28,3 +28,20 @@ jobs:
         
       - name: Push image docker
         run: docker push ${{secrets.DOCKER_USERNAME}}/app
+
+      # ---------------- KUBERNETES ----------------
+
+      - name: Configure kubectl
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ASSUME_ROLE_ARN }}
+          role-session-name: GitHub_to_AWS_via_FederatedOIDC
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Update kubeconfig
+        run: |
+          aws eks update-kubeconfig --name lanchonete-app-dev --region ${{ secrets.AWS_REGION }}
+
+      - name: Apply Kubernetes manifests
+        run: |
+          kubectl apply -f k8s/
