@@ -35,10 +35,10 @@ jobs:
         with:
           role-to-assume: ${{ secrets.AWS_ASSUME_ROLE_ARN_EKS }}
           role-session-name: GitHub_to_AWS_via_FederatedOIDC
-          aws-region: ${{ secrets.AWS_REGION }}
+          aws-region: ${{ vars.AWS_REGION }}
 
       - name: Update kubeconfig
-        run: aws eks update-kubeconfig --name lanchonete-app-dev --region ${{ secrets.AWS_REGION }}
+        run: aws eks update-kubeconfig --name lanchonete-app-dev --region ${{ vars.AWS_REGION }}
 
       - name: Apply Kubernetes manifests
         run: |
