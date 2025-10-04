@@ -1,8 +1,6 @@
-# 📦 Tech Challenge - Fase 2
+# Tech Challenge - Fase 3
 
 ---
-
-Essa aplicação foi construída para entrega do Tech Challenge da fase 2, cujo objetivo principal foi a refatoração do código já existente da arquitetura hexagonal para o padrão Clean Architecture, além da implementação da estrutura Kubernetes para orquestração e escalabilidade.
 
 ## Integrantes do grupo:
 
@@ -39,33 +37,24 @@ Foi desenvolvido um sistema de autoatendimento para fast food, que:
 
 ---
 
-## 📦 Funcionalidades Entregues na Fase 2
+## 📦 Funcionalidades Entregues na Fase 3
 
-- Refatoração do código para Clean Architecture.
+- Implementação de API Gateway
+- Implementação de autenticação via Cognito
+- Implementação de infra com Kubernets com terraform
+- Criação de repositorio de infra com terraform para o banco de dados
+- Revisão e criação de documentação de modelagem de dados
+- Desenho de arquitetura de serviços AWS
+- Configuração de Git Actions para deploy integrado com a AWS
 
-
-- APIs REST para:
-    - Cadastro e identificação de usuário
-    - Realização de pedido
-    - Integração com Mercado Pago para geração do QRCode
-    - Consulta de pagamentos
-    - Webhook para confirmação de pagamento via Mercado Pago
-    - Listagem de pedidos filtrados e ordenados por status e tempo
-    - Controle de pedidos entregues
-    - Gerenciamento de clientes, produtos e pedidos
-
-
-- Implantação em Kubernetes:
-    - Escalabilidade automática (Horizontal Pod Autoscaler).
-    - Uso de ConfigMaps e Secrets para valores sensíveis.
-    - Boas práticas com Deployments e Services para orquestração e exposição.
 
 ---
 
 
 ##  Arquitetura
 
-![diagrama.png](diagrama.png)
+![FIAP_ARQUITERURA_PARTE_3.drawio.png](FIAP_ARQUITERURA_PARTE_3.drawio.png)
+Link para consulta: https://drive.google.com/file/d/1lbuXFyJ4u4rDfE4sO1hEmubwgqLQ72TT/view?pli=1
 
 ### Requisitos contemplados
 
@@ -82,6 +71,14 @@ Conheça o DDD do nosso projeto no link: https://miro.com/app/board/uXjVI9DOubQ=
 
 ---
 
+##  Modelagem de dados
+
+![Entity Relationship Diagram.jpg](Entity%20Relationship%20Diagram.jpg)
+Conheça nosso ADR Banco de Dados no link: https://miro.com/app/board/uXjVJBOnVMI=/?share_link_id=499165686840. Lá você irá encontrar todas as informações sobre a escolha do nosso banco de dados, além de detalhamento dos modelos conceitual, fisico e logico.
+
+
+---
+
 ## 🎥 Vídeo Demonstrativo
 
 Assista ao vídeo com demonstração do funcionamento da aplicação e da arquitetura: https://youtu.be/hqAwc3LQJfs
@@ -93,9 +90,14 @@ Assista ao vídeo com demonstração do funcionamento da aplicação e da arquit
 
 - Java 17
 - Spring Boot
-- Kubernetes local (Minikube ou Docker Desktop)
+- Kubernetes 
+- Amazon Cognito
+- API Gateway
 - Mercado Pago (integração de pagamento via QRCode)
 - MariaDB (Banco de dados)
+- Amazon RDS
+- Terraform
+- Github Actions
 
 ---
 
@@ -667,6 +669,3 @@ Para ter acesso aos Endpoints e exemplos faça o download da collection e import
 ---
 
 
-## 📌 Observações Finais
-
-- A API não possui autenticação implementada.
