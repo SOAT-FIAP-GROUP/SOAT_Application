@@ -6,10 +6,19 @@ on:
     types:
       - completed
   workflow_dispatch:
+    inputs:
+      force-deploy:
+        description: 'Força a execução do deploy'
+        required: false
+        default: 'true'
+
+permissions:
+  id-token: write
+  contents: read
 
 jobs:
   deploy:
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event.inputs.force-deploy == 'true' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
