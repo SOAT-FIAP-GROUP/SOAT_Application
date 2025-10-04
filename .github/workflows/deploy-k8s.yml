@@ -26,13 +26,7 @@ jobs:
 
       - name: Set Docker image variable
         run: |
-          if [ -n "${{ github.event.workflow_run }}" ]; then
-            # Se veio do workflow_run automático
-            DOCKER_IMAGE="${{ github.event.workflow_run.outputs['docker-image'] }}"
-          else
-            # Se veio do workflow_dispatch manual
-            DOCKER_IMAGE="${{ secrets.DOCKER_USERNAME }}/lanchonete-app:latest"
-          fi
+          DOCKER_IMAGE="${{ secrets.DOCKER_USERNAME }}/lanchonete-app:latest"
           echo "DOCKER_IMAGE=$DOCKER_IMAGE" >> $GITHUB_ENV
 
 
