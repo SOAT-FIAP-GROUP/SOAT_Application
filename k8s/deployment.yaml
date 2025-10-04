@@ -14,8 +14,8 @@ spec:
     spec:
       containers:
       - name: lanchonete-container
-        image: ashenonedev/lanchonete-app:latest
-#        imagePullPolicy: Never
+        image: ${DOCKER_IMAGE}
+        imagePullPolicy: Always
         ports:
         - containerPort: 8080
         env:
