@@ -81,7 +81,7 @@ Conheça nosso ADR Banco de Dados no link: https://miro.com/app/board/uXjVJBOnVM
 
 ## 🎥 Vídeo Demonstrativo
 
-Assista ao vídeo com demonstração do funcionamento da aplicação e da arquitetura: https://youtu.be/hqAwc3LQJfs
+Assista ao vídeo com demonstração do funcionamento da aplicação e da arquitetura: https://youtu.be/EeZ09IW9S-Y
 
 
 ---
