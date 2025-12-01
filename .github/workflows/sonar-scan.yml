@@ -3,7 +3,7 @@ on:
   push:
     branches:
       - main
-      - config/sonar
+
 jobs:
   build:
     name: Build and analyze
