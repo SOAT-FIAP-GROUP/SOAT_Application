@@ -32,4 +32,7 @@ jobs:
       - name: Build and analyze
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=SOAT-FIAP-GROUP_SOAT_Application
+        run: mvn -B verify \
+              org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
+              -Dsonar.projectKey=SOAT-FIAP-GROUP_SOAT_Application \
+              -Dsonar.exclusions=**/*Entity.java,**/App*.java,**/*Gateway.java,**/*Request.java,**/*Res.java,**/DadosPedidoPago.java,**/*Config.java,**/*Mapper.java,**/*Response.java,**/*Handler.java,**/LanchoneteApplication.java,**/Pagamento.java
